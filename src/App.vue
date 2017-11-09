@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
@@ -11,13 +10,28 @@ export default {
 }
 </script>
 
+<style lang="css">
+@import "https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700";
+</style>
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+html, body{
+  background: #000;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
 }
+
+a{
+  color: #009fe3;
+  text-decoration: none;
+}
+
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+
 </style>
