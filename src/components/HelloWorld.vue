@@ -91,7 +91,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped <style lang="scss">
+<style lang="scss" scoped>
 
 $blue: #009fe3;
 
@@ -104,6 +104,17 @@ html, body{
 p{
   font-weight: 300;
   line-height: 30px;
+}
+
+a {
+  &.button{
+    background:$blue;
+    color: white;
+    height: 55px;
+    display: inline-block;
+    line-height: 55px;
+    padding: 0 30px;
+  }
 }
 
 .aboutHome{
