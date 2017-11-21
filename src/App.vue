@@ -5,8 +5,32 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return {
+      info: [],
+      errors: []
+    }
+  },
+  created () {
+    this.fetchData()
+  },
+  methods: {
+    fetchData: async (e) => {
+      const vm = this
+      vm.users = []
+      try {
+        const response = await axios.get(`http://localhost:5000/data/call`)
+        this.info = response.data
+        console.log(this.info)
+      } catch (e) {
+        this.errors.push(e)
+      }
+    }
+  }
 }
 </script>
 

@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "start": "node server.js",
+    "start": "DEBUG=express:* node server.js",
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
@@ -14,7 +14,10 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "axios": "^0.17.1",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
+    "sequelize": "^4.22.11",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
