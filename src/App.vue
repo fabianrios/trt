@@ -12,22 +12,24 @@ export default {
   data () {
     return {
       info: [],
-      errors: []
+      errors: [],
+      root: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000',
+      este: 'este'
     }
   },
   created () {
     this.fetchData()
   },
   methods: {
-    fetchData: async (e) => {
+    fetchData: async function fetchData (e) {
       const vm = this
-      vm.users = []
+      const url = `${vm.root}/api/call`
       try {
-        const response = await axios.get(`http://localhost:5000/data/call`)
-        this.info = response.data
-        console.log(this.info)
+        const response = await axios.get(url)
+        vm.info = response.data
+        console.log(vm.info)
       } catch (e) {
-        this.errors.push(e)
+        vm.errors.push(e)
       }
     }
   }

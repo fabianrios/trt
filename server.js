@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(serveStatic(__dirname + "/dist"));
 // use routes
-app.use('/data', router);
+app.use('/api', router);
 var port = process.env.PORT || 5000;
 
 
