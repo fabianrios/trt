@@ -1,14 +1,6 @@
 <template>
   <div class="content">
-    <div class="mainbar">
-      <div class="row">
-        <span class="logo"></span>
-        <ul class="signform">
-          <li><a href="login">login</a></li>
-          <li><a href="sign up">sign up</a></li>
-        </ul>
-      </div>
-    </div>
+    <Mainbar></Mainbar>
     
     <div class="main_series innerContent">
       <h1><b>Content page</b> example</h1>
@@ -35,62 +27,34 @@
          <p>At my stable, I train horses from the beginning to Grand Prix, teach students who are competing at international level and give demonstrations and clinics all over the world about my own developed TRT method.</p>
       </div>
     </div>
-
-    <div class="social tac">
-      <h3 class="upper fwn"><b>stay up to date with</b> trt tb</h3>
-      <ul class="social-icons">
-        <li><a href=""><icon name="instagram" scale="2"></icon></a></li>
-        <li><a href=""><icon name="twitter" scale="2"></icon></a></li>
-        <li><a href=""><icon name="youtube" scale="2"></icon></a></li>
-        <li><a href=""><icon name="facebook" scale="2"></icon></a></li>
-      </ul>
-    </div>
-
-    <footer>
-      <div class="inner">
-        <div class="logofooter">
-          <a href=""><img src="../assets/pferdlogo.svg" alt=""></a>
-        </div>
-        <div class="linksfooter">
-          <ul>
-            <li><a href="">BROWSE CLASSES</a></li>
-            <li><a href="">HELP CENTER</a></li>
-            <li><a href="">CONTACT US</a></li>
-            <li><a href="">PRIVACY</a></li>
-            <li><a href="">TERMS</a></li>
-            <li><a href="">CAREERS</a></li>
-          </ul>
-          <p>Copyright © 2017 TRT TV</p>
-        </div>
-        <div class="acceptedPayment">
-          <img src="../assets/ideal.gif" alt="ideal">
-          <img src="../assets/mastercard.svg" alt="mastercard">
-        </div>
-      </div>
-    </footer>
+    
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 
 import Icon from 'vue-awesome/components/Icon'
+import Footer from '@/components/Footer'
+import Mainbar from '@/components/Mainbar'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Content',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Content part'
     }
   },
-  components: Icon
+  components: {
+    Icon,
+    Footer,
+    Mainbar
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
- .social{
-   background-color: #070707;
- }
 
  .innerText{
    background: white;

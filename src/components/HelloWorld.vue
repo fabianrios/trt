@@ -1,14 +1,6 @@
 <template>
   <div class="hello">
-    <div class="mainbar">
-      <div class="row">
-        <span class="logo"></span>
-        <ul class="signform">
-          <li><a href="login">login</a></li>
-          <li><a href="sign up">sign up</a></li>
-        </ul>
-      </div>
-    </div>
+    <mainbar></mainbar>
     
     <div class="main_series">
       <a href="" class="play big"></a>
@@ -82,43 +74,15 @@
         <a href="" class="button multiply">order now</a>
       </div>
     </div>
-    <div class="social tac">
-      <h3 class="upper fwn"><b>stay up to date with</b> trt tb</h3>
-      <ul class="social-icons">
-        <li><a href=""><icon name="instagram" scale="2"></icon></a></li>
-        <li><a href=""><icon name="twitter" scale="2"></icon></a></li>
-        <li><a href=""><icon name="youtube" scale="2"></icon></a></li>
-        <li><a href=""><icon name="facebook" scale="2"></icon></a></li>
-      </ul>
-    </div>
-    <footer>
-      <div class="inner">
-        <div class="logofooter">
-          <a href=""><img src="../assets/pferdlogo.svg" alt=""></a>
-        </div>
-        <div class="linksfooter">
-          <ul>
-            <li><a href="">BROWSE CLASSES</a></li>
-            <li><a href="">HELP CENTER</a></li>
-            <li><a href="">CONTACT US</a></li>
-            <li><a href="">PRIVACY</a></li>
-            <li><a href="">TERMS</a></li>
-            <li><a href="">CAREERS</a></li>
-          </ul>
-          <p>Copyright © 2017 TRT TV</p>
-        </div>
-        <div class="acceptedPayment">
-          <img src="../assets/ideal.gif" alt="ideal">
-          <img src="../assets/mastercard.svg" alt="mastercard">
-        </div>
-      </div>
-    </footer>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 
 import Icon from 'vue-awesome/components/Icon'
+import Footer from '@/components/Footer'
+import Mainbar from '@/components/Mainbar'
 
 export default {
   name: 'HelloWorld',
@@ -127,7 +91,11 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
-  components: Icon
+  components: {
+    Icon,
+    Footer,
+    Mainbar
+  }
 }
 </script>
 
