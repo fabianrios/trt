@@ -34,7 +34,6 @@
 
 <script>
 
-import Icon from 'vue-awesome/components/Icon'
 import Footer from '@/components/Footer'
 import Mainbar from '@/components/Mainbar'
 
@@ -46,7 +45,6 @@ export default {
     }
   },
   components: {
-    Icon,
     Footer,
     Mainbar
   }

@@ -3,21 +3,47 @@
     <div class="row">
       <span class="logo"></span>
       <ul class="signform">
-        <li><a href="login">login</a></li>
-        <li><a href="sign up">sign up</a></li>
+        <li><a href="login"  v-on:click="showThemodal($event)">login</a></li>
+        <li><a href="sign up" v-on:click="showThemodal($event)">sign up</a></li>
       </ul>
     </div>
+    <modal v-if="showModal" @close="showModal = false">
+      <h2 class="upper tac fwn" slot="header"><b>create</b> account</h2>
+      <div slot="body">
+        <form action="">
+          <input type="email" placeholder="Email Adress">
+          <input type="text" placeholder="Name">
+          <input type="text" placeholder="Country">
+          <input type="text" name="adress" id="adress" placeholder="Adress">
+          <button class="button expand upper">sign in</button>
+        </form>
+        <br />
+        <p class="tac nm">Already have an account <a href="">Sign in</a></p>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
+import Modal from '@/components/Modal'
 
 export default {
   name: 'Mainbar',
   data () {
     return {
-      msg: 'Mainbar'
+      msg: 'Mainbar',
+      showModal: false
     }
+  },
+  methods: {
+    showThemodal: function showThemodal (e) {
+      e.preventDefault()
+      this.showModal = true
+      console.log(e)
+    }
+  },
+  components: {
+    Modal
   }
 }
 </script>

@@ -3,7 +3,10 @@
 <svg version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 125.2 122.9" style="enable-background:new 0 0 125.2 122.9;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
+	.st0{fill:#BCBCBC;}
 </style>
-<polygon class="st0" points="86.4,91 34.9,59.9 86.4,28.8 "/>
+<path class="st0" d="M27.5,102.1l-2.7-2.5c-1.5-1.4-1.6-3.7-0.2-5.2L92.5,21c1.4-1.5,3.7-1.6,5.2-0.2l2.7,2.5
+	c1.5,1.4,1.6,3.7,0.2,5.2l-67.9,73.5C31.3,103.4,29,103.5,27.5,102.1z"/>
+<path class="st0" d="M97.7,102.1l2.7-2.5c1.5-1.4,1.6-3.7,0.2-5.2L32.7,21c-1.4-1.5-3.7-1.6-5.2-0.2l-2.7,2.5
+	c-1.5,1.4-1.6,3.7-0.2,5.2l67.9,73.5C93.9,103.4,96.2,103.5,97.7,102.1z"/>
 </svg>

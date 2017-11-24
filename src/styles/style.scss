@@ -37,7 +37,31 @@ p{
   text-transform: uppercase;
 }
 
-a {
+input{
+    background: #f6f6f6;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid #dddddd;
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    box-sizing:border-box;
+    padding: 0;
+    padding-left: 10px;
+}
+
+button{
+    font-size: 16px;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.nm{
+    margin: 0;
+}
+
+a, button {
   color: #009fe3;
   text-decoration: none;
   &.button{
@@ -48,6 +72,12 @@ a {
     display: inline-block;
     line-height: 55px;
     padding: 0 30px 0 50px;
+    box-shadow: 0;
+    border-radius: 0;
+    border: 1px solid $blue;
+    &.expand{
+        width: 100%;
+    }
     &:before{
       content:'';
       position: absolute;

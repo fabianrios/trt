@@ -7,14 +7,12 @@
         <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur.</p>
       </div>
       <div class="seriesshow">
-        <div class="encapsule" v-for="(serie, index) in series">
-          <div class="serie" v-bind:style="{ background: pdata }">
-            <div class="text_Serie">
-              <div class="fixw">
-                <h1>{{ serie.name }}</h1>
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-                <h3>COMING SPRING 2017</h3>
-              </div>
+        <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
+          <div class="text_Serie">
+            <div class="fixw">
+              <h1>{{ serie.name }}</h1>
+              <p>{{ serie.text }}</p>
+              <h3>COMING SPRING 2017</h3>
             </div>
           </div>
         </div>
@@ -38,11 +36,13 @@ export default {
       isFloated: true,
       series: [{
         name: 'World of dressage',
-        image: 'Worldofdressage.jpg'
+        image: 'https://res.cloudinary.com/trt-tv/image/upload/v1511523784/assets/Worldofdressage.jpg',
+        text: 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna.'
       },
       {
         name: 'Brett kidding',
-        image: 'Brettkidding.jpg'
+        image: 'https://res.cloudinary.com/trt-tv/image/upload/v1511523784/assets/Brettkidding.jpg',
+        text: 'Parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna. lorem'
       }
       ]
     }
