@@ -50,6 +50,22 @@ input{
     padding-left: 10px;
 }
 
+select{
+  border: 1px solid lightgray;
+  height: 50px;
+  border-radius: 0;
+  width: 100%;
+  outline: none;
+  background: #fff;
+  background-image: url(http://res.cloudinary.com/trt-tv/image/upload/v1512335361/icn_arrow_sml_down_ldyjfm.svg);
+  background-repeat: no-repeat;
+  background-position: 94% 50%;
+  background-size: 12px 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 10px;
+}
+
 button{
     font-size: 16px;
     display: block;
@@ -259,6 +275,7 @@ $deg: 315deg;
       }
       h5{
         margin: 0;
+        text-align: left;
       }
     }
   }
@@ -316,4 +333,18 @@ div{
     margin: 0 auto;
     padding-bottom: 100px;
   }
+}
+
+
+//toaster
+.mini-toastr-notification__title{
+  font-weight: bold;
+}
+
+.mini-toastr__notification{
+  width: 400px;
+}
+
+.mini-toastr-notification__message{
+  padding: 0;
 }

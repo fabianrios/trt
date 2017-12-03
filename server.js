@@ -31,8 +31,26 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-// login session
+// encryption
+let crypto = require('crypto')
+let algorithm = 'aes-256-ctr'
+let password = 'mormon'
 
+function encrypt (text) {
+  let cipher = crypto.createCipher(algorithm, password)
+  let crypted = cipher.update(text, 'utf8', 'hex')
+  crypted += cipher.final('hex')
+  return crypted
+}
+
+function decrypt (text) {
+  let decipher = crypto.createDecipher(algorithm, password)
+  let dec = decipher.update(text, 'hex', 'utf8')
+  dec += decipher.final('utf8')
+  return dec
+}
+
+// login session
 passport.serializeUser(function (user, cb) {
   cb(null, user.id)
 })
@@ -51,11 +69,10 @@ passport.use(new LocalStrategy({
   function (email, password, done) {
     console.log('credentials: ', email, password)
     db.User.findOne({ where: {email: email} }).then(user => {
-      // console.log('response: ', user)
+      console.log('response: ', user, encrypt(password))
       if (!user) {
         return done(null, false)
       }
-      if (user.password !== password) { return done(null, false) }
       return done(null, user)
     })
   }
@@ -74,19 +91,40 @@ app.use(passport.session())
 app.use('/api', router)
 
 app.post('/login', function (req, res, next) {
-  console.log(req.body, 'req.body')
+  //  console.log(req.body, 'req.body')
   passport.authenticate('local',
   function (err, user) {
+    // console.log('user', user)
     if (err) { return next(err) }
     if (!user) {
-      console.log('post error', user)
-      return res.status(401).send(JSON.stringify({error: 'no user found'}, null, 2))
+      return res.status(401).end('There is no user register with that email')
+    }
+    if (user.password !== encrypt(req.body.password)) {
+      return res.status(401).end('The password is incorrect')
     }
     req.logIn(user, function (err) {
       if (err) { return next(err) }
-      return res.status(200).send(JSON.stringify(req.user, null, 2))
+      return res.status(200).send(JSON.stringify(user, null, 2))
     })
   })(req, res, next)
+})
+
+app.post('/register', function (req, res, next) {
+  let theUser = req.body
+  theUser.password = encrypt(theUser.password)
+  console.log('theUser', theUser)
+  db.User.findOne({ where: {email: theUser.email} }).then(euser => {
+    if (euser !== null) {
+      return res.status(400).end('User already exist')
+    } else {
+      db.User.create(theUser).then(user => {
+        return res.status(200).send(JSON.stringify(user, null, 2))
+      }).catch(function (err) {
+        console.error('couldnt create user', err)
+        return res.status(500).send(err)
+      })
+    }
+  })
 })
 
 app.get('/logout',

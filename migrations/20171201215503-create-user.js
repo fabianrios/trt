@@ -12,6 +12,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       password: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       email: {
@@ -20,7 +21,7 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
-      adress: {
+      address: {
         type: Sequelize.STRING
       },
       country: {
@@ -28,6 +29,9 @@ module.exports = {
       },
       bio: {
         type: Sequelize.TEXT
+      },
+      admin: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
