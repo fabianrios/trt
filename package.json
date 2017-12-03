@@ -16,10 +16,19 @@
   "dependencies": {
     "axios": "^0.17.1",
     "cors": "^2.8.4",
+    "crypto": "^1.0.1",
     "express": "^4.16.2",
-    "sequelize": "^4.22.11",
+    "express-session": "^1.15.6",
+    "mini-toastr": "^0.6.6",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.4.0",
+    "sequelize": "^4.23.4",
+    "sequelize-cli": "^3.1.0",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-notifications": "^0.9.0",
+    "vue-router": "^3.0.1",
+    "vue-session": "^0.9.10"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

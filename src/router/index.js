@@ -1,10 +1,38 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueSession from 'vue-session'
+
+import VueNotifications from 'vue-notifications'
+import miniToastr from 'mini-toastr'
+
 import HelloWorld from '@/components/HelloWorld'
 import Content from '@/components/Content'
 import Series from '@/components/Series'
 
+const toastTypes = {
+  success: 'success',
+  error: 'error',
+  info: 'info',
+  warn: 'warn'
+}
+
+// This step requires only for mini-toastr, just an initialization
+miniToastr.init({types: toastTypes})
+
+function toast ({title, message, type, timeout, cb}) {
+  return miniToastr[type](message, title, timeout, cb)
+}
+
+const options = {
+  success: toast,
+  error: toast,
+  info: toast,
+  warn: toast
+}
+
 Vue.use(Router)
+Vue.use(VueSession)
+Vue.use(VueNotifications, options)
 
 export default new Router({
   routes: [
