@@ -11,8 +11,10 @@ var db        = {};
 console.log(config.database, 'which',  process.env.DATABASE_URL)
 
 if (config.use_env_variable) {
+  console.log("first", config.use_env_variable);
   var sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
+  console.log("second");
   var sequelize = new Sequelize(config.database || process.env.DATABASE_URL, config.username, config.password, config);
 }
 
