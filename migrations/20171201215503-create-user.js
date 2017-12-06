@@ -21,6 +21,9 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      publicid: {
+        type: Sequelize.STRING
+      },
       address: {
         type: Sequelize.STRING
       },
