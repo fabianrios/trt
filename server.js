@@ -1,13 +1,13 @@
 // initate 3rd parties and express server
-const express = require('express'),
-  path = require('path'),
-  serveStatic = require('serve-static'),
-  session = require('express-session'),
-  bodyParser = require('body-parser'),
-  Sequelize = require('sequelize'),
-  passport = require('passport'),
-  LocalStrategy = require('passport-local').Strategy,
-  cors = require('cors')
+const express = require('express')
+const path = require('path')
+const serveStatic = require('serve-static')
+const session = require('express-session')
+const bodyParser = require('body-parser')
+const Sequelize = require('sequelize')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+const cors = require('cors')
 
 const db = require('./models')
 db.sequelize.sync().then(function () {
@@ -82,13 +82,24 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors(corsOptions))
 app.use(serveStatic(path.join(__dirname, '/dist')))
-app.use(require('express-session')({ secret: 'pferd', resave: false, saveUninitialized: false }))
+app.use(session({ secret: 'pferd', resave: false, saveUninitialized: false }))
 // Initialize Passport and restore authentication state, if any, from the session
 app.use(passport.initialize())
 app.use(passport.session())
 
 // use routes
 app.use('/api', router)
+
+app.get('/user/:id', function (req, res, next) {
+  console.log(req.params)
+  db.User.findOne({ where: {id: req.params.id} }).then(user => {
+    console.log('response: ', user)
+    if (!user) {
+      return res.status(401).end('No user found')
+    }
+    return res.status(200).send(JSON.stringify(user, null, 2))
+  })
+})
 
 app.post('/login', function (req, res, next) {
   //  console.log(req.body, 'req.body')

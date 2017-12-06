@@ -11,6 +11,11 @@ export default {
   name: 'app',
   data () {
     return {
+      cloudinary: {
+        uploadPreset: 'nufipcxu',
+        apiKey: '126896252395396',
+        cloudName: 'trt-tv'
+      },
       info: [],
       errors: [],
       root: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000',

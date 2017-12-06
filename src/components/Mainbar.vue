@@ -8,7 +8,7 @@
       </ul>
       <ul v-else class="signform">
         <li><h4 class="upper nm">WELCOME {{user.name}}</h4></li>
-        <li><a href="profile" class="iconfix"><icon name="user" scale="1"></icon></a></li>
+        <li><router-link :to="{ name: 'Profile', params: { id: user.id }}"><icon name="user" scale="1"></icon></router-link></li>
         <li><a href="logout" class="iconfix" v-on:click="logOut($event)"><icon name="sign-out" scale="1"></icon></a></li>
       </ul>
     </div>

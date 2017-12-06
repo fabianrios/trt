@@ -8,6 +8,7 @@ import miniToastr from 'mini-toastr'
 import HelloWorld from '@/components/HelloWorld'
 import Content from '@/components/Content'
 import Series from '@/components/Series'
+import Profile from '@/components/Profile'
 
 const toastTypes = {
   success: 'success',
@@ -50,6 +51,11 @@ export default new Router({
       path: '/series',
       name: 'Series',
       component: Series
+    },
+    {
+      path: '/profile/:id',
+      name: 'Profile',
+      component: Profile
     }
   ]
 })

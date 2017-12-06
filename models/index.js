@@ -5,7 +5,7 @@ var path = require('path')
 var Sequelize = require('sequelize')
 var basename = path.basename(__filename)
 var env = process.env.NODE_ENV || 'development'
-var config = require(__dirname + '/../config/config.json')[env]
+var config = require(path.join(__dirname, '/../config/config.json'))[env]
 var db = {}
 
 console.log(config.database, 'which', process.env.DATABASE_URL)
@@ -14,9 +14,9 @@ if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable], config)
 } else {
   if (process.env.DATABASE_URL) {
-    var sequelize = new Sequelize(process.env.DATABASE_URL)
+    sequelize = new Sequelize(process.env.DATABASE_URL)
   } else {
-    var sequelize = new Sequelize(config.database, config.username, config.password, config)
+    sequelize = new Sequelize(config.database, config.username, config.password, config)
   }
 }
 
