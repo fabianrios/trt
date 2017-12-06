@@ -51,20 +51,10 @@ function decrypt (text) {
 }
 
 // login session
-passport.serializeUser(function (user, cb) {
-  cb(null, user.id)
-})
-
-passport.deserializeUser(function (id, cb) {
-  db.users.findById(id, function (err, user) {
-    if (err) { return cb(err) }
-    cb(null, user)
-  })
-})
-
 passport.use(new LocalStrategy({
   usernameField: 'email',
-  passwordField: 'password'
+  passwordField: 'password',
+  session: false
 },
   function (email, password, done) {
     console.log('credentials: ', email, password)
