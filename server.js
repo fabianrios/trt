@@ -51,10 +51,20 @@ function decrypt (text) {
 }
 
 // login session
+passport.serializeUser(function (user, cb) {
+  cb(null, user.id)
+})
+
+passport.deserializeUser(function (id, cb) {
+  db.User.findById(id, function (err, user) {
+    if (err) { return cb(err) }
+    cb(null, user)
+  })
+})
+
 passport.use(new LocalStrategy({
   usernameField: 'email',
-  passwordField: 'password',
-  session: false
+  passwordField: 'password'
 },
   function (email, password, done) {
     console.log('credentials: ', email, password)
@@ -93,7 +103,7 @@ app.get('/user/:id', function (req, res, next) {
 
 app.post('/login', function (req, res, next) {
   //  console.log(req.body, 'req.body')
-  passport.authenticate('local',
+  passport.authenticate('local', { session: false }, 
   function (err, user) {
     // console.log('user', user)
     if (err) { return next(err) }
