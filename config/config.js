@@ -1,4 +1,5 @@
-{
+'use strict'
+module.exports = {
   "development": {
     "username": "frios",
     "password": null,
@@ -14,6 +15,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "database": process.env.DATABASE_URL
   }
 }
