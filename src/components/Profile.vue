@@ -62,7 +62,7 @@ export default {
       ]
     }
   },
-  async mounted () {
+  async created () {
     const vm = this
     // console.log('get countries', vm.$parent.countries['DE'])
     if (!this.$session.exists()) {
