@@ -2,8 +2,9 @@ var express = require('express')
 var router = express.Router()
 
 router.get('/:id', function (req, res, next) {
+  console.log(req.params)
   db.User.findOne({ where: {id: req.params.id} }).then(user => {
-    // console.log('response: ', user)
+    console.log('response: ', user)
     if (!user) {
       return res.status(401).end('No user found')
     }
