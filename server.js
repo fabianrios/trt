@@ -9,22 +9,18 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const cors = require('cors')
 
-const db = require('./models')
-db.sequelize.sync().then(function () {
-  server.listen(port)
-  server.on('error', onError)
-  server.on('listening', onListening)
-})
-
-function onError (error) {
-  console.log(error)
-}
-function onListening () {
-
-}
+db = require('./models');
+db.sequelize
+.sync()
+.then(function () {
+  console.log('Sync DB ' + 3000);
+}).catch(function (e) {
+  throw new Error(e);
+});
 
 // declaring the routes
 var router = require('./router/index')
+var user = require('./router/user')
 
 var corsOptions = {
   origin: ['https://trtvseries.herokuapp.com', 'http://localhost:8080'],
@@ -89,17 +85,7 @@ app.use(passport.session())
 
 // use routes
 app.use('/api', router)
-
-app.get('/user/:id', function (req, res, next) {
-  console.log(req.params)
-  db.User.findOne({ where: {id: req.params.id} }).then(user => {
-    console.log('response: ', user)
-    if (!user) {
-      return res.status(401).end('No user found')
-    }
-    return res.status(200).send(JSON.stringify(user, null, 2))
-  })
-})
+app.use('/user', user)
 
 app.post('/login', function (req, res, next) {
   //  console.log(req.body, 'req.body')

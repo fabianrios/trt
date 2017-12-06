@@ -4,7 +4,7 @@
     <div class="row">
       <div class="innerStart">
         <div class="profilepic">
-          <div class="circlepic" v-bind:class="{ active: this.user.image }" :style="{ 'background-image': 'url(' + this.user.image + ')' }">
+          <div class="circlepic" v-bind:class="{ active: this.backgroundImage }" :style="{ 'background-image': 'url(' + this.backgroundImage + ')' }">
             <icon name="user-o" scale="3"></icon>
             <input type="file" @change="filesChange($event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
             <div class="edit" v-on:click="triggerInput($event)">
@@ -46,7 +46,7 @@ export default {
     return {
       msg: 'social',
       isFloated: true,
-      backgroundImage: 'https://res.cloudinary.com/trt-tv/image/upload/v1512512885/profiles/s4zmvgrxdkmops0bvbcz.jpg',
+      backgroundImage: '',
       country: '',
       user: {},
       series: [{
@@ -73,6 +73,7 @@ export default {
         try {
           const response = await axios.get(url)
           vm.user = response.data
+          vm.backgroundImage = vm.user.image
           vm.country = vm.$parent.countries.find(function (country) { return country.text === vm.user.country })
         } catch (e) {
           console.log('e', e.response.data)
@@ -89,19 +90,29 @@ export default {
       input.click()
     },
     filesChange: async function filesChange (file) {
+      let vm = this
       let formData = new FormData()
       // console.log(file[0], file[0].name)
       formData.append('file', file[0])
-      formData.append('upload_preset', this.$parent.cloudinary.uploadPreset)
-      formData.append('cloud_name', this.$parent.cloudinary.cloudName)
-      const url = `https://api.cloudinary.com/v1_1/${this.$parent.cloudinary.cloudName}/upload`
+      formData.append('upload_preset', vm.$parent.cloudinary.uploadPreset)
+      formData.append('cloud_name', vm.$parent.cloudinary.cloudName)
+      const url = `https://api.cloudinary.com/v1_1/${vm.$parent.cloudinary.cloudName}/upload`
       console.log(url, this.$parent.cloudinary.uploadPreset)
       try {
         const response = await axios.post(url, formData)
         console.log(response.data)
-        this.user.image = response.data.secure_url
-        this.user.public_id = response.data.public_id
-        console.log(this.user)
+        vm.user.image = response.data.secure_url
+        vm.backgroundImage = response.data.secure_url
+        vm.user.public_id = response.data.public_id
+        console.log(vm.user)
+        const posturl = `${vm.$parent.root}/user/${vm.user.id}`
+        try {
+          const postresponse = await axios.post(posturl, { image: vm.user.image })
+          console.log('postresponse', postresponse.data)
+        } catch (e) {
+          console.log('e', e.response.data)
+          this.errors.push(e)
+        }
       } catch (e) {
         console.log('e', e.response.data)
         this.errors.push(e)
