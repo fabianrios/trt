@@ -68,8 +68,9 @@ export default {
     if (!this.$session.exists()) {
       this.$router.push('/')
     } else {
-      if (this.$session.get('jwt').id === parseInt(this.$route.params.id, 10)) {
-        const url = `${vm.$parent.root}/user/${this.$session.get('jwt').id}`
+      vm.user = vm.$session.get('jwt')
+      if (this.$session.get('jwt').id === parseInt(vm.$route.params.id, 10)) {
+        const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}`
         try {
           const response = await axios.get(url)
           vm.user = response.data
