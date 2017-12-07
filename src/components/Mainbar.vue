@@ -101,6 +101,7 @@ export default {
         password: form.querySelector("input[name='password']").value,
         email: form.querySelector("input[name='email']").value,
         image: null,
+        publicid: null,
         address: form.querySelector("input[name='address']").value,
         country: form.querySelector("select[name='country']").value,
         bio: null,
