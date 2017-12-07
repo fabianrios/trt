@@ -9,7 +9,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const cors = require('cors')
 
-db = require('./models');
+db = require('./models')
 db.sequelize
 .sync()
 .then(function () {
@@ -65,7 +65,7 @@ passport.use(new LocalStrategy({
   function (email, password, done) {
     console.log('credentials: ', email, password)
     db.User.findOne({ where: {email: email} }).then(user => {
-      // console.log('response: ', user, encrypt(password))
+      console.log('response: ', user, encrypt(password))
       if (!user) {
         return done(null, false)
       }
