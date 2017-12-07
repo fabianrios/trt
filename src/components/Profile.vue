@@ -62,14 +62,20 @@ export default {
       ]
     }
   },
-  async created () {
-    const vm = this
+  created () {
     // console.log('get countries', vm.$parent.countries['DE'])
     if (!this.$session.exists()) {
       this.$router.push('/')
     } else {
+      this.fetchUser()
+    }
+  },
+  methods: {
+    fetchUser: async function fetchUser () {
+      const vm = this
       vm.user = vm.$session.get('jwt')
-      if (this.$session.get('jwt').id === parseInt(vm.$route.params.id, 10)) {
+      vm.backgroundImage = vm.user.image
+      if (vm.$session.get('jwt').id === parseInt(vm.$route.params.id, 10)) {
         const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}`
         try {
           const response = await axios.get(url)
@@ -83,9 +89,7 @@ export default {
       } else {
         this.$router.push(`/`)
       }
-    }
-  },
-  methods: {
+    },
     triggerInput: function triggerInput () {
       const input = this.$el.getElementsByClassName('input-file')[0]
       input.click()
