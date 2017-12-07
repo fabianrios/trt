@@ -9,11 +9,11 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const cors = require('cors')
 
-db = require('./models')
+const db = require('./models')
 db.sequelize
 .sync()
 .then(function () {
-  console.log('Sync DB ' + 3000);
+  console.log('Sync DB ' + port);
 }).catch(function (e) {
   throw new Error(e);
 });
@@ -91,7 +91,7 @@ app.post('/login', function (req, res, next) {
   //  console.log(req.body, 'req.body')
   passport.authenticate('local', { session: false }, 
   function (err, user) {
-    // console.log('user', user)
+    console.log('user', user)
     if (err) { return next(err) }
     if (!user) {
       return res.status(401).end('There is no user register with that email')
