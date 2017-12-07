@@ -13,7 +13,7 @@
           </div>
         </div>
         <h1 class="tac fwn upper"> {{user.name}} </h1>
-        <h4 class="tac upper fwn">{{user.address}} • {{country.value}}</h4>
+        <h4 class="tac upper fwn">{{user.address}} • {{getCountry(user.country).value}}</h4>
         <p class="tac bio">{{user.bio}}</p>
         <br />
         <h2 class="tac fwn upper"><b>Your</b> series</h2>
@@ -46,9 +46,9 @@ export default {
     return {
       msg: 'social',
       isFloated: true,
-      backgroundImage: '',
+      backgroundImage: this.$session.get('jwt').image || '',
       country: '',
-      user: {},
+      user: this.$session.get('jwt') || {},
       series: [{
         name: 'World of dressage',
         image: 'https://res.cloudinary.com/trt-tv/image/upload/v1511523784/assets/Worldofdressage.jpg',
@@ -71,17 +71,17 @@ export default {
     }
   },
   methods: {
+    getCountry: function getCountry (userCountry) {
+      return this.$parent.countries.find(function (country) { return country.text === userCountry })
+    },
     fetchUser: async function fetchUser () {
       const vm = this
-      vm.user = vm.$session.get('jwt')
-      vm.backgroundImage = vm.user.image
       if (vm.$session.get('jwt').id === parseInt(vm.$route.params.id, 10)) {
         const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}`
         try {
           const response = await axios.get(url)
           vm.user = response.data
           vm.backgroundImage = vm.user.image
-          vm.country = vm.$parent.countries.find(function (country) { return country.text === vm.user.country })
         } catch (e) {
           console.log('e', e.response.data)
           vm.errors.push(e)
@@ -122,9 +122,9 @@ export default {
         console.log('e', e.response.data)
         this.errors.push(e)
       }
-      formData.forEach((val, key) => {
-        console.log(key, val)
-      })
+      // formData.forEach((val, key) => {
+      //   console.log(key, val)
+      // })
     }
   },
   components: {

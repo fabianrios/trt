@@ -139,7 +139,7 @@ export default {
         vm.$session.start()
         vm.$session.set('jwt', vm.user)
         // vm.showLoginSuccess()
-        vm.$router.push('/series')
+        vm.$router.push(`/profile/${vm.user.id}`)
       } catch (e) {
         console.log('e', e.response)
         vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})
@@ -165,7 +165,7 @@ export default {
 }
  
 .signform{
-  width: 30%;
+  width: 35%;
   position: relative;
   top:55px;
   float: right;
