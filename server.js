@@ -2,7 +2,6 @@
 const express = require('express')
 const path = require('path')
 const serveStatic = require('serve-static')
-const session = require('express-session')
 const bodyParser = require('body-parser')
 const Sequelize = require('sequelize')
 const passport = require('passport')
@@ -46,18 +45,7 @@ function decrypt (text) {
   return dec
 }
 
-// login session
-passport.serializeUser(function (user, cb) {
-  cb(null, user.id)
-})
-
-passport.deserializeUser(function (id, cb) {
-  db.User.findById(id, function (err, user) {
-    if (err) { return cb(err) }
-    cb(null, user)
-  })
-})
-
+// login
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
@@ -78,10 +66,8 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors(corsOptions))
 app.use(serveStatic(path.join(__dirname, '/dist')))
-app.use(session({ secret: 'pferd', resave: false, saveUninitialized: false }))
 // Initialize Passport and restore authentication state, if any, from the session
 app.use(passport.initialize())
-app.use(passport.session())
 
 // use routes
 app.use('/api', router)
@@ -99,10 +85,7 @@ app.post('/login', function (req, res, next) {
     if (user.password !== encrypt(req.body.password)) {
       return res.status(401).end('The password is incorrect')
     }
-    req.logIn(user, function (err) {
-      if (err) { return next(err) }
-      return res.status(200).send(JSON.stringify(user, null, 2))
-    })
+    return res.status(200).send(JSON.stringify(user, null, 2))
   })(req, res, next)
 })
 
