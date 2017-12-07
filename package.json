@@ -28,6 +28,7 @@
     "vue": "^2.5.2",
     "vue-notifications": "^0.9.0",
     "vue-router": "^3.0.1",
+    "vue-scrollto": "^2.8.0",
     "vue-session": "^0.9.10"
   },
   "devDependencies": {

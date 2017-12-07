@@ -16,7 +16,7 @@
         <h4 class="tac upper fwn">{{user.address}} • {{getCountry(user.country).value}}</h4>
         <p class="tac bio">{{user.bio}}</p>
         <br />
-        <h2 class="tac fwn upper"><b>Your</b> series</h2>
+        <h2 class="tac fwn upper" id="series"><b>Your</b> series</h2>
       </div>
       <div class="seriesshow">
         <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }">

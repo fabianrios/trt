@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import VueSession from 'vue-session'
+import VueScrollTo from 'vue-scrollto'
 
 import VueNotifications from 'vue-notifications'
 import miniToastr from 'mini-toastr'
@@ -34,6 +35,7 @@ const options = {
 Vue.use(Router)
 Vue.use(VueSession)
 Vue.use(VueNotifications, options)
+Vue.use(VueScrollTo)
 
 export default new Router({
   routes: [
