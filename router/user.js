@@ -1,8 +1,9 @@
 var express = require('express')
 var router = express.Router()
+const db = require('../models')
 
 router.get('/:id', function (req, res, next) {
-  console.log(req.params)
+  console.log("req.params", req.params)
   db.User.findOne({ where: {id: req.params.id} }).then(user => {
     console.log('response: ', user)
     if (!user) {
@@ -17,7 +18,7 @@ router.get('/:id', function (req, res, next) {
 })
 
 router.post('/:id', function (req, res, next) {
-  console.log(req.body, req.params.id)
+  console.log("post", req.body, req.params.id)
   db.User.update(req.body, { where: {id: req.params.id} }).then(user => {
     console.log('response: ', user)
     if (!user) {
