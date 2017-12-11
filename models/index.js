@@ -44,6 +44,9 @@ Object.keys(db).forEach(modelName => {
   }
 })
 
+db.Serie.hasMany(db.Episode)
+db.Episode.belongsTo(db.Serie)
+
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
