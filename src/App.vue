@@ -305,7 +305,6 @@ export default {
     fetchData: async function fetchData (e) {
       const vm = this
       const url = `${vm.root}/api/call`
-      console.log('root:', vm.root)
       try {
         const response = await axios.get(url)
         vm.info = response.data
