@@ -63,10 +63,12 @@
       <ul class="seriesList">
       <li v-for="episode in episodes" v-bind:style="{'background-image':`url(${episode.image.split('upload')[0]}upload/c_thumb,w_265,h_185${episode.image.split('upload')[1]})`}">
         <div class="contentbanner">
+          <router-link :to="'/episode/'+episode.id"><span class="logo"></span>
           <div class="promotext">
             <h3>{{episode.name}}</h3>
             <h5>Promo video</h5>
           </div>
+          </router-link>
         </div>
       </li>
      </ul>
@@ -113,6 +115,41 @@ export default {
         vm.createEpisode(sendBody)
       }
     },
+    uploadImage: async function uploadImage (body, create) {
+      const vm = this
+      const url = `https://api.cloudinary.com/v1_1/${vm.$parent.cloudinary.cloudName}/upload`
+      let formData = new FormData()
+      formData.append('file', body.file[0])
+      formData.append('upload_preset', 'series_cover')
+      formData.append('cloud_name', vm.$parent.cloudinary.cloudName)
+      //  formData.forEach((val, key) => {
+      //  console.log(key, val)
+      // })
+      let config = {
+        onUploadProgress: progressEvent => {
+          let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total)
+          vm.$parent.progressWidth = percentCompleted
+          if (percentCompleted >= 100) {
+            vm.$parent.progressColor = '#009fe3'
+            setTimeout(() => {
+              vm.$parent.progressWidth = 0
+              vm.$parent.progressColor = 'orange'
+            }, 1000)
+          }
+        }
+      }
+      try {
+        const response = await axios.post(url, formData, config)
+        console.log('response.data', response.data)
+        body['image'] = response.data.secure_url
+        if (create) {
+          vm.createEpisode(body)
+        }
+      } catch (e) {
+        console.log('error', e.response.data)
+        this.errors.push(e)
+      }
+    },
     getEpisodes: async function getEpisodes (serie) {
       const vm = this
       const posturl = `${vm.$parent.root}/serie/${serie}/episodes`
@@ -120,22 +157,20 @@ export default {
       try {
         const response = await axios.get(posturl)
         vm.episodes = response.data
-        console.log('e', response.data)
+        console.log('getEpisodes', response.data)
       } catch (e) {
-        console.log('e', e.response.data)
+        console.log('error: ', e.response.data)
         vm.$parent.errors.push(e)
       }
     },
     createEpisode: async function createSerie (body) {
       const vm = this
       const posturl = `${vm.$parent.root}/episode`
-      console.log(body, posturl)
       try {
         const postresponse = await axios.post(posturl, body)
-        // vm.$parent.episodes.unshift(postresponse.data)
-        console.log('e', postresponse.data)
+        console.log('postresponse: ', postresponse.data)
       } catch (e) {
-        console.log('e', e.response.data)
+        console.log('error postresponse', e.response.data)
         vm.$parent.errors.push(e)
       }
     }

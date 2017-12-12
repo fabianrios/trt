@@ -333,7 +333,7 @@ $deg: 315deg;
     .contentbanner{
       opacity: 0.3;
     }
-    &.active{
+    &.active, &:hover{
       .contentbanner{
         opacity: 1;
       }
@@ -378,10 +378,12 @@ $deg: 315deg;
         margin: 0;
         text-transform: uppercase;
         text-align: left;
+        color: white;
       }
       h5{
         margin: 0;
         text-align: left;
+        color: white;
       }
     }
   }

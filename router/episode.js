@@ -46,4 +46,18 @@ router.get('/', function (req, res, next) {
   })
 })
 
+router.get('/:id', function (req, res, next) {
+  db.Episode.findOne({where: {id: req.params.id}}).then(post => {
+    console.log('one episode: ', post)
+    if (!post) {
+      return res.status(401).end('No episode found')
+    }
+    return res.status(200).send(post)
+  })
+  .catch(function (err) {
+    console.error('couldnt get episode', err)
+    return res.status(500).send(err)
+  })
+})
+
 module.exports = router

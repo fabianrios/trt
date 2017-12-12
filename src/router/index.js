@@ -9,6 +9,7 @@ import miniToastr from 'mini-toastr'
 import HelloWorld from '@/components/HelloWorld'
 import Content from '@/components/Content'
 import Series from '@/components/Series'
+import Episode from '@/components/Episode'
 import Profile from '@/components/Profile'
 import Adminseries from '@/components/Adminseries'
 import Adminepisodes from '@/components/Adminepisodes'
@@ -60,6 +61,11 @@ export default new Router({
       path: '/profile/:id',
       name: 'Profile',
       component: Profile
+    },
+    {
+      path: '/episode/:id',
+      name: 'Episode',
+      component: Episode
     },
     {
       path: '/admin/series',
