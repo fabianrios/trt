@@ -44,8 +44,11 @@ Object.keys(db).forEach(modelName => {
   }
 })
 
-db.Serie.hasMany(db.Episode)
-db.Episode.belongsTo(db.Serie)
+db.Serie.hasMany(db.Episode, { foreignKey: 'serie_id' })
+db.Episode.belongsTo(db.Serie, { foreignKey: 'serie_id' })
+
+db.Episode.belongsToMany(db.User, {through: 'UserEpisode'});
+db.User.belongsToMany(db.Episode, {through: 'UserEpisode'});
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize

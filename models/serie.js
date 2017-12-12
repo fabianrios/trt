@@ -5,12 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     publish: DataTypes.BOOLEAN,
     price: DataTypes.DECIMAL,
     bio: DataTypes.TEXT,
+    release: DataTypes.STRING,
     image: DataTypes.STRING
   }, {
     classMethods: {
       associate: function (models) {
         // associations can be defined here
-        User.hasMany(models.Episode)
+        models.User.hasMany(models.Episode)
       }
     }
   })

@@ -10,6 +10,8 @@ import HelloWorld from '@/components/HelloWorld'
 import Content from '@/components/Content'
 import Series from '@/components/Series'
 import Profile from '@/components/Profile'
+import Adminseries from '@/components/Adminseries'
+import Adminepisodes from '@/components/Adminepisodes'
 
 const toastTypes = {
   success: 'success',
@@ -58,6 +60,16 @@ export default new Router({
       path: '/profile/:id',
       name: 'Profile',
       component: Profile
+    },
+    {
+      path: '/admin/series',
+      name: 'Adminseries',
+      component: Adminseries
+    },
+    {
+      path: '/admin/episodes',
+      name: 'Adminepisodes',
+      component: Adminepisodes
     }
   ]
 })

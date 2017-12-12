@@ -163,10 +163,11 @@ export default {
       try {
         const response = await axios.post(url, sendBody)
         vm.user = response.data
-        console.log(vm.user)
+        // console.log(vm.user)
         vm.showModal = false
         vm.logUser = true
         vm.$session.set('jwt', vm.user)
+        vm.$parent.user = vm.user
       } catch (e) {
         console.log('e', e.response)
         vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})

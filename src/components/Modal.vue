@@ -75,6 +75,13 @@ export default {
   transition: all .3s ease;
 }
 
+.adminseries{
+  .modal-container{
+    width: 500px;
+    padding-bottom: 50px;
+  }
+}
+
 .modal-default-button {
   float: right;
 }

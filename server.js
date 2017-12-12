@@ -20,6 +20,8 @@ db.sequelize
 // declaring the routes
 var router = require('./router/index')
 var user = require('./router/user')
+var serie = require('./router/serie')
+var episode = require('./router/episode')
 
 var corsOptions = {
   origin: ['https://trtvseries.herokuapp.com', 'http://localhost:8080'],
@@ -72,6 +74,8 @@ app.use(passport.initialize())
 // use routes
 app.use('/api', router)
 app.use('/user', user)
+app.use('/serie', serie)
+app.use('/episode', episode)
 
 app.post('/login', function (req, res, next) {
   //  console.log(req.body, 'req.body')

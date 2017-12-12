@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" ref="theprofile">
     <Mainbar v-bind:class="{ static: isFloated }" ref="mainbar"></Mainbar>
     <div class="row">
       <div class="innerStart">
@@ -168,7 +168,7 @@ export default {
     h4{
       margin-top: 0;
     }
-    margin: 130px 0 0 0;
+    margin: 0 0 0 0;
   }
 }
 .profilepic{
