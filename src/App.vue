@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div id="progress-bar" v-bind:style="{ width: progressWidth + '%', background: progressColor }"></div>
     <router-view/>
   </div>
 </template>
@@ -18,8 +19,11 @@ export default {
       },
       info: [],
       errors: [],
+      series: [],
       root: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000',
       este: 'este',
+      progressWidth: 0,
+      progressColor: 'orange',
       countries: [
         { text: 'AF', value: 'Afghanistan' },
         { text: 'AX', value: 'Åland Islands' },
@@ -274,16 +278,51 @@ export default {
   },
   created () {
     this.fetchData()
+    this.getAllSeries()
   },
   methods: {
+    isAdmin: function isAdmin () {
+      if (this.$session.get('jwt').admin !== true) {
+        console.log('not an admin')
+        this.$router.push(`/`)
+      }
+    },
+    parseBody: function parseBody (form) {
+      const sendBody = {}
+      for (var i = 0; i < form.elements.length; i++) {
+        if (form.elements[i].type !== 'submit') {
+          if (form.elements[i].name === 'publish') {
+            sendBody[form.elements[i].name] = form.elements[i].checked
+          } else if (form.elements[i].name === 'file' && form.elements[i].files.length > 0) {
+            sendBody[form.elements[i].name] = form.elements[i].files
+          } else if (form.elements[i].value !== '') {
+            sendBody[form.elements[i].name] = form.elements[i].value
+          }
+        }
+      }
+      return sendBody
+    },
     fetchData: async function fetchData (e) {
       const vm = this
       const url = `${vm.root}/api/call`
+      console.log('root:', vm.root)
       try {
         const response = await axios.get(url)
         vm.info = response.data
-        console.log(vm.info)
+        // console.log(vm.info)
       } catch (e) {
+        vm.errors.push(e)
+      }
+    },
+    getAllSeries: async function getAllSeries (e) {
+      const vm = this
+      const url = `${vm.root}/serie`
+      try {
+        const response = await axios.get(url)
+        // console.log('response', response.data)
+        vm.series = response.data
+      } catch (e) {
+        console.log('error', e.response.data)
         vm.errors.push(e)
       }
     }

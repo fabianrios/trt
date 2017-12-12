@@ -23,6 +23,9 @@ module.exports = {
       bio: {
         type: Sequelize.TEXT
       },
+      release: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
