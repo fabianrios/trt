@@ -155,7 +155,7 @@ export default {
     position: relative;
     text-align: center;
     margin: 0 auto;
-    margin-top: 9px;
+    margin-top: 2px;
     display: block !important;
   }
 }
