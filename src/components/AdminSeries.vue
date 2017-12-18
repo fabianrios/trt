@@ -84,7 +84,7 @@ export default {
     }
   },
   methods: {
-    onPushSerie: function onEditSerie (e) {
+    onPushSerie: function onPushSerie (e) {
       const form = e.currentTarget
       const sendBody = this.$parent.parseBody(form)
       console.log(sendBody)

@@ -13,6 +13,8 @@
           <div class="optionen">
             <ul>
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: user.id }}">Your profile</router-link></li>
+              <li v-if="user.admin"><router-link class="button backwards" :to="{ name: 'Adminepisodes' }">Admin episodes</router-link></li>
+              <li v-if="user.admin"><router-link class="button backwards" :to="{ name: 'Adminseries' }">Admin series</router-link></li>
               <li><a href="settings" class="button backwards" v-on:click="showThemodal($event, 'update')">Edit your settings</a></li>
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
               <li><a href="logout" class="button backwards" v-on:click="logOut($event)">Sign out</a></li>
