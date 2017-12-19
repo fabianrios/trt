@@ -7,6 +7,8 @@ const Sequelize = require('sequelize')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const cors = require('cors')
+const exphbs  = require('express-handlebars');
+const mailer = require('express-mailer')
 
 const db = require('./models')
 db.sequelize
@@ -15,7 +17,7 @@ db.sequelize
   console.log('Sync DB ' + port);
 }).catch(function (e) {
   throw new Error(e);
-});
+})
 
 // declaring the routes
 var router = require('./router/index')
@@ -71,6 +73,22 @@ app.use(serveStatic(path.join(__dirname, '/dist')))
 // Initialize Passport and restore authentication state, if any, from the session
 app.use(passport.initialize())
 
+// mail
+mailer.extend(app, {
+  from: 'trttv',
+  host: 'smtp.gmail.com', // hostname 
+  secureConnection: true, // use SSL 
+  port: 465, // port for secure SMTP 
+  transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts 
+  auth: {
+    user: process.env.GMAILEMAIL,
+    pass: process.env.GMAILPASS
+  }
+})
+
+app.set('views', path.join(__dirname, 'views'))
+app.engine('hbs', exphbs());
+app.set('view engine', 'hbs')
 // use routes
 app.use('/api', router)
 app.use('/user', user)
@@ -102,12 +120,60 @@ app.post('/register', function (req, res, next) {
       return res.status(400).end('User already exist')
     } else {
       db.User.create(theUser).then(user => {
+        app.mailer.send('registration', {
+          to: user.email,
+          subject: 'Welcome to TRTTV',
+          user: theUser,
+          password: decrypt(theUser.password)
+        }, function (err) {
+          if (err) {
+            console.log('There was an error sending the email', err)
+          }
+        })
         return res.status(200).send(JSON.stringify(user, null, 2))
       }).catch(function (err) {
         console.error('couldnt create user', err)
         return res.status(500).send(err)
       })
     }
+  })
+})
+
+app.post('/dashboard/:id/update', function (req, res, next) {
+  console.log('post dashboard', req.body)
+  db.Dashboard.update(req.body, { where: {id: req.params.id}, returning: true }).then(serie => {
+    console.log('update: ', serie)
+    if (!serie[1][0]) {
+      return res.status(401).end('No main series updated')
+    }
+    return res.status(200).send(serie[1][0])
+  })
+  .catch(function (err) {
+    console.error('couldnt update user', err)
+    return res.status(500).send(err)
+  })
+})
+
+app.get('/dashboard', function (req, res, next) {
+  db.Dashboard.findAll().then(dash => {
+    if (!dash) {
+      return res.status(401).end('No dash found')
+    }
+    db.Serie.findOne({where : {id: dash[0].main_serie_id}}).then(serie => {
+      console.log('response: ', serie)
+      if (!dash) {
+        return res.status(401).end('No dash found')
+      }
+      return res.status(200).send(JSON.stringify(serie,null,2))
+    })
+    .catch(function (err) {
+      console.error('couldnt get a serie', err)
+      return res.status(500).send(err)
+    })
+  })
+  .catch(function (err) {
+    console.error('couldnt get a dash', err)
+    return res.status(500).send(err)
   })
 })
 

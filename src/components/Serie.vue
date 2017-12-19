@@ -1,0 +1,238 @@
+<template>
+  <div class="aserie">
+    <Mainbar v-bind:class="{ static: isFloated }"></Mainbar>
+    <div class="main_series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
+      <a href="" v-scroll-to="'#episodes'" class="play big"></a>
+      <h1>{{serie.name}}</h1>
+      <p class="intro_series">
+        {{serie.bio}}
+      </p>
+      <h3 class="upper">{{serie.release}}</h3>
+    </div>
+    <div class="row">
+      <div class="promotion">
+        <ul>
+          <li>
+            <icon name="play-circle-o" scale="4"></icon>
+            <h3 class="upper fwn"><b>10</b> VIDEOS</h3>
+            <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh.</p>
+          </li>
+          <li>
+            <icon name="heart-o" scale="4"></icon>
+            <h3 class="upper fwn"><b>100%</b> EXCLUSIVE</h3>
+            <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh.</p>
+          </li>
+          <li>
+            <icon name="star-o" scale="4"></icon>
+            <h3 class="fwn"><b>€ 90</b> <small class="upper">life time access</small></h3>
+            <a href="" class="button">Pre-enroll</a>
+          </li>
+        </ul>
+      </div>
+      <br />
+      <br />
+      <br />
+      <div class="aboutHome">
+        <div class="theimg">
+          <img src="http://res.cloudinary.com/trt-tv/image/upload/v1513698826/assets/behindguy.png" alt="" width="554" height="660">
+        </div>
+        <div class="text">
+          <h2 class="fwn"><b>ABOUT</b> {{serie.name}}</h2>
+          <p>{{serie.bio}}</p>
+        </div>
+      </div>
+      <br />
+      <br />
+      <h2 class="fwn tac upper" v-if="episodes.length > 0"><b>The</b> Episodes</h2>
+      <ul class="episodes" id="episodes">
+        <li  v-for="episode in episodes">
+          <div class="episode_box">
+            <div class="eimage">
+              <img v-if="episode.image" :src="`${episode.image.split('upload')[0]}upload/c_thumb,w_255,h_255${episode.image.split('upload')[1]}`" alt="">
+              <router-link :to="'/episode/'+episode.id" class="play normalize"></router-link>
+              <div class="hoverish"></div>
+            </div>
+            <div class="etext">
+              <router-link :to="'/episode/'+episode.id"><h3 class="upper fwn"><b>{{episode.name}}</b> {{serie.name}}</h3></router-link>
+              <p>{{episode.bio}}</p>
+            </div>
+          </div>
+          
+        </li>
+      </ul>
+      <h2 class="fwn tac upper"><b>The</b> Series</h2>
+      <div class="slideBanner row">
+      <a id="leftgone" href=""><span></span></a>
+      <ul class="seriesList">
+      <li v-for="serie in $parent.series" v-bind:style="{'background-image':`url(${serie.image.split('upload')[0]}upload/c_thumb,w_265,h_185${serie.image.split('upload')[1]})`}" v-if="serie.publish">
+        <div class="contentbanner">
+          <router-link :to="'/serie/'+serie.id"><span class="logo"></span>
+          <div class="promotext">
+            <h3>{{serie.name}}</h3>
+            <h5>Promo video</h5>
+          </div>
+          </router-link>
+        </div>
+      </li>
+     </ul>
+     <a href="" id="rightgone"><span></span></a>
+    </div>
+    </div>
+    <Footer></Footer>
+  </div>
+</template>
+
+<script>
+
+import Footer from '@/components/Footer'
+import Mainbar from '@/components/Mainbar'
+import axios from 'axios'
+
+export default {
+  name: 'Serie',
+  data () {
+    return {
+      msg: 'social',
+      isFloated: false,
+      serie: {},
+      episodes: {}
+    }
+  },
+  created () {
+    this.getSerie()
+    this.getSerieEpisodes()
+  },
+  watch: {
+    // call again the method if the route changes
+    '$route': ['getSerie', 'getSerieEpisodes']
+  },
+  methods: {
+    getSerie: async function getSerie () {
+      const vm = this
+      const url = `${vm.$parent.root}/serie/${vm.$route.params.id}`
+      try {
+        const response = await axios.get(url)
+        vm.serie = response.data
+      } catch (e) {
+        console.log('e', e.response.data)
+        vm.errors.push(e)
+      }
+    },
+    getSerieEpisodes: async function getSerieEpisodes () {
+      const vm = this
+      const url = `${vm.$parent.root}/serie/${vm.$route.params.id}/episodes`
+      try {
+        const response = await axios.get(url)
+        vm.episodes = response.data
+      } catch (e) {
+        console.log('e', e.response.data)
+        vm.errors.push(e)
+      }
+    }
+  },
+  components: {
+    Footer,
+    Mainbar
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+
+.aboutHome{
+  max-width: 1000px;
+  margin: 0 auto;
+  .theimg{
+    width: 30%;
+    img{
+      max-width: 400px;
+      height: auto;
+    }
+  }
+  .text{
+    float: right;
+    width: 50%;
+  }
+}
+
+.promotion{
+  margin-top: 80px;
+  h3{
+    font-size: 31px;
+  }
+  ul{
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+    li{
+      padding: 10px 20px;
+      display: inline-block;
+      width: 28%;
+      vertical-align: top;
+      &:nth-of-type(2){
+        border: 1px solid #3B3B3B;
+        border-top: 0;
+        border-bottom: 0;
+      }
+      p{
+        color: #555555;
+      }
+    }
+  }
+}
+
+.episodes{
+  max-width: 950px;
+  margin: 0 auto;
+  .episode_box{
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .eimage{
+    position: relative;
+    display: inline-block;
+    width: 26%;
+    height: 255px;
+    .play{
+      position: absolute;
+      top: 35%;
+      left: 90px;
+      z-index: 99999;
+    }
+    .hoverish{
+      height: 155px;
+      width: 255px;
+      position: absolute;
+      bottom: 0;
+      z-index: 9999;
+    }
+    &:hover{
+      .hoverish{
+        background: -moz-linear-gradient(top, rgba(153,153,153,0) 0%, rgba(153,153,153,0.12) 15%, rgba(0,159,227,0.8) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(153,153,153,0) 0%,rgba(153,153,153,0.12) 15%,rgba(0,159,227,0.8) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(153,153,153,0) 0%,rgba(153,153,153,0.12) 15%,rgba(0,159,227,0.8) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00999999', endColorstr='#cc1aeddc',GradientType=0 ); /* IE6-9 */
+      }
+    }
+  }
+  .etext{
+    display: inline-block;
+    padding: 30px;
+    width: 70%;
+    background: #fff;
+    color: #000;
+    vertical-align: top;
+    height: 255px;
+  }
+}
+
+.main_series{
+  p{
+    padding-bottom: 0;
+  }
+  h3{
+    padding-bottom: 20px;
+  }
+}
+</style>
