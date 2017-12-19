@@ -2,54 +2,25 @@
   <div class="hello">
     <mainbar></mainbar>
     
-    <div class="main_series">
-      <a href="" class="play big"></a>
-      <h1>the specialist</h1>
+    <div class="main_series" v-bind:style="{ 'background-image': `url(${$parent.mainseries.image})` }">
+      <router-link :to="'/serie/'+$parent.mainseries.id" class="play big"></router-link>
+      <h1>{{$parent.mainseries.name}}</h1>
       <p class="intro_series">
-        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna.
+        {{$parent.mainseries.bio}}
       </p>
     </div>
 
     <div class="slideBanner row">
       <a id="leftgone" href=""><span></span></a>
       <ul class="seriesList">
-      <li>
+      <li v-for="serie in $parent.series" v-bind:style="{'background-image':`url(${serie.image.split('upload')[0]}upload/c_thumb,w_265,h_185${serie.image.split('upload')[1]})`}" v-if="serie.publish">
         <div class="contentbanner">
+          <router-link :to="'/serie/'+serie.id"><span class="logo"></span>
           <div class="promotext">
-            <h3>World of Dressage</h3>
+            <h3>{{serie.name}}</h3>
             <h5>Promo video</h5>
           </div>
-        </div>
-      </li>
-      <li>
-        <div class="comming"><span><b>comming</b> soon</span></div>
-        <div class="contentbanner">
-          <div class="promotext">
-            <h3>BRETT KIDDING</h3>
-            <h5>Promo video</h5>
-          </div>
-        </div>
-      </li>
-      <li class="active">
-        <div class="contentbanner">
-          <div class="promotext">
-            <h3>THE specialist</h3>
-            <h5>Promo video</h5>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="contentbanner">
-          <div class="promotext">
-            <h3>Around the world</h3>
-            <h5>Promo video</h5>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="promotext">
-          <h3>Around the world</h3>
-          <h5>Promo video</h5>
+          </router-link>
         </div>
       </li>
      </ul>

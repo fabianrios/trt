@@ -90,11 +90,11 @@ export default {
       selected: 'NL'
     }
   },
-  beforeCreate: function () {
-    if (!this.$session.exists()) {
-      this.$router.push('/')
-    }
-  },
+  // beforeCreate: function () {
+  //   if (!this.$session.exists()) {
+  //     this.$router.push('/')
+  //   }
+  // },
   notifications: {
     showLoginError: {
       title: '',

@@ -17,7 +17,7 @@ export default {
         apiKey: '126896252395396',
         cloudName: 'trt-tv'
       },
-      info: [],
+      mainseries: [],
       errors: [],
       series: [],
       root: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000',
@@ -304,11 +304,10 @@ export default {
     },
     fetchData: async function fetchData (e) {
       const vm = this
-      const url = `${vm.root}/api/call`
+      const url = `${vm.root}/dashboard`
       try {
         const response = await axios.get(url)
-        vm.info = response.data
-        // console.log(vm.info)
+        vm.mainseries = response.data
       } catch (e) {
         vm.errors.push(e)
       }

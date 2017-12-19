@@ -39,6 +39,19 @@ router.get('/:id/episodes', function (req, res, next) {
   })
 })
 
+router.get('/:id', function (req, res, next) {
+  db.Serie.findOne({ where: {id: req.params.id}}).then(serie => {
+    if (!serie) {
+      return res.status(401).end('No serie found')
+    }
+    return res.status(200).send(serie)
+  })
+  .catch(function (err) {
+    console.error('couldnt update user', err)
+    return res.status(500).send(err)
+  })
+})
+
 router.post('/', function (req, res, next) {
   console.log('post', req.body)
   db.Serie.create(req.body).then(post => {
