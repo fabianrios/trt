@@ -1,26 +1,35 @@
 <template>
   <div class="hello">
     <mainbar></mainbar>
-    
-    <div class="main_series" v-bind:style="{ 'background-image': `url(${$parent.mainseries.image})` }">
-      <router-link :to="'/serie/'+$parent.mainseries.id" class="play big"></router-link>
-      <h1>{{$parent.mainseries.name}}</h1>
-      <p class="intro_series">
-        {{$parent.mainseries.bio}}
-      </p>
+    <div class="main_series">
+      <div class="maincontainer">
+        <video :poster="$parent.mainseries.image" v-if="$parent.mainseries.video" :src="$parent.mainseries.video" loop id="teaser"></video>
+        <div class="shadow" v-if="$parent.mainseries.video"></div>
+        <div class="extrainfo" v-bind:class="{ onvideo: $parent.mainseries.video }">
+          <div class="inside">
+            <a class="play big" v-bind:class="{ novideo: $parent.mainseries.video }" v-on:click="playTeaser"></a>
+            <h1>{{$parent.mainseries.name}}</h1>
+            <p class="intro_series">
+              {{$parent.mainseries.bio}}
+            </p>
+            <router-link class="button transparent" :to="'/serie/'+$parent.mainseries.id">Watch more</router-link>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <br />
     <div class="slideBanner row">
       <a id="leftgone" href=""><span></span></a>
       <ul class="seriesList">
       <li v-for="serie in $parent.series" v-bind:style="{'background-image':`url(${serie.image.split('upload')[0]}upload/c_thumb,w_265,h_185${serie.image.split('upload')[1]})`}" v-if="serie.publish">
         <div class="contentbanner">
-          <router-link :to="'/serie/'+serie.id"><span class="logo"></span>
+          <a :href="'/#/serie/'+serie.id" v-on:mouseover.prevent="changeSeries($event, serie)">
           <div class="promotext">
             <h3>{{serie.name}}</h3>
             <h5>Promo video</h5>
           </div>
-          </router-link>
+          </a>
         </div>
       </li>
      </ul>
@@ -59,7 +68,19 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      playing: false
+    }
+  },
+  methods: {
+    playTeaser: function playTeaser (e) {
+      const teaser = document.getElementById('teaser')
+      this.playing = !this.playing
+      this.playing ? teaser.play() : teaser.pause()
+    },
+    changeSeries: function changeSeries (e, serie) {
+      this.$parent.mainseries = serie
+      this.playing = false
     }
   },
   components: {
@@ -72,5 +93,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-
+.extrainfo{
+  &.onvideo{
+    position: absolute;
+    top: 350px;
+    width: 100%;
+    .inside{
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+}
 </style>

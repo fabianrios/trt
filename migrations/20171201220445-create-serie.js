@@ -23,6 +23,9 @@ module.exports = {
       bio: {
         type: Sequelize.TEXT
       },
+      video: {
+        type: Sequelize.TEXT
+      },
       release: {
         type: Sequelize.STRING
       },

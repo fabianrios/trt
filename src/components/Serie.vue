@@ -14,7 +14,7 @@
         <ul>
           <li>
             <icon name="play-circle-o" scale="4"></icon>
-            <h3 class="upper fwn"><b>10</b> VIDEOS</h3>
+            <h3 class="upper fwn"><b>{{episodes.length}}</b> VIDEOS</h3>
             <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh.</p>
           </li>
           <li>
@@ -24,7 +24,7 @@
           </li>
           <li>
             <icon name="star-o" scale="4"></icon>
-            <h3 class="fwn"><b>€ 90</b> <small class="upper">life time access</small></h3>
+            <h3 class="fwn"><b>€ {{serie.price}}</b> <small class="upper">life time access</small></h3>
             <a href="" class="button">Pre-enroll</a>
           </li>
         </ul>
