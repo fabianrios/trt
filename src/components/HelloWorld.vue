@@ -23,14 +23,14 @@
       <a id="leftgone" href=""><span></span></a>
       <ul class="seriesList">
       <li v-for="serie in $parent.series" v-bind:style="{'background-image':`url(${serie.image.split('upload')[0]}upload/c_thumb,w_265,h_185${serie.image.split('upload')[1]})`}" v-if="serie.publish">
-        <div class="contentbanner">
-          <a :href="'/#/serie/'+serie.id" v-on:mouseover.prevent="changeSeries($event, serie)">
-          <div class="promotext">
-            <h3>{{serie.name}}</h3>
-            <h5>Promo video</h5>
+        <a :href="'/#/serie/'+serie.id" v-on:mouseover.prevent="changeSeries($event, serie)" class="fixclick">
+          <div class="contentbanner">
+            <div class="promotext">
+              <h3>{{serie.name}}</h3>
+              <h5>Promo video</h5>
+            </div>
           </div>
-          </a>
-        </div>
+        </a>
       </li>
      </ul>
      <a href="" id="rightgone"><span></span></a>
@@ -96,7 +96,7 @@ export default {
 .extrainfo{
   &.onvideo{
     position: absolute;
-    top: 350px;
+    top: 25%;
     width: 100%;
     .inside{
       margin: 0 auto;
