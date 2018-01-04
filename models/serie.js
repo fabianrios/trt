@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     publish: DataTypes.BOOLEAN,
     price: DataTypes.DECIMAL,
     bio: DataTypes.TEXT,
+    video: DataTypes.TEXT,
     release: DataTypes.STRING,
     image: DataTypes.STRING
   }, {
