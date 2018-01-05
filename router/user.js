@@ -21,10 +21,10 @@ router.post('/:id', function (req, res, next) {
   console.log("post", req.body, req.params.id)
   db.User.update(req.body, { where: {id: req.params.id} }).then(user => {
     console.log('update: ', user)
-    if (!user) {
+    if (user[0] !== 1) {
       return res.status(401).end('No user found')
     }
-    db.User.findOne({ where: {id: user} }).then(user => {
+    db.User.findOne({ where: {id: req.params.id} }).then(user => {
         console.log('response: ', user)
         if (!user) {
           return res.status(401).end('No user found')
@@ -41,7 +41,5 @@ router.post('/:id', function (req, res, next) {
     return res.status(500).send(err)
   })
 })
-
-
-
+ 
 module.exports = router

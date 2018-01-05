@@ -3,10 +3,9 @@
     <div class="social tac">
       <h3 class="upper fwn"><b>stay up to date with</b> trt tb</h3>
       <ul class="social-icons">
-        <li><a href=""><icon name="instagram" scale="2"></icon></a></li>
-        <li><a href=""><icon name="twitter" scale="2"></icon></a></li>
-        <li><a href=""><icon name="youtube" scale="2"></icon></a></li>
-        <li><a href=""><icon name="facebook" scale="2"></icon></a></li>
+        <li><a href="https://www.instagram.com/tristantucker_official/ " target="_blank"><icon name="instagram" scale="2"></icon></a></li>
+        <li><a href="https://www.youtube.com/channel/UC2Y_M0XAo8NpCf0cktKdf_w" target="_blank"><icon name="youtube" scale="2"></icon></a></li>
+        <li><a href="https://www.facebook.com/tristan.tucker.543 " target="_blank"><icon name="facebook" scale="2"></icon></a></li>
       </ul>
     </div>
     <footer>

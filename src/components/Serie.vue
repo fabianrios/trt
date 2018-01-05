@@ -62,21 +62,21 @@
       </ul>
       <h2 class="fwn tac upper"><b>The</b> Series</h2>
       <div class="slideBanner row">
-      <a id="leftgone" href=""><span></span></a>
-      <ul class="seriesList">
-      <li v-for="serie in $parent.series" v-bind:style="{'background-image':`url(${serie.image.split('upload')[0]}upload/c_thumb,w_265,h_185${serie.image.split('upload')[1]})`}" v-if="serie.publish">
-        <div class="contentbanner">
-          <router-link :to="'/serie/'+serie.id"><span class="logo"></span>
-          <div class="promotext">
-            <h3>{{serie.name}}</h3>
-            <h5>Promo video</h5>
-          </div>
-          </router-link>
-        </div>
-      </li>
-     </ul>
-     <a href="" id="rightgone"><span></span></a>
-    </div>
+        <a id="leftgone" href="" v-on:click.prevent="moveLeft"><span></span></a>
+        <transition-group name="list" tag="ul" class="seriesList"  v-on:enter="enter" v-on:leave="leave" v-bind:css="false">
+          <li v-for="serie in $parent.series" v-bind:key="serie.id" v-bind:style="{'background-image':`url(${serie.image.split('upload')[0]}upload/c_thumb,w_265,h_185${serie.image.split('upload')[1]})`}" v-if="serie.publish">
+            <a :href="'/#/serie/'+serie.id" class="fixclick">
+              <div class="contentbanner">
+                <div class="promotext">
+                  <h3>{{serie.name}}</h3>
+                  <h5>Promo video</h5>
+                </div>
+              </div>
+            </a>
+          </li>
+        </transition-group>
+        <a href="" id="rightgone" v-on:click.prevent="moveRight"><span></span></a>
+      </div>
     </div>
     <Footer></Footer>
   </div>
@@ -95,7 +95,10 @@ export default {
       msg: 'social',
       isFloated: false,
       serie: {},
-      episodes: {}
+      episodes: {},
+      side: true,
+      x: 50,
+      speed: 200
     }
   },
   created () {
@@ -107,6 +110,40 @@ export default {
     '$route': ['getSerie', 'getSerieEpisodes']
   },
   methods: {
+    enter: function enter (el, done) {
+      const x = this.x
+      const trans = this.side ? [{ transform: `translateX(${x}px)`, opacity: 0 }, { transform: 'translateX(0px)', opacity: 1 }] : [{ transform: `translateX(-${x}px)`, opacity: 0 }, { transform: 'translateX(0px)', opacity: 1 }]
+      el.animate(trans, {
+        duration: this.speed,
+        iterations: 1,
+        easing: 'ease-in'
+      })
+    },
+    leave: function leave (el, done) {
+      const x = this.x
+      const trans = this.side ? [{ transform: 'translateX(0)', opacity: 1 }, { transform: `translateX(-${x}px)`, opacity: 0 }] : [{ transform: 'translateX(0)', opacity: 1 }, { transform: `translateX(${x}px)`, opacity: 0 }]
+      el.animate(trans, {
+        duration: this.speed,
+        iterations: 1,
+        easing: 'ease-out'
+      })
+    },
+    moveLeft: function moveLeft () {
+      const b = this.$parent.series[0]
+      this.$parent.series.shift()
+      this.side = true
+      setTimeout(() => {
+        this.$parent.series.push(b)
+      }, this.speed)
+    },
+    moveRight: function moveRight () {
+      const b = this.$parent.series[this.$parent.series.length - 1]
+      this.$parent.series.pop()
+      this.side = false
+      setTimeout(() => {
+        this.$parent.series.unshift(b)
+      }, this.speed)
+    },
     getSerie: async function getSerie () {
       const vm = this
       const url = `${vm.$parent.root}/serie/${vm.$route.params.id}`
