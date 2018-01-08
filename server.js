@@ -86,6 +86,8 @@ mailer.extend(app, {
   }
 })
 
+console.log(process.env.GMAILEMAIL, process.env.GMAILPASS);
+
 app.set('views', path.join(__dirname, 'views'))
 app.engine('hbs', exphbs());
 app.set('view engine', 'hbs')
@@ -137,6 +139,10 @@ app.post('/register', function (req, res, next) {
       })
     }
   })
+})
+
+app.get('/mailchecker', function(req, res, next){
+  res.render('registration', { title: 'registration', user: {name: 'fabian'} })
 })
 
 app.post('/dashboard/:id/update', function (req, res, next) {
