@@ -3,7 +3,7 @@ var router = express.Router()
 const db = require('../models')
 
 router.post('/:id/update', function (req, res, next) {
-  console.log('post', req.body)
+  // console.log('post', req.body)
   db.Serie.update(req.body, { where: {id: req.params.id}, returning: true }).then(serie => {
     console.log('update: ', serie)
     if (!serie[1][0]) {
@@ -53,7 +53,7 @@ router.get('/:id', function (req, res, next) {
 })
 
 router.post('/', function (req, res, next) {
-  console.log('post', req.body)
+  // console.log('post', req.body)
   db.Serie.create(req.body).then(post => {
     console.log('create: ', post)
     if (!post) {
@@ -69,7 +69,7 @@ router.post('/', function (req, res, next) {
 
 router.get('/', function (req, res, next) {
   db.Serie.findAll().then(post => {
-    console.log('all of them: ', post)
+    // console.log('all of them: ', post)
     if (!post) {
       return res.status(401).end('No post created')
     }
