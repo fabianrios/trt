@@ -7,8 +7,32 @@ mollie = new Mollie.API.Client;
 mollie.setApiKey(process.env.MOLLIE_API);
 
 router.post('/webhook', function (req, res, next) {
-  console.log('webhook: ', req)
-  return res.status(200).end()
+  const id = req.body.id
+  console.log('webhook: ', req.body, id)
+  if (!id){
+    return response.end();
+  } else {
+    mollie.payments.get(id, function(payment) {
+      if (payment.error) {
+        console.error(payment.error);
+        return response.end();
+      }
+      if (payment.isPaid()) {
+        /*
+          At this point you'd probably want to start the process of delivering the
+          product to the customer.
+        */
+        console.log('paid')
+      } else if (!payment.isOpen()) {
+        console.log('no paid, not open')
+        /*
+          The payment isn't paid and isn't open anymore. We can assume it was
+          aborted.
+        */
+      }
+    })
+    return res.status(200).end()
+  }
 })
 
 router.get('/:id', function (req, res, next) {
