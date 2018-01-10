@@ -69,6 +69,7 @@ passport.use(new LocalStrategy({
 
 const app = express()
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors(corsOptions))
 app.use(serveStatic(path.join(__dirname, '/dist')))
 // Initialize Passport and restore authentication state, if any, from the session

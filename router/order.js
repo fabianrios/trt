@@ -8,14 +8,14 @@ mollie.setApiKey(process.env.MOLLIE_API);
 
 router.post('/webhook', function (req, res, next) {
   const id = req.body.id
-  console.log('webhook: ', req.body, id, req.params)
+  console.log('webhook: ', req.body, id, req.param.id, req.params, req.param)
   if (!id){
-    return res.end()
+    return res.status(400).end()
   } else {
     mollie.payments.get(id, function (payment) {
       if (payment.error) {
         console.error(payment.error)
-        return res.end()
+        return res.status(400).end()
       }
       if (payment.isPaid()) {
         /*
