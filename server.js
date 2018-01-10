@@ -103,7 +103,7 @@ app.post('/login', function (req, res, next) {
   //  console.log(req.body, 'req.body')
   passport.authenticate('local', { session: false }, 
   function (err, user) {
-    console.log('user', user)
+    // console.log('user', user)
     if (err) { return next(err) }
     if (!user) {
       return res.status(401).end('There is no user register with that email')
@@ -118,7 +118,7 @@ app.post('/login', function (req, res, next) {
 app.post('/register', function (req, res, next) {
   let theUser = req.body
   theUser.password = encrypt(theUser.password)
-  console.log('theUser', theUser)
+  // console.log('theUser', theUser)
   db.User.findOne({ where: {email: theUser.email} }).then(euser => {
     if (euser !== null) {
       return res.status(400).end('User already exist')
@@ -148,9 +148,9 @@ app.get('/mailchecker', function(req, res, next){
 })
 
 app.post('/dashboard/:id/update', function (req, res, next) {
-  console.log('post dashboard', req.body)
+  // console.log('post dashboard', req.body)
   db.Dashboard.update(req.body, { where: {id: req.params.id}, returning: true }).then(serie => {
-    console.log('update: ', serie)
+    // console.log('update: ', serie)
     if (!serie[1][0]) {
       return res.status(401).end('No main series updated')
     }
@@ -168,7 +168,7 @@ app.get('/dashboard', function (req, res, next) {
       return res.status(401).end('No dash found')
     }
     db.Serie.findOne({where : {id: dash[0].main_serie_id}}).then(serie => {
-      console.log('response: ', serie)
+      // console.log('response: ', serie)
       if (!dash) {
         return res.status(401).end('No dash found')
       }

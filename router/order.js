@@ -31,7 +31,7 @@ router.get('/:money/:des/:episodes/:user/create', function (req, res, next) {
     amount:      m,
     description: d,
     redirectUrl: `http://${req.headers.host}/order/${u}_${d}_${e}/`,
-    webhookUrl:  `http://${req.headers.host}/order/webhook/`,
+    webhookUrl:  `http://www.trt-tv.eu/order/webhook/`,
     metadata: {
         orderId: `${u}_${d}_${e}`
     }
@@ -40,6 +40,7 @@ router.get('/:money/:des/:episodes/:user/create', function (req, res, next) {
         console.error('error', payment.error);
         return res.end();
     }
+    console.log('ps: ', payment)
     res.writeHead(302, {
         Location: payment.getPaymentUrl()
     });
