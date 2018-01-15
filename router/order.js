@@ -104,7 +104,7 @@ router.get('/:episode/:user/episode_create', function (req, res, next) {
       mollie.payments.create({
         amount: episode.price,
         description: episode.name,
-        redirectUrl: `http://${req.headers.host}/profile/${u}?episode_id=${episode.id}`,
+        redirectUrl: `http://${req.headers.host}/#/profile/${u}?episode_id=${episode.id}`,
         webhookUrl: `http://www.trt-tv.eu/order/webhook/`,
         metadata: meta
       }, function (payment) {
@@ -154,7 +154,7 @@ router.get('/:serie/:user/create', function (req, res, next) {
       mollie.payments.create({
         amount: serie.price,
         description: serie.name,
-        redirectUrl: `http://${req.headers.host}/profile/${u}?serie_id=${s}`,
+        redirectUrl: `http://${req.headers.host}/#/profile/${u}?serie_id=${s}`,
         webhookUrl: `http://www.trt-tv.eu/order/webhook/`,
         metadata: meta
       }, function (payment) {
