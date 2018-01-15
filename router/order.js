@@ -8,7 +8,7 @@ mollie.setApiKey(process.env.MOLLIE_API);
 
 router.post('/webhook', function (req, res, next) {
   const id = req.body.id
-  console.log('webhook: ', req.body, id, req.param.id, req.params, req.param)
+  console.log('webhook: ', req.body, id);
   if (!id){
     return res.status(400).end()
   } else {
@@ -17,21 +17,42 @@ router.post('/webhook', function (req, res, next) {
         console.error(payment.error)
         return res.status(400).end()
       }
+      console.log(payment)
       if (payment.isPaid()) {
-        /*
-          At this point you'd probably want to start the process of delivering the
-          product to the customer.
-        */
+        
+        const u = payment.metadata.user
+        const s = payment.metadata.serie
+        db.Serie.findOne({ where: {id: s}, include: [db.Episode]}).then(serie => {
+          if (!serie) {
+            return res.status(401).end('No serie found')
+          }
+          db.User.findOne({ where: {id: u }}).then(user => {
+            if (!user) {
+              return res.status(401).end('No user found')
+            }
+            user.addEpisode(serie.Episodes).then(() => {
+              return res.status(200).end()
+            }).catch(function (err) {
+              console.error('couldnt associate episode to user', err)
+              return res.status(500).send(err)
+            })
+          }).catch(function (err) {
+            console.error('couldnt get a user', err)
+            return res.status(500).send(err)
+          })
+        })
+        .catch(function (err) {
+          console.error('couldnt get serie', err)
+          return res.status(500).send(err)
+        })
         console.log('paid')
       } else if (!payment.isOpen()) {
-        console.log('no paid, not open')
         /*
           The payment isn't paid and isn't open anymore. We can assume it was
           aborted.
         */
       }
     })
-    return res.status(200).end()
   }
 })
 
@@ -41,35 +62,104 @@ router.get('/:id', function (req, res, next) {
   return res.status(200).send(req.params.id)
 })
 
-router.get('/:money/:des/:episodes/:user/create', function (req, res, next) {
-  const m = parseFloat(req.params.money).toFixed(2)
-  if (m === "NaN"){
-    res.status(401).end(JSON.stringify({error: 'wrong decimal format for currency'}))
-  }
-  const d = req.params.des
-  const e = req.params.episodes
-  const u = req.params.user
+router.get('/:episode/:user/episode_create', function (req, res, next) {
+  const e = parseInt(req.params.episode, 10)
+  const u = parseInt(req.params.user, 10)
+  db.Episode.findOne({ where: {id: e}}).then(episode => {
+    if (!episode) {
+      return res.status(401).end('No episode found')
+    }
+    db.User.findOne({ where: {id: u }}).then(user => {
+      if (!user) {
+        return res.status(401).end('No user found')
+      }
+      const meta = {
+        orderId: `${u}_${e}`,
+        user: u,
+        episode: episode.id
+      }
+      console.log('meta', meta)
+      mollie.payments.create({
+        amount: episode.price,
+        description: episode.name,
+        redirectUrl: `http://${req.headers.host}/profile/${u}?episode_id=${episode.id}`,
+        webhookUrl: `http://www.trt-tv.eu/order/webhook/`,
+        metadata: meta
+      }, function (payment) {
+        if (payment.error) {
+          console.error('error', payment.error)
+          return res.end()
+        }
+        console.log('ps: ', payment)
+        user.addEpisode(episode, { through: { status: payment.status, pay: payment.id }}).then(() => {
+          res.writeHead(302, {
+            Location: payment.getPaymentUrl()
+          })
+          return res.end()
+        }).catch(function (err) {
+          console.error('couldnt associate episode to user', err)
+          return res.status(500).send(err)
+        })
+      })
+    }).catch(function (err) {
+      console.error('couldnt get the user', err)
+      return res.status(500).send(err)
+    })
+  }).catch(function (err) {
+    console.error('couldnt get the episode', err)
+    return res.status(500).send(err)
+  })
+})
 
-  console.log(`http://${req.headers.host}/order/webhook/`)
-  mollie.payments.create({
-    amount:      m,
-    description: d,
-    redirectUrl: `http://${req.headers.host}/order/${u}_${d}_${e}/`,
-    webhookUrl:  `http://www.trt-tv.eu/order/webhook/`,
-    metadata: {
-        orderId: `${u}_${d}_${e}`
+router.get('/:serie/:user/create', function (req, res, next) {
+  // const m = parseFloat(req.params.money).toFixed(2)
+  const s = req.params.serie
+  const u = parseInt(req.params.user, 10)
+  // money needs to be retrieve from DB not easy change in the url call
+  db.Serie.findOne({ where: {id: s}}).then(serie => {
+    if (!serie) {
+      return res.status(401).end('No serie found')
     }
-  },  function (payment) {
-    if (payment.error) {
-        console.error('error', payment.error);
-        return res.end();
-    }
-    console.log('ps: ', payment)
-    res.writeHead(302, {
-        Location: payment.getPaymentUrl()
-    });
-    return res.end();
-  });
+    db.User.findOne({ where: {id: u }}).then(user => {
+      if (!user) {
+        return res.status(401).end('No user found')
+      }
+      const meta = {
+        orderId: `${u}_${s}`,
+        user: u,
+        serie: serie.id
+      }
+      mollie.payments.create({
+        amount: serie.price,
+        description: serie.name,
+        redirectUrl: `http://${req.headers.host}/profile/${u}?serie_id=${s}`,
+        webhookUrl: `http://www.trt-tv.eu/order/webhook/`,
+        metadata: meta
+      }, function (payment) {
+        if (payment.error) {
+          console.error('error', payment.error)
+          return res.end()
+        }
+        console.log('ps: ', payment)
+        user.addSerie(serie, { through: { status: payment.status, pay: payment.id }}).then(() => {
+          res.writeHead(302, {
+            Location: payment.getPaymentUrl()
+          })
+          return res.end()
+        }).catch(function (err) {
+          console.error('couldnt associate episode to user', err)
+          return res.status(500).send(err)
+        })
+      })
+    }).catch(function (err) {
+      console.error('couldnt get a user', err)
+      return res.status(500).send(err)
+    })
+  })
+  .catch(function (err) {
+    console.error('couldnt get serie', err)
+    return res.status(500).send(err)
+  })
 })
 
 module.exports = router

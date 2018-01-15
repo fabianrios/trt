@@ -40,7 +40,7 @@ router.get('/:id/episodes', function (req, res, next) {
 })
 
 router.get('/:id', function (req, res, next) {
-  db.Serie.findOne({ where: {id: req.params.id}}).then(serie => {
+  db.Serie.findOne({ where: {id: req.params.id}, include: [db.Episode]}).then(serie => {
     if (!serie) {
       return res.status(401).end('No serie found')
     }
