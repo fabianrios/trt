@@ -18,10 +18,9 @@ router.post('/webhook', function (req, res, next) {
         return res.status(400).end()
       }
       console.log(payment)
+      const u = payment.metadata.user
+      const s = payment.metadata.serie
       if (payment.isPaid()) {
-        
-        const u = payment.metadata.user
-        const s = payment.metadata.serie
         db.Serie.findOne({ where: {id: s}, include: [db.Episode]}).then(serie => {
           if (!serie) {
             return res.status(401).end('No serie found')
@@ -30,7 +29,7 @@ router.post('/webhook', function (req, res, next) {
             if (!user) {
               return res.status(401).end('No user found')
             }
-            user.addEpisode(serie.Episodes).then(() => {
+            user.addEpisode(serie.Episodes, { through: { status: payment.status }}).then(() => {
               return res.status(200).end()
             }).catch(function (err) {
               console.error('couldnt associate episode to user', err)
@@ -51,6 +50,29 @@ router.post('/webhook', function (req, res, next) {
           The payment isn't paid and isn't open anymore. We can assume it was
           aborted.
         */
+        db.Serie.findOne({ where: {id: s}, include: [db.Episode]}).then(serie => {
+          if (!serie) {
+            return res.status(401).end('No serie found')
+          }
+          db.User.findOne({ where: {id: u }}).then(user => {
+            if (!user) {
+              return res.status(401).end('No user found')
+            }
+            user.addEpisode(serie.Episodes, { through: { status: payment.status }}).then(() => {
+              return res.status(200).end()
+            }).catch(function (err) {
+              console.error('couldnt associate episode to user', err)
+              return res.status(500).send(err)
+            })
+          }).catch(function (err) {
+            console.error('couldnt get a user', err)
+            return res.status(500).send(err)
+          })
+        })
+        .catch(function (err) {
+          console.error('couldnt get serie', err)
+          return res.status(500).send(err)
+        })
       }
     })
   }
