@@ -1,6 +1,6 @@
 <template>
   <div class="aserie">
-    <Mainbar v-bind:class="{ static: isFloated }"></Mainbar>
+    <Mainbar v-bind:class="{ static: isFloated }" ref="mainBar"></Mainbar>
     <div class="main_series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
       <a href="" v-scroll-to="'#episodes'" class="play big"></a>
       <h1>{{serie.name}}</h1>
@@ -25,7 +25,8 @@
           <li>
             <icon name="star-o" scale="4"></icon>
             <h3 class="fwn"><b>€ {{serie.price}}</b> <small class="upper">life time access</small></h3>
-            <a v-if="serie.payed !== true" :href="'http://www.trt-tv.eu/order/'+serie.id+'/'+$parent.user.id+'/create'" class="button">Pre-enroll</a>
+            <a v-if="serie.payed !== true && $parent.user.id" :href="'http://www.trt-tv.eu/order/'+serie.id+'/'+$parent.user.id+'/create'" class="button">Pre-enroll</a>
+            <a href="sign up" v-else="serie.payed !== true && !$parent.user.id" v-on:click="$refs.mainBar.showThemodal($event, 'register')" class="button">Pre-enroll</a>
           </li>
         </ul>
       </div>
@@ -146,6 +147,7 @@ export default {
     getSerie: async function getSerie () {
       const vm = this
       const url = `${vm.$parent.root}/serie/${vm.$route.params.id}`
+      console.log(vm.$refs.mainBar)
       try {
         const response = await axios.get(url)
         vm.serie = response.data
