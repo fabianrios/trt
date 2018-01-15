@@ -20,6 +20,7 @@ export default {
       mainseries: [],
       errors: [],
       series: [],
+      user: this.$session.get('jwt') || {},
       root: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000',
       este: 'este',
       progressWidth: 0,

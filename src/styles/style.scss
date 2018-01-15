@@ -192,6 +192,9 @@ a, button {
   box-shadow: inset 0px -80px 400px 100px rgba(0,0,0,1);
   background-repeat: no-repeat;
   background-size: cover;
+  a {
+    color: white;
+  }
   &.admin{
     min-height: 300px;
     width: 32%;

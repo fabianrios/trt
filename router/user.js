@@ -4,8 +4,8 @@ const db = require('../models')
 
 router.get('/:id', function (req, res, next) {
   console.log("req.params", req.params)
-  db.User.findOne({ where: {id: req.params.id} }).then(user => {
-    console.log('response: ', user)
+  db.User.findOne({ where: {id: req.params.id}, include: [db.Episode, db.Serie] }).then(user => {
+    // console.log('response: ', user)
     if (!user) {
       return res.status(401).end('No user found')
     }
@@ -20,12 +20,12 @@ router.get('/:id', function (req, res, next) {
 router.post('/:id', function (req, res, next) {
   console.log("post", req.body, req.params.id)
   db.User.update(req.body, { where: {id: req.params.id} }).then(user => {
-    console.log('update: ', user)
+    // console.log('update: ', user)
     if (user[0] !== 1) {
       return res.status(401).end('No user found')
     }
     db.User.findOne({ where: {id: req.params.id} }).then(user => {
-        console.log('response: ', user)
+        // console.log('response: ', user)
         if (!user) {
           return res.status(401).end('No user found')
         }

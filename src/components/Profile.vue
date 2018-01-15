@@ -12,21 +12,23 @@
             </div>
           </div>
         </div>
-        <h1 class="tac fwn upper"> {{user.name}} </h1>
-        <h4 class="tac upper fwn">{{user.address}} • {{getCountry(user.country).value}}</h4>
-        <p class="tac bio">{{user.bio}}</p>
+        <h1 class="tac fwn upper"> {{$parent.user.name}} </h1>
+        <h4 class="tac upper fwn">{{$parent.user.address}} • {{getCountry($parent.user.country).value}}</h4>
+        <p class="tac bio">{{$parent.user.bio}}</p>
         <br />
         <h2 class="tac fwn upper" id="series"><b>Your</b> series</h2>
       </div>
       <div class="seriesshow">
         <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
+          <router-link :to="'/serie/'+serie.id">
           <div class="text_Serie">
             <div class="fixw">
               <h1>{{ serie.name }}</h1>
               <p>{{ serie.text }}</p>
-              <h3>COMING SPRING 2017</h3>
+              <h3>{{ serie.release }}</h3>
             </div>
           </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -48,18 +50,7 @@ export default {
       isFloated: true,
       backgroundImage: this.$session.get('jwt').image || '',
       country: '',
-      user: this.$session.get('jwt') || {},
-      series: [{
-        name: 'World of dressage',
-        image: 'https://res.cloudinary.com/trt-tv/image/upload/v1511523784/assets/Worldofdressage.jpg',
-        text: 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna.'
-      },
-      {
-        name: 'Brett kidding',
-        image: 'https://res.cloudinary.com/trt-tv/image/upload/v1511523784/assets/Brettkidding.jpg',
-        text: 'Parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna. lorem'
-      }
-      ]
+      series: []
     }
   },
   created () {
@@ -80,8 +71,17 @@ export default {
         const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}`
         try {
           const response = await axios.get(url)
-          vm.user = response.data
-          vm.backgroundImage = vm.user.image
+          vm.$parent.user = response.data
+          vm.backgroundImage = vm.$parent.user.image
+          const seriesIndex = []
+          vm.$parent.user.Episodes.forEach(function (episode) {
+            if (seriesIndex.indexOf(episode.serie_id) === -1) {
+              seriesIndex.push(episode.serie_id)
+            }
+          })
+          vm.series = vm.$parent.series.filter((serie) => seriesIndex.indexOf(serie.id) !== -1)
+          vm.$session.set('jwt', vm.$parent.user)
+          console.log('Episodes: ', seriesIndex, vm.series)
         } catch (e) {
           console.log('e', e.response.data)
           vm.errors.push(e)
@@ -106,13 +106,12 @@ export default {
       try {
         const response = await axios.post(url, formData)
         console.log(response.data)
-        vm.user.image = response.data.secure_url
+        vm.$parent.user.image = response.data.secure_url
         vm.backgroundImage = response.data.secure_url
-        vm.user.public_id = response.data.public_id
-        console.log(vm.user)
-        const posturl = `${vm.$parent.root}/user/${vm.user.id}`
+        vm.$parent.user.public_id = response.data.public_id
+        const posturl = `${vm.$parent.root}/user/${vm.$parent.user.id}`
         try {
-          const postresponse = await axios.post(posturl, { image: vm.user.image })
+          const postresponse = await axios.post(posturl, { image: vm.$parent.user.image })
           console.log('postresponse', postresponse.data)
         } catch (e) {
           console.log('e', e.response.data)

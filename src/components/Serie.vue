@@ -25,7 +25,7 @@
           <li>
             <icon name="star-o" scale="4"></icon>
             <h3 class="fwn"><b>€ {{serie.price}}</b> <small class="upper">life time access</small></h3>
-            <a href="" class="button">Pre-enroll</a>
+            <a v-if="serie.payed !== true" :href="'http://www.trt-tv.eu/order/'+serie.id+'/'+$parent.user.id+'/create'" class="button">Pre-enroll</a>
           </li>
         </ul>
       </div>
@@ -49,15 +49,15 @@
           <div class="episode_box">
             <div class="eimage">
               <img v-if="episode.image" :src="`${episode.image.split('upload')[0]}upload/c_thumb,w_255,h_255${episode.image.split('upload')[1]}`" alt="">
-              <router-link :to="'/episode/'+episode.id" class="play normalize"></router-link>
+              <router-link v-if="episode.payed === true || serie.payed === true" :to="'/episode/'+episode.id" class="play normalize"></router-link>
               <div class="hoverish"></div>
             </div>
             <div class="etext">
               <router-link :to="'/episode/'+episode.id"><h3 class="upper fwn"><b>{{episode.name}}</b> {{serie.name}}</h3></router-link>
               <p>{{episode.bio}}</p>
+              <a v-if="episode.payed !== true && serie.payed !== true" :href="'http://www.trt-tv.eu/order/'+episode.id+'/'+$parent.user.id+'/episode_create'" class="button right">Get episode €{{episode.price}}</a> 
             </div>
           </div>
-          
         </li>
       </ul>
       <h2 class="fwn tac upper"><b>The</b> Series</h2>
@@ -103,11 +103,10 @@ export default {
   },
   created () {
     this.getSerie()
-    this.getSerieEpisodes()
   },
   watch: {
     // call again the method if the route changes
-    '$route': ['getSerie', 'getSerieEpisodes']
+    '$route': ['getSerie']
   },
   methods: {
     enter: function enter (el, done) {
@@ -150,17 +149,23 @@ export default {
       try {
         const response = await axios.get(url)
         vm.serie = response.data
-      } catch (e) {
-        console.log('e', e.response.data)
-        vm.errors.push(e)
-      }
-    },
-    getSerieEpisodes: async function getSerieEpisodes () {
-      const vm = this
-      const url = `${vm.$parent.root}/serie/${vm.$route.params.id}/episodes`
-      try {
-        const response = await axios.get(url)
-        vm.episodes = response.data
+        vm.episodes = response.data.Episodes
+        const seriesIndex = []
+        // console.log(vm.$parent.user.Series, vm.$parent.user.Episodes, vm.serie)
+        vm.$parent.user.Episodes.forEach(function (episode) {
+          seriesIndex.push(episode.id)
+        })
+        vm.$parent.user.Series.forEach(function (userSerie) {
+          if (userSerie.id === vm.serie.id) {
+            vm.serie['payed'] = true
+          }
+        })
+        vm.episodes.forEach(function (episode) {
+          if (seriesIndex.indexOf(episode.id) !== -1) {
+            episode['payed'] = true
+          }
+        })
+        // console.log(seriesIndex, 'vm.episodes', vm.episodes, vm.serie)
       } catch (e) {
         console.log('e', e.response.data)
         vm.errors.push(e)
