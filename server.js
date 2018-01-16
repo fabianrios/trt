@@ -116,6 +116,32 @@ app.post('/login', function (req, res, next) {
   })(req, res, next)
 })
 
+app.post('/recover', function (req, res, next) {
+  const email = req.body.email
+  db.User.findOne({ where: {email: email} }).then(user => {
+    if (!user) {
+      return res.status(400).end('couldnt get a user with that email')
+    }
+    const pass = decrypt(user.password)
+    app.mailer.send('password', {
+      to: user.email,
+      subject: 'password recovery for TRTTV',
+      user: user,
+      password: pass
+    }, function (err) {
+      if (err) {
+        console.log('There was an error sending the email', err)
+        return res.status(500).send(err)
+      } else {
+        return res.status(200).send(JSON.stringify(user.name, null, 2))
+      }
+    })
+  }).catch(function (err) {
+    console.error('error geting a user with that email', err)
+    return res.status(500).send(err)
+  })
+})
+
 app.post('/register', function (req, res, next) {
   let theUser = req.body
   theUser.password = encrypt(theUser.password)

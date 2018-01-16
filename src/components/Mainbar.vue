@@ -26,6 +26,7 @@
     <modal v-if="showModal" @close="showModal = false">
       <h2 class="upper tac fwn" slot="header" v-if="whichModal ===  'register'"><b>create</b> account</h2>
       <h2 class="upper tac fwn" slot="header" v-else-if="whichModal ===  'update'"><b>update</b> profile</h2>
+      <h2 class="upper tac fwn" slot="header" v-else-if="whichModal ===  'forgot'"><b>Passowrd</b> recovery</h2>
       <h2 class="upper tac fwn" slot="header" v-else><b>Log</b> in</h2>
       <div slot="body"  v-if="whichModal ===  'register'">
         <form v-on:submit.prevent="onRegister" method="POST">
@@ -60,13 +61,20 @@
         </form>
         <br />
       </div>
+      <div slot="body" v-else-if="whichModal ===  'forgot'">
+        <form v-on:submit.prevent="onSubmitForgot" method="POST">
+          <input type="email" name="email" placeholder="Email Adress">
+          <button class="button expand upper">send email</button>
+        </form>
+        <br />
+      </div>
       <div slot="body" v-else>
         <form v-on:submit.prevent="onSubmit" method="POST">
           <input type="email" name="email" placeholder="Email Adress" required>
           <input type="password" name="password" placeholder="password" required>
           <button class="button expand upper">sign in</button>
         </form>
-        <br />
+        <p class="nm"><small><a href="forgot" v-on:click="showThemodal($event, 'forgot')">forgot your password?</a></small></p>
         <p class="tac nm">Don't you have an account yet? <a href="sign up" v-on:click="showThemodal($event, 'register')">Sign up</a></p>
       </div>
     </modal>
@@ -166,6 +174,23 @@ export default {
         vm.showModal = false
         vm.logUser = true
         vm.$session.set('jwt', vm.$parent.$parent.user)
+      } catch (e) {
+        console.log('e', e.response)
+        vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})
+        vm.errors.push(e)
+      }
+    },
+    onSubmitForgot: async function onSubmitForgot (e) {
+      const vm = this
+      const url = `${vm.$parent.$parent.root}/recover`
+      const form = e.currentTarget
+      const sendBody = {
+        email: form.querySelector("input[name='email']").value
+      }
+      try {
+        const response = await axios.post(url, sendBody)
+        vm.showModal = false
+        vm.showLoginSuccess({title: 'passowrd recovery', message: `don't worry ${response.data}, we just send you an email`, timeout: 4000})
       } catch (e) {
         console.log('e', e.response)
         vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})
