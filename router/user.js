@@ -4,7 +4,19 @@ const db = require('../models')
 
 router.get('/:id', function (req, res, next) {
   console.log("req.params", req.params)
-  db.User.findOne({ where: {id: req.params.id}, include: [db.Episode, db.Serie] }).then(user => {
+  db.User.findOne({ where: {id: req.params.id},
+    include: [{
+      model: db.Episode,
+      through: {
+        where: {status: 'paid'}
+      }
+    },
+    {
+      model: db.Serie,
+      through: {
+        where: {status: 'paid'}
+      }
+    }] }).then(user => {
     // console.log('response: ', user)
     if (!user) {
       return res.status(401).end('No user found')
