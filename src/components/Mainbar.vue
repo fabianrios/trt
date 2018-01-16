@@ -7,16 +7,16 @@
         <li><a href="sign up" v-on:click="showThemodal($event, 'register')">sign up</a></li>
       </ul>
       <ul v-else class="signform">
-        <li><h4 class="upper nm">WELCOME {{user.name}}</h4></li>
+        <li><h4 class="upper nm">WELCOME {{$parent.$parent.user.name}}</h4></li>
         <li>
-          <router-link :to="{ name: 'Profile', params: { id: user.id }}"><icon name="user" scale="1"></icon></router-link>
+          <router-link :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}"><icon name="user" scale="1"></icon></router-link>
           <div class="optionen">
             <ul>
-              <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: user.id }}">Your profile</router-link></li>
-              <li v-if="user.admin"><router-link class="button backwards" :to="{ name: 'Adminepisodes' }">Admin episodes</router-link></li>
-              <li v-if="user.admin"><router-link class="button backwards" :to="{ name: 'Adminseries' }">Admin series</router-link></li>
+              <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}">Your profile</router-link></li>
+              <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminepisodes' }">Admin episodes</router-link></li>
+              <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminseries' }">Admin series</router-link></li>
               <li><a href="settings" class="button backwards" v-on:click="showThemodal($event, 'update')">Edit your settings</a></li>
-              <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
+              <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
               <li><a href="logout" class="button backwards" v-on:click="logOut($event)">Sign out</a></li>
             </ul>
           </div>
@@ -42,20 +42,20 @@
           <button class="button expand upper">sign up</button>
         </form>
         <br />
-        <p class="tac nm">Already have an account <a href="">Sign in</a></p>
+        <p class="tac nm">Already have an account? <a href="login" v-on:click="showThemodal($event, 'login')">click here</a></p>
       </div>
       <div slot="body" v-else-if="whichModal ===  'update'">
         <form v-on:submit.prevent="onSubmitUpdate" method="POST">
-          <input type="email" name="email" placeholder="Email Adress" :value="user.email">
-          <input type="text" name="name" placeholder="Name" :value="user.name">
-          <input type="text" name="address" placeholder="Address" :value="user.address">
-          <select v-model="user.country" name="country">
+          <input type="email" name="email" placeholder="Email Adress" :value="$parent.$parent.user.email">
+          <input type="text" name="name" placeholder="Name" :value="$parent.$parent.user.name">
+          <input type="text" name="address" placeholder="Address" :value="$parent.$parent.user.address">
+          <select v-model="$parent.$parent.user.country" name="country">
             <option disabled value="0">Select an option</option>
             <option v-for="country in $parent.$parent.countries" v-bind:value="country.text">
               {{country.value}}
             </option>
           </select>
-          <textarea name="bio" id="bio" cols="30" rows="10" :value="user.bio"></textarea>
+          <textarea name="bio" id="bio" cols="30" rows="10" :value="$parent.$parent.user.bio"></textarea>
           <button class="button expand upper">update</button>
         </form>
         <br />
@@ -67,7 +67,7 @@
           <button class="button expand upper">sign in</button>
         </form>
         <br />
-        <p class="tac nm">Any problem sign in? <a href="">click here</a></p>
+        <p class="tac nm">Don't you have an account yet? <a href="sign up" v-on:click="showThemodal($event, 'register')">Sign up</a></p>
       </div>
     </modal>
   </div>
@@ -84,16 +84,13 @@ export default {
       msg: 'Mainbar',
       showModal: false,
       whichModal: 'register',
-      user: this.$session.get('jwt') || {},
       logUser: this.$session.exists(),
       errors: [],
       selected: 'NL'
     }
   },
-  // beforeCreate: function () {
-  //   if (!this.$session.exists()) {
-  //     this.$router.push('/')
-  //   }
+  // created: function () {
+  //   console.log(this)
   // },
   notifications: {
     showLoginError: {
@@ -115,9 +112,9 @@ export default {
     },
     logOut: function logOut (e) {
       e.preventDefault()
-      this.$session.destroy()
       this.logUser = false
-      this.user = {}
+      this.$parent.$parent.user = {}
+      this.$session.destroy()
       this.$router.push('/')
     },
     onRegister: async function onSubmit (e) {
@@ -138,11 +135,11 @@ export default {
       console.log(sendBody, url)
       try {
         const response = await axios.post(url, sendBody)
-        vm.user = response.data
+        vm.$parent.$parent.user = response.data
         vm.showModal = false
         vm.logUser = true
         vm.$session.start()
-        vm.$session.set('jwt', vm.user)
+        vm.$session.set('jwt', vm.$parent.$parent.user)
         vm.$router.push('/content')
       } catch (e) {
         console.log('e', e.response.data)
@@ -152,7 +149,7 @@ export default {
     },
     onSubmitUpdate: async function onSubmitUpdate (e) {
       const vm = this
-      const url = `${vm.$parent.$parent.root}/user/${vm.user.id}`
+      const url = `${vm.$parent.$parent.root}/user/${vm.$parent.$parent.user.id}`
       const form = e.currentTarget
       const sendBody = {
         name: form.querySelector("input[name='name']").value,
@@ -164,12 +161,11 @@ export default {
       console.log(sendBody, url)
       try {
         const response = await axios.post(url, sendBody)
-        vm.user = response.data
+        vm.$parent.$parent.user = response.data
         // console.log(vm.user)
         vm.showModal = false
         vm.logUser = true
-        vm.$session.set('jwt', vm.user)
-        vm.$parent.user = vm.user
+        vm.$session.set('jwt', vm.$parent.$parent.user)
       } catch (e) {
         console.log('e', e.response)
         vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})
@@ -186,14 +182,14 @@ export default {
       }
       try {
         const response = await axios.post(url, sendBody)
-        vm.user = response.data
+        vm.$parent.$parent.user = response.data
         // console.log(vm.user)
         vm.showModal = false
         vm.logUser = true
         vm.$session.start()
-        vm.$session.set('jwt', vm.user)
+        vm.$session.set('jwt', vm.$parent.$parent.user)
         // vm.showLoginSuccess()
-        vm.$router.push(`/profile/${vm.user.id}`)
+        vm.$router.push(`/profile/${vm.$parent.$parent.user.id}`)
       } catch (e) {
         console.log('e', e.response)
         vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})

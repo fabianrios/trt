@@ -24,9 +24,9 @@
           </li>
           <li>
             <icon name="star-o" scale="4"></icon>
-            <h3 class="fwn"><b>€ {{serie.price}}</b> <small class="upper">life time access</small></h3>
+            <h3 class="fwn"><b>€ {{serie.price}}</b> <small class="upper">life time access {{$parent.user.id}} {{serie.payed}}</small></h3>
             <a v-if="serie.payed !== true && $parent.user.id" :href="'http://www.trt-tv.eu/order/'+serie.id+'/'+$parent.user.id+'/create'" class="button">Pre-enroll</a>
-            <a href="sign up" v-else="serie.payed !== true && !$parent.user.id" v-on:click="$refs.mainBar.showThemodal($event, 'register')" class="button">Pre-enroll</a>
+            <a href="log in" v-else-if="serie.payed !== true && !$parent.user.id" v-on:click="$refs.mainBar.showThemodal($event, 'login')" class="button">Pre-enroll</a>
           </li>
         </ul>
       </div>

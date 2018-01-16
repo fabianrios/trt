@@ -20,31 +20,57 @@ router.post('/webhook', function (req, res, next) {
       console.log(payment)
       const u = payment.metadata.user
       const s = payment.metadata.serie
+      const e = payment.metadata.episode
       if (payment.isPaid()) {
-        db.Serie.findOne({ where: {id: s}, include: [db.Episode]}).then(serie => {
-          if (!serie) {
-            return res.status(401).end('No serie found')
-          }
-          db.User.findOne({ where: {id: u }}).then(user => {
-            if (!user) {
-              return res.status(401).end('No user found')
+        if (s !== undefined) {
+          db.Serie.findOne({ where: {id: s}}).then(serie => {
+            if (!serie) {
+              return res.status(401).end('No serie found')
             }
-            user.addEpisode(serie.Episodes, { through: { status: payment.status }}).then(() => {
-              return res.status(200).end()
+            db.User.findOne({ where: {id: u }}).then(user => {
+              if (!user) {
+                return res.status(401).end('No user found')
+              }
+              user.addSerie(serie, { through: { status: payment.status }}).then(() => {
+                return res.status(200).end()
+              }).catch(function (err) {
+                console.error('couldnt associate serie to user', err)
+                return res.status(500).send(err)
+              })
             }).catch(function (err) {
-              console.error('couldnt associate episode to user', err)
+              console.error('couldnt get a user', err)
               return res.status(500).send(err)
             })
-          }).catch(function (err) {
-            console.error('couldnt get a user', err)
+          })
+          .catch(function (err) {
+            console.error('couldnt get serie', err)
             return res.status(500).send(err)
           })
-        })
-        .catch(function (err) {
-          console.error('couldnt get serie', err)
-          return res.status(500).send(err)
-        })
-        console.log('paid')
+        } else {
+          db.Episode.findOne({ where: {id: e}}).then(episode => {
+            if (!episode) {
+              return res.status(401).end('No episode found')
+            }
+            db.User.findOne({ where: {id: u }}).then(user => {
+              if (!user) {
+                return res.status(401).end('No user found')
+              }
+              user.addEpisode(episode, { through: { status: payment.status }}).then(() => {
+                return res.status(200).end()
+              }).catch(function (err) {
+                console.error('couldnt associate episode to user', err)
+                return res.status(500).send(err)
+              })
+            }).catch(function (err) {
+              console.error('couldnt get a user', err)
+              return res.status(500).send(err)
+            })
+          })
+          .catch(function (err) {
+            console.error('couldnt get episode', err)
+            return res.status(500).send(err)
+          })
+        }
       } else if (!payment.isOpen()) {
         /*
           The payment isn't paid and isn't open anymore. We can assume it was
