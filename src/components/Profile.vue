@@ -20,6 +20,16 @@
       </div>
       <div class="seriesshow">
         <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
+          <div class="therating">
+            <h3>YOUR REVIEW </h3>
+            <div class="rating">
+              <span v-bind:class="{ selected: serie.stars == 5}" v-on:click="rating(serie.id, 5)">5</span>
+              <span v-bind:class="{ selected: serie.stars >= 4}" v-on:click="rating(serie.id, 4)">4</span>
+              <span v-bind:class="{ selected: serie.stars >= 3}" v-on:click="rating(serie.id, 3)">3</span>
+              <span v-bind:class="{ selected: serie.stars >= 2}" v-on:click="rating(serie.id, 2)">2</span>
+              <span v-bind:class="{ selected: serie.stars >= 1}" v-on:click="rating(serie.id, 1)">1</span>
+            </div>
+          </div>
           <router-link :to="'/serie/'+serie.id">
           <div class="text_Serie">
             <div class="fixw">
@@ -62,6 +72,9 @@ export default {
     }
   },
   methods: {
+    classHandler: function classHandler (serie) {
+      console.log(this, serie)
+    },
     getCountry: function getCountry (userCountry) {
       return this.$parent.countries.find(function (country) { return country.text === userCountry })
     },
@@ -73,15 +86,16 @@ export default {
           const response = await axios.get(url)
           vm.$parent.user = response.data
           vm.backgroundImage = vm.$parent.user.image
-          const seriesIndex = []
-          vm.$parent.user.Episodes.forEach(function (episode) {
-            if (seriesIndex.indexOf(episode.serie_id) === -1) {
-              seriesIndex.push(episode.serie_id)
-            }
-          })
-          vm.series = vm.$parent.series.filter((serie) => seriesIndex.indexOf(serie.id) !== -1)
+          // const seriesIndex = []
+          // vm.$parent.user.Episodes.forEach(function (episode) {
+          //   if (seriesIndex.indexOf(episode.serie_id) === -1) {
+          //     seriesIndex.push(episode.serie_id)
+          //   }
+          // })
+          // vm.series = vm.$parent.series.filter((serie) => seriesIndex.indexOf(serie.id) !== -1)
+          vm.series = response.data.Series
           vm.$session.set('jwt', vm.$parent.user)
-          console.log('Episodes: ', seriesIndex, vm.series)
+          console.log('series: ', vm.series)
         } catch (e) {
           console.log('e', e.response.data)
           vm.errors.push(e)
@@ -93,6 +107,27 @@ export default {
     triggerInput: function triggerInput () {
       const input = this.$el.getElementsByClassName('input-file')[0]
       input.click()
+    },
+    rating: async function rating (serieid, rate) {
+      console.log(serieid, rate)
+      let vm = this
+      const data = {
+        serieid: serieid,
+        rate: rate
+      }
+      const posturl = `${vm.$parent.root}/user/${vm.$parent.user.id}/rating`
+      try {
+        const response = await axios.post(posturl, data)
+        vm.series.forEach(function (serie) {
+          if (serie.id === serieid) {
+            serie.stars = rate
+          }
+        })
+        console.log('response', response.data)
+      } catch (e) {
+        console.log('e', e.response.data)
+        this.errors.push(e)
+      }
     },
     filesChange: async function filesChange (file) {
       let vm = this
@@ -135,6 +170,58 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
+.therating{
+  float: right;
+  margin-right: 20px;
+  h3{
+    display: inline-block;
+    color: #fff;
+    opacity: 1;
+  }
+}
+.rating {
+  margin-left: 10px;
+  display: inline-block;
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  text-align: center;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+  color: transparent;
+  &:before{
+    content: "\2605";
+    position: absolute;
+    left: 0; 
+    color: #fff;
+  }
+}
+.rating > span:hover,
+.rating > span:hover ~ span {
+  cursor: pointer;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   left: 0; 
+   color: #009fe3;
+}
+.rating > span.selected,
+.rating > span.selected ~ span {
+  color: transparent;
+}
+.rating > span.selected:before,
+.rating > span.selected ~ span:before {
+   content: "\2605";
+   position: absolute;
+   left: 0; 
+   color: #009fe3;
+}
+
 
 .input-file{
   display: none;
