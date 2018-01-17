@@ -47,8 +47,8 @@ Object.keys(db).forEach(modelName => {
 db.Serie.hasMany(db.Episode, { foreignKey: 'serie_id' })
 db.Episode.belongsTo(db.Serie, { foreignKey: 'serie_id' })
 
-db.Episode.belongsToMany(db.User, {through: db.UserEpisode})
-db.User.belongsToMany(db.Episode, {through: db.UserEpisode})
+db.Episode.belongsToMany(db.User, {through: db.UserEpisodes})
+db.User.belongsToMany(db.Episode, {through: db.UserEpisodes})
 
 db.Serie.belongsToMany(db.User, {through: db.UserSeries})
 db.User.belongsToMany(db.Serie, {through: db.UserSeries})
