@@ -91,7 +91,7 @@
 <script>
 import Modal from '@/components/Modal'
 import axios from 'axios'
-import facebookLogin from 'facebook-login-vuejs'
+import facebookLogin from '../../src/facebook'
 
 export default {
   name: 'Mainbar',
@@ -127,7 +127,7 @@ export default {
       )
     },
     faceRegister: function faceRegister (user) {
-      console.log(user)
+      console.log('user', user)
     },
     sdkLoaded: function sdkLoaded (payload) {
       console.log('payload', payload)
