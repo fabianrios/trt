@@ -91,7 +91,6 @@
 <script>
 import Modal from '@/components/Modal'
 import axios from 'axios'
-import facebookLogin from '../../src/facebook'
 
 export default {
   name: 'Mainbar',
@@ -252,8 +251,7 @@ export default {
     }
   },
   components: {
-    Modal,
-    facebookLogin
+    Modal
   }
 }
 </script>
