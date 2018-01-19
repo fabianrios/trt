@@ -1,4 +1,4 @@
-import facebookLogin from 'facebook-login-vuejs'
+import facebookLogin from './facebook-login.vue'
 
 export const facebookLoginPlugin = {
   install: function (Vue, options) {
