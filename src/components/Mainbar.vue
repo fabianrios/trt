@@ -102,6 +102,7 @@ export default {
       whichModal: 'register',
       logUser: this.$session.exists(),
       errors: [],
+      FB: undefined,
       selected: 'NL'
     }
   },
@@ -119,7 +120,7 @@ export default {
   },
   methods: {
     getUserData: function getUserData () {
-      window.FB.api('/me', 'GET', { fields: 'id,name,email' },
+      this.FB.api('/me', 'GET', { fields: 'id,name,email' },
         userInformation => {
           this.faceRegister(userInformation)
         }
@@ -131,7 +132,7 @@ export default {
     sdkLoaded: function sdkLoaded (payload) {
       console.log('payload', payload)
       this.logUser = payload.isConnected
-      window.FB = payload.FB
+      this.FB = payload.FB
       if (this.logUser) this.getUserData()
     },
     onLogin: function onLogin () {
