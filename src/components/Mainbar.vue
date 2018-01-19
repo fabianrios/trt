@@ -102,7 +102,8 @@ export default {
       whichModal: 'register',
       logUser: this.$session.exists(),
       errors: [],
-      selected: 'NL'
+      selected: 'NL',
+      FB: undefined
     }
   },
   // created: function () {
