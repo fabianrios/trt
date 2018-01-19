@@ -133,6 +133,7 @@ export default {
       console.log(user)
     },
     sdkLoaded: function sdkLoaded (payload) {
+      console.log(payload)
       this.logUser = payload.isConnected
       this.FB = payload.FB
       if (this.logUser) this.getUserData()
