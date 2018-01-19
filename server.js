@@ -116,6 +116,19 @@ app.post('/login', function (req, res, next) {
   })(req, res, next)
 })
 
+app.post('/facebook/auth', function (req, res, next) {
+  const email = req.body.email
+  db.User.findOne({ where: {email: email} }).then(user => {
+    if (!user) {
+      return res.status(400).end('couldnt get a user with that email')
+    }
+    return res.status(200).send(JSON.stringify(user, null, 2))
+  }).catch(function (err) {
+    console.error('error geting a user with that email', err)
+    return res.status(500).send(err)
+  })
+})
+
 app.post('/recover', function (req, res, next) {
   const email = req.body.email
   db.User.findOne({ where: {email: email} }).then(user => {
