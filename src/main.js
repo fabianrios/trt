@@ -5,7 +5,9 @@ import App from './App'
 import router from './router'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
+import facebookLogin from 'facebook-login-vuejs'
 Vue.component('icon', Icon)
+Vue.component(facebookLogin.name, facebookLogin)
 
 Vue.config.productionTip = false
 
@@ -14,5 +16,5 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App, Icon }
+  components: { App, Icon, facebookLogin }
 })
