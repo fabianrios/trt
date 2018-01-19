@@ -5,6 +5,15 @@ import App from './App'
 import router from './router'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
+
+// import facebookLogin from './facebook-login.vue'
+// export const facebookLoginPlugin = {
+//   install: function (Vue, options) {
+//     Vue.component(facebookLogin.name, facebookLogin)
+//   }
+// }
+// export default facebookLogin
+
 Vue.component('icon', Icon)
 
 Vue.config.productionTip = false
