@@ -106,9 +106,6 @@ export default {
       FB: undefined
     }
   },
-  // created: function () {
-  //   console.log(this)
-  // },
   notifications: {
     showLoginError: {
       title: '',
