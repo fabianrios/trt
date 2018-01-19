@@ -119,9 +119,10 @@ export default {
   },
   methods: {
     getUserData: function getUserData () {
-      this.FB.api('/me', 'GET', { fields: 'id,name,email' },
+      const vm = this
+      window.FB.api('/me', 'GET', { fields: 'id,name,email' },
         userInformation => {
-          this.faceRegister(userInformation)
+          vm.faceRegister(userInformation)
         }
       )
     },
@@ -131,7 +132,7 @@ export default {
     sdkLoaded: function sdkLoaded (payload) {
       console.log('payload', payload)
       this.logUser = payload.isConnected
-      this.FB = payload.FB
+      window.FB = payload.FB
       if (this.logUser) this.getUserData()
     },
     onLogin: function onLogin () {
