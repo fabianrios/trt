@@ -77,6 +77,7 @@
         <h4 class="tac">or</h4>
         <facebook-login class="button ext"
           appId="138744983473354"
+          loginLabel="Login with Facebook"
           @login="getUserData"
           @logout="onLogout"
           @get-initial-status="getUserData">
@@ -126,8 +127,22 @@ export default {
         }
       )
     },
-    faceRegister: function faceRegister (user) {
-      console.log('user', user)
+    faceRegister: async function faceRegister (user) {
+      const vm = this
+      const url = `${vm.$parent.$parent.root}/facebook/auth`
+      try {
+        const response = await axios.post(url, user)
+        vm.$parent.$parent.user = response.data
+        vm.showModal = false
+        vm.logUser = true
+        vm.$session.start()
+        vm.$session.set('jwt', vm.$parent.$parent.user)
+        vm.$router.push(`/profile/${vm.$parent.$parent.user.id}`)
+      } catch (e) {
+        console.log('e', e.response.data)
+        vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})
+        vm.errors.push(e)
+      }
     },
     sdkLoaded: function sdkLoaded (payload) {
       console.log('payload', payload)
