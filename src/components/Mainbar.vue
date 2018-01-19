@@ -74,6 +74,13 @@
           <input type="password" name="password" placeholder="password" required>
           <button class="button expand upper">sign in</button>
         </form>
+        <h4 class="tac">or</h4>
+        <facebook-login class="button ext"
+          appId="138744983473354"
+          @login="getUserData"
+          @logout="onLogout"
+          @get-initial-status="getUserData">
+        </facebook-login>
         <p class="nm"><small><a href="forgot" v-on:click="showThemodal($event, 'forgot')">forgot your password?</a></small></p>
         <p class="tac nm">Don't you have an account yet? <a href="sign up" v-on:click="showThemodal($event, 'register')">Sign up</a></p>
       </div>
@@ -84,6 +91,7 @@
 <script>
 import Modal from '@/components/Modal'
 import axios from 'axios'
+import facebookLogin from 'facebook-login-vuejs'
 
 export default {
   name: 'Mainbar',
@@ -113,6 +121,28 @@ export default {
     }
   },
   methods: {
+    getUserData: function getUserData () {
+      this.FB.api('/me', 'GET', { fields: 'id,name,email' },
+        userInformation => {
+          this.faceRegister(userInformation)
+        }
+      )
+    },
+    faceRegister: function faceRegister (user) {
+      console.log(user)
+    },
+    sdkLoaded: function sdkLoaded (payload) {
+      this.logUser = payload.isConnected
+      this.FB = payload.FB
+      if (this.logUser) this.getUserData()
+    },
+    onLogin: function onLogin () {
+      this.logUser = true
+      this.getUserData()
+    },
+    onLogout: function onLogout () {
+      this.logUser = false
+    },
     showThemodal: function showThemodal (e, which) {
       e.preventDefault()
       this.showModal = true
@@ -148,7 +178,7 @@ export default {
         vm.logUser = true
         vm.$session.start()
         vm.$session.set('jwt', vm.$parent.$parent.user)
-        vm.$router.push('/content')
+        vm.$router.push(`/profile/${vm.$parent.$parent.user.id}`)
       } catch (e) {
         console.log('e', e.response.data)
         vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})
@@ -223,7 +253,8 @@ export default {
     }
   },
   components: {
-    Modal
+    Modal,
+    facebookLogin
   }
 }
 </script>
