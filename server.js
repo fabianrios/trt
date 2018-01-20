@@ -121,10 +121,12 @@ app.post('/facebook/auth', function (req, res, next) {
   db.User.findOne({ where: {email: email} }).then((user) => {
     if (!user) {
       db.User.create({ email: email, name: req.body.name, password: encrypt(req.body.id) }).then(cuser => {
+        console.log('cuser', cuser)
         if (!cuser) {
           return res.status(400).end('couldnt get or create a user with those parameters')
+        } else {
+          return res.status(200).send(JSON.stringify(cuser, null, 2))
         }
-        return res.status(200).send(JSON.stringify(cuser, null, 2))
       }).catch(function (err) {
         console.error('error creating a user with those values', err)
         return res.status(500).send(err)
