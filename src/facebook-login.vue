@@ -129,15 +129,17 @@ export default {
   border: none;
   color: #fff;
   position: relative;
-  line-height: 34px;
+  line-height: 54px;
   min-width: 225px;
   padding: 0 15px 0px 46px;
   background-image: linear-gradient(#4c69ba, #3b55a0);
 }
 .facebook-login .spinner {
-  left: 5px;
+  position: absolute;
+  top: 11px;
+  left: 10px;
   width: 30px;
-  height: 90%;
+  height: 30px;
   display: block;
   border-radius: 50%;
   position: absolute;
@@ -145,12 +147,7 @@ export default {
   border-top-color: #3498db;
   animation: facebook-login-spin 2s linear infinite;
 }
-.facebook-login img {
-  position: absolute;
-  top: 3px;
-  left: 10px;
-  width: 30px;
-}
+
 @keyframes facebook-login-spin {
   0% {
     transform: rotate(0deg);

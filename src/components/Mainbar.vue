@@ -18,6 +18,15 @@
               <li><a href="settings" class="button backwards" v-on:click="showThemodal($event, 'update')">Edit your settings</a></li>
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
               <li><a href="logout" class="button backwards" v-on:click="logOut($event)">Sign out</a></li>
+              <li v-if="face">
+                <facebook-login class="button ext"
+                  appId="138744983473354"
+                  loginLabel="LOGIN WITH FACEBOOK"
+                  @login="getUserData"
+                  @logout="logOut"
+                  @get-initial-status="getUserData">
+                </facebook-login>
+              </li>
             </ul>
           </div>
         </li>
@@ -74,12 +83,12 @@
           <input type="password" name="password" placeholder="password" required>
           <button class="button expand upper">sign in</button>
         </form>
-        <h4 class="tac">or</h4>
+        <h4 class="tac fwn">or</h4>
         <facebook-login class="button ext"
           appId="138744983473354"
-          loginLabel="Login with Facebook"
+          loginLabel="LOGIN WITH FACEBOOK"
           @login="getUserData"
-          @logout="onLogout"
+          @logout="logOut"
           @get-initial-status="getUserData">
         </facebook-login>
         <p class="nm"><small><a href="forgot" v-on:click="showThemodal($event, 'forgot')">forgot your password?</a></small></p>
@@ -103,7 +112,8 @@ export default {
       logUser: this.$session.exists(),
       errors: [],
       FB: undefined,
-      selected: 'NL'
+      selected: 'NL',
+      face: false
     }
   },
   notifications: {
@@ -123,7 +133,7 @@ export default {
       const vm = this
       window.FB.api('/me', 'GET', { fields: 'id,name,email' },
         userInformation => {
-          if(userInformation.email) vm.faceRegister(userInformation)
+          if (userInformation.email) vm.faceRegister(userInformation)
         }
       )
     },
@@ -135,6 +145,7 @@ export default {
         vm.$parent.$parent.user = response.data
         vm.showModal = false
         vm.logUser = true
+        vm.face = true
         vm.$session.start()
         vm.$session.set('jwt', vm.$parent.$parent.user)
         vm.$router.push(`/profile/${vm.$parent.$parent.user.id}`)
@@ -145,7 +156,7 @@ export default {
       }
     },
     sdkLoaded: function sdkLoaded (payload) {
-      console.log('payload', payload)
+      console.log('sdkLoaded', payload)
       this.logUser = payload.isConnected
       window.FB = payload.FB
       if (this.logUser) this.getUserData()
@@ -153,9 +164,6 @@ export default {
     onLogin: function onLogin () {
       this.logUser = true
       this.getUserData()
-    },
-    onLogout: function onLogout () {
-      this.logUser = false
     },
     showThemodal: function showThemodal (e, which) {
       e.preventDefault()
@@ -165,6 +173,7 @@ export default {
     logOut: function logOut (e) {
       e.preventDefault()
       this.logUser = false
+      this.face = false
       this.$parent.$parent.user = {}
       this.$session.destroy()
       this.$router.push('/')
