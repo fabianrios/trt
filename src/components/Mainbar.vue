@@ -17,16 +17,7 @@
               <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminseries' }">Admin series</router-link></li>
               <li><a href="settings" class="button backwards" v-on:click="showThemodal($event, 'update')">Edit your settings</a></li>
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
-              <li v-if="!face"><a href="logout" class="button backwards" v-on:click.prevent="logOut()">Sign out</a></li>
-              <li>
-                <facebook-login class="button ext"
-                  appId="138744983473354"
-                  loginLabel="LOGIN WITH FACEBOOK"
-                  @login="getUserData"
-                  @logout="logOut"
-                  @get-initial-status="getUserData">
-                </facebook-login>
-              </li>
+              <li><a href="logout" class="button backwards" v-on:click.prevent="logOut()">Sign out</a></li>
             </ul>
           </div>
         </li>
@@ -102,6 +93,11 @@
 import Modal from '@/components/Modal'
 import axios from 'axios'
 
+// Helpers
+import {
+  fbLogout
+} from '../helpers.js'
+
 export default {
   name: 'Mainbar',
   data () {
@@ -174,10 +170,17 @@ export default {
     },
     logOut: function logOut () {
       this.logUser = false
-      this.face = false
       this.$parent.$parent.user = {}
       this.$session.destroy()
       this.$router.push('/')
+      if (this.face) {
+        fbLogout()
+          .then(response => {
+            console.log('fbLogout', response)
+            this.face = false
+          }
+          )
+      }
     },
     onRegister: async function onSubmit (e) {
       const vm = this
