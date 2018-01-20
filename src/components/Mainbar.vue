@@ -17,7 +17,7 @@
               <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminseries' }">Admin series</router-link></li>
               <li><a href="settings" class="button backwards" v-on:click="showThemodal($event, 'update')">Edit your settings</a></li>
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
-              <li><a href="logout" class="button backwards" v-on:click="logOut($event)">Sign out</a></li>
+              <li v-if="!face"><a href="logout" class="button backwards" v-on:click="logOut($event)">Sign out</a></li>
               <li v-if="face">
                 <facebook-login class="button ext"
                   appId="138744983473354"
@@ -133,7 +133,10 @@ export default {
       const vm = this
       window.FB.api('/me', 'GET', { fields: 'id,name,email' },
         userInformation => {
-          if (userInformation.email) vm.faceRegister(userInformation)
+          if (userInformation.email) {
+            vm.face = true
+            vm.faceRegister(userInformation)
+          }
         }
       )
     },
@@ -145,7 +148,6 @@ export default {
         vm.$parent.$parent.user = response.data
         vm.showModal = false
         vm.logUser = true
-        vm.face = true
         vm.$session.start()
         vm.$session.set('jwt', vm.$parent.$parent.user)
         vm.$router.push(`/profile/${vm.$parent.$parent.user.id}`)
