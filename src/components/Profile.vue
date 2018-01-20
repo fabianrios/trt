@@ -76,6 +76,7 @@ export default {
       console.log(this, serie)
     },
     getCountry: function getCountry (userCountry) {
+      userCountry = userCountry || 'NL'
       return this.$parent.countries.find(function (country) { return country.text === userCountry })
     },
     fetchUser: async function fetchUser () {
