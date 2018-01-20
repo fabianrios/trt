@@ -169,10 +169,6 @@ export default {
       this.whichModal = which
     },
     logOut: function logOut () {
-      this.logUser = false
-      this.$parent.$parent.user = {}
-      this.$session.destroy()
-      this.$router.push('/')
       console.log(this.face)
       fbLogout()
         .then(response => {
@@ -180,6 +176,10 @@ export default {
           this.face = false
         }
         )
+      this.logUser = false
+      this.$parent.$parent.user = {}
+      this.$session.destroy()
+      this.$router.push('/')
     },
     onRegister: async function onSubmit (e) {
       const vm = this
