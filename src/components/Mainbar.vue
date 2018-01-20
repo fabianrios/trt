@@ -130,7 +130,6 @@ export default {
       window.FB.api('/me', 'GET', { fields: 'id,name,email' },
         userInformation => {
           if (userInformation.email) {
-            vm.face = true
             vm.faceRegister(userInformation)
           }
         }
@@ -142,6 +141,7 @@ export default {
       try {
         const response = await axios.post(url, user)
         vm.$parent.$parent.user = response.data
+        vm.face = true
         vm.showModal = false
         vm.logUser = true
         vm.$session.start()
@@ -160,7 +160,6 @@ export default {
       if (this.logUser) this.getUserData()
     },
     onLogin: function onLogin () {
-      this.logUser = true
       this.getUserData()
     },
     showThemodal: function showThemodal (e, which) {
@@ -173,6 +172,7 @@ export default {
       this.$parent.$parent.user = {}
       this.$session.destroy()
       this.$router.push('/')
+      console.log(this.face)
       if (this.face) {
         fbLogout()
           .then(response => {
