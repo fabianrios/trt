@@ -123,7 +123,7 @@ export default {
       const vm = this
       window.FB.api('/me', 'GET', { fields: 'id,name,email' },
         userInformation => {
-          vm.faceRegister(userInformation)
+          if(userInformation.email) vm.faceRegister(userInformation)
         }
       )
     },
