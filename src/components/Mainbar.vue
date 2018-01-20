@@ -156,6 +156,7 @@ export default {
     sdkLoaded: function sdkLoaded (payload) {
       console.log('sdkLoaded', payload)
       this.logUser = payload.isConnected
+      this.face = payload.isConnected
       window.FB = payload.FB
       if (this.logUser) this.getUserData()
     },
@@ -173,14 +174,12 @@ export default {
       this.$session.destroy()
       this.$router.push('/')
       console.log(this.face)
-      if (this.face) {
-        fbLogout()
-          .then(response => {
-            console.log('fbLogout', response)
-            this.face = false
-          }
-          )
-      }
+      fbLogout()
+        .then(response => {
+          console.log('fbLogout', response)
+          this.face = false
+        }
+        )
     },
     onRegister: async function onSubmit (e) {
       const vm = this
