@@ -17,7 +17,7 @@
               <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminseries' }">Admin series</router-link></li>
               <li><a href="settings" class="button backwards" v-on:click="showThemodal($event, 'update')">Edit your settings</a></li>
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
-              <li v-if="!face"><a href="logout" class="button backwards" v-on:click="logOut($event)">Sign out</a></li>
+              <li v-if="!face"><a href="logout" class="button backwards" v-on:click.prevent="logOut()">Sign out</a></li>
               <li>
                 <facebook-login class="button ext"
                   appId="138744983473354"
@@ -172,8 +172,7 @@ export default {
       this.showModal = true
       this.whichModal = which
     },
-    logOut: function logOut (e) {
-      e.preventDefault()
+    logOut: function logOut () {
       this.logUser = false
       this.face = false
       this.$parent.$parent.user = {}
