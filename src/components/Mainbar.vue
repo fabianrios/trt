@@ -153,13 +153,6 @@ export default {
         vm.errors.push(e)
       }
     },
-    sdkLoaded: function sdkLoaded (payload) {
-      console.log('sdkLoaded', payload)
-      this.logUser = payload.isConnected
-      this.face = payload.isConnected
-      window.FB = payload.FB
-      if (this.logUser) this.getUserData()
-    },
     onLogin: function onLogin () {
       this.getUserData()
     },
@@ -172,7 +165,6 @@ export default {
       console.log(this.face)
       fbLogout()
         .then(response => {
-          console.log('fbLogout', response)
           this.face = false
         }
         )
