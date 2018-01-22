@@ -27,6 +27,7 @@
         <div class="acceptedPayment">
           <img src="../assets/ideal.gif" alt="ideal">
           <img src="../assets/mastercard.svg" alt="mastercard">
+          <img src="../assets/Paypal-logo.png" alt="paypal">
         </div>
       </div>
     </footer>

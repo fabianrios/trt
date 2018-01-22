@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   var UserSeries = sequelize.define('UserSeries', {
     status: DataTypes.STRING,
     pay: DataTypes.STRING,
+    email: DataTypes.STRING,
     stars: DataTypes.INTEGER
   }, {
     classMethods: {

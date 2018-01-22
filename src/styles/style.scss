@@ -55,7 +55,11 @@ p{
 }
 
 .upper{
-  text-transform: uppercase;
+  text-transform: uppercase !important;
+}
+
+.lower{
+  text-transform: lowercase !important;
 }
 
 input[type='text'], input[type='email'], input[type='password'], input[type='number'], input[type='date']{
@@ -73,6 +77,18 @@ input[type='text'], input[type='email'], input[type='password'], input[type='num
 
 input[type='file']{
   margin: 10px 5px;
+}
+
+.inline-form{
+  input[type='text'], input[type='email'], input[type='password'], input[type='number'], input[type='date']{
+    max-width: 250px;
+    display: inline-block;
+    height: 55px;
+  }
+  button, .button{
+    display: inline-block;
+    border: 0;
+  }
 }
 
 textarea{
