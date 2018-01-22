@@ -16,10 +16,13 @@
         <h4 class="tac upper fwn">{{$parent.user.address}} • {{getCountry($parent.user.country).value}}</h4>
         <p class="tac bio">{{$parent.user.bio}}</p>
         <br />
-        <h2 class="tac fwn upper" id="series"><b>Your</b> series</h2>
+        <h2 v-if="series" class="tac fwn upper" id="series"><b>Your</b> series</h2>
+        <div class="tac" v-else>
+          <router-link :to="'/series/'" class="button tac">Discover our series</router-link>
+        </div>
       </div>
       <div class="seriesshow">
-        <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
+        <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }" v-if="!serie.email" v-bind:key="serie.id">
           <div class="therating">
             <h3>YOUR REVIEW </h3>
             <div class="rating">
@@ -39,6 +42,25 @@
             </div>
           </div>
           </router-link>
+        </div>
+        <div class="serie gifted" v-else v-bind:style="{ 'background-image': `url(${serie.image})` }">
+          <div class="giftedDetails">
+            <h2 class="tac">GIFTED SERIE</h2>
+            <h2 class="tac lower">We sent an email to <b>{{serie.email}}</b>, we will inform you as soon as they claim the gift!</h2>
+            <p>if you want to change the person email address, please <a href="change" v-on:click.prevent="showForm()"><b>click here</b></a> notice that this is not necesary unless you have put the wrong email address.</p>
+          </div>
+          <form v-on:submit.prevent="submitEmail" method="POST" class="inline-form" v-show="changeEmail">
+            <input type="hidden" name="serieid" id="serieid" :value="serie.id">
+            <input type="email" name="email" id="email" :value="serie.email">
+            <button class="button"> Change email</button>
+          </form>
+          <div class="text_Serie">
+            <div class="fixw">
+              <h1>{{ serie.name }}</h1>
+              <p>{{ serie.text }}</p>
+              <h3>{{ serie.release }}</h3>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -60,7 +82,8 @@ export default {
       isFloated: true,
       backgroundImage: this.$session.get('jwt').image || '',
       country: '',
-      series: []
+      series: [],
+      changeEmail: false
     }
   },
   created () {
@@ -74,6 +97,24 @@ export default {
   methods: {
     classHandler: function classHandler (serie) {
       console.log(this, serie)
+    },
+    showForm: function showForm () {
+      this.changeEmail = !this.changeEmail
+    },
+    submitEmail: async function submitEmail (e) {
+      const vm = this
+      const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}/emailChange`
+      const form = e.currentTarget
+      const sendBody = {
+        serieid: form.querySelector("input[name='serieid']").value,
+        email: form.querySelector("input[name='email']").value
+      }
+      try {
+        await axios.post(url, sendBody)
+      } catch (e) {
+        console.log('e', e.response.data)
+        vm.errors.push(e)
+      }
     },
     getCountry: function getCountry (userCountry) {
       userCountry = userCountry || 'NL'
@@ -171,6 +212,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.giftedDetails{
+  background: rgba(0,0,0,0.4);
+  margin: 0 auto;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  form{
+    margin-top: 50px;
+  }
+  p{
+    margin: 0 auto;
+    max-width: 550px;
+  }
+}
 
 .therating{
   float: right;
