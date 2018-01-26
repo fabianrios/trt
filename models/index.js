@@ -50,6 +50,12 @@ db.Episode.belongsTo(db.Serie, { foreignKey: 'serie_id' })
 db.Episode.belongsToMany(db.User, {through: db.UserEpisodes})
 db.User.belongsToMany(db.Episode, {through: db.UserEpisodes})
 
+db.Serie.hasMany(db.Gifts, { foreignKey: 'serie_id' })
+db.User.hasMany(db.Gifts, { foreignKey: 'user_id' })
+
+db.Gifts.belongsTo(db.Serie, { foreignKey: 'serie_id' })
+db.Gifts.belongsTo(db.User, { foreignKey: 'user_id' })
+
 db.Serie.belongsToMany(db.User, {through: db.UserSeries})
 db.User.belongsToMany(db.Serie, {through: db.UserSeries})
 

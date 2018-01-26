@@ -26,7 +26,8 @@
             <icon name="star-o" scale="4"></icon>
             <h3 class="fwn"><b>€ {{serie.price}}</b> <small class="upper">life time access {{$parent.user.id}} {{serie.payed}}</small></h3>
             <a v-if="serie.payed !== true && $parent.user.id" :href="'http://www.trt-tv.eu/order/'+serie.id+'/'+$parent.user.id+'/create'" class="button">Pre-enroll</a>
-            <a href="log in" v-else-if="serie.payed !== true && !$parent.user.id" v-on:click="$refs.mainBar.showThemodal($event, 'login')" class="button">Pre-enroll</a>
+            <a href="log in" v-else-if="serie.payed !== true && $parent.user.id" v-on:click="$refs.mainBar.showThemodal($event, 'login')" class="button">Pre-enroll</a>
+            <a v-if="$parent.user.id" href="" class="button transparent" id="gagift" v-on:click.prevent="showModalfx()">Give as a gift</a>
           </li>
         </ul>
       </div>
@@ -56,7 +57,7 @@
             <div class="etext">
               <router-link :to="'/episode/'+episode.id"><h3 class="upper fwn"><b>{{episode.name}}</b> {{serie.name}}</h3></router-link>
               <p>{{episode.bio}}</p>
-              <a v-if="episode.payed !== true && serie.payed !== true" :href="'http://www.trt-tv.eu/order/'+episode.id+'/'+$parent.user.id+'/episode_create'" class="button right">Get episode €{{episode.price}}</a> 
+              <a v-if="episode.payed !== true && serie.payed !== true" :href="'http://www.trt-tv.eu/order/'+episode.id+'/'+$parent.user.id+'/episode_create'" class="button right">Get episode €{{episode.price}}</a>
             </div>
           </div>
         </li>
@@ -79,6 +80,18 @@
         <a href="" id="rightgone" v-on:click.prevent="moveRight"><span></span></a>
       </div>
     </div>
+    <modal v-if="showModal" @close="showModal = false">
+      <h2 class="upper tac fwn" slot="header"><b>Give</b> as a gift</h2>
+      <div slot="body">
+        <form v-on:submit.prevent="submitGift" method="POST">
+          <input type="email" name="email" id="email" placeholder="friend email">
+          <div class="ext">
+            <button class="button" id="thisone"> Order now</button>
+          </div>
+        </form>
+        <br><br>
+      </div>
+    </modal>
     <Footer></Footer>
   </div>
 </template>
@@ -87,6 +100,7 @@
 
 import Footer from '@/components/Footer'
 import Mainbar from '@/components/Mainbar'
+import Modal from '@/components/Modal'
 import axios from 'axios'
 
 export default {
@@ -95,6 +109,7 @@ export default {
     return {
       msg: 'social',
       isFloated: false,
+      showModal: false,
       serie: {},
       episodes: {},
       side: true,
@@ -110,6 +125,25 @@ export default {
     '$route': ['getSerie']
   },
   methods: {
+    showModalfx: function showModalfx () {
+      this.showModal = true
+    },
+    submitGift: async function submitGift (e) {
+      const vm = this
+      const url = `${vm.$parent.root}/order/${vm.serie.id}/${vm.$parent.user.id}/create`
+      const form = e.currentTarget
+      const sendBody = {
+        email: form.querySelector("input[name='email']").value
+      }
+      try {
+        const response = await axios.post(url, sendBody)
+        console.log(response.data)
+        if (response.status === 200) window.location.href = response.data.links.paymentUrl
+      } catch (e) {
+        console.log('e', e.response.data)
+        vm.errors.push(e)
+      }
+    },
     enter: function enter (el, done) {
       const x = this.x
       const trans = this.side ? [{ transform: `translateX(${x}px)`, opacity: 0 }, { transform: 'translateX(0px)', opacity: 1 }] : [{ transform: `translateX(-${x}px)`, opacity: 0 }, { transform: 'translateX(0px)', opacity: 1 }]
@@ -147,7 +181,7 @@ export default {
     getSerie: async function getSerie () {
       const vm = this
       const url = `${vm.$parent.root}/serie/${vm.$route.params.id}`
-      console.log(vm.$refs.mainBar)
+      // console.log(vm.$refs.mainBar)
       try {
         const response = await axios.get(url)
         vm.serie = response.data
@@ -176,6 +210,7 @@ export default {
   },
   components: {
     Footer,
+    Modal,
     Mainbar
   }
 }
@@ -269,6 +304,11 @@ export default {
     vertical-align: top;
     height: 255px;
   }
+}
+
+#gagift{
+  margin-top: 5px;
+  border: 0;
 }
 
 .main_series{

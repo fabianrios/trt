@@ -7,7 +7,7 @@ const Sequelize = require('sequelize')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const cors = require('cors')
-const exphbs  = require('express-handlebars');
+const exphbs  = require('express-handlebars')
 const mailer = require('express-mailer')
 
 const db = require('./models')
@@ -58,7 +58,7 @@ passport.use(new LocalStrategy({
   function (email, password, done) {
     console.log('credentials: ', email, password)
     db.User.findOne({ where: {email: email} }).then(user => {
-      console.log('response: ', user, encrypt(password))
+      // console.log('response: ' , user)
       if (!user) {
         return done(null, false)
       }
@@ -100,8 +100,12 @@ app.use('/serie', serie)
 app.use('/episode', episode)
 app.use('/order', order)
 
+// app.get('/hack', function(req, res, next) {
+//   console.log(decrypt('f821524f8d901120af'))
+// })
+
 app.post('/login', function (req, res, next) {
-  //  console.log(req.body, 'req.body')
+  console.log(req.body, 'req.body')
   passport.authenticate('local', { session: false }, 
   function (err, user) {
     // console.log('user', user)
@@ -110,6 +114,7 @@ app.post('/login', function (req, res, next) {
       return res.status(401).end('There is no user register with that email')
     }
     if (user.password !== encrypt(req.body.password)) {
+      // console.log(user.password, encrypt(req.body.password))
       return res.status(401).end('The password is incorrect')
     }
     return res.status(200).send(JSON.stringify(user, null, 2))
@@ -217,7 +222,7 @@ app.get('/dashboard', function (req, res, next) {
     if (!dash) {
       return res.status(401).end('No dash found')
     }
-    db.Serie.findOne({where : {id: dash[0].main_serie_id}}).then(serie => {
+    return db.Serie.findOne({where : {id: dash[0].main_serie_id}}).then(serie => {
       // console.log('response: ', serie)
       if (!dash) {
         return res.status(401).end('No dash found')

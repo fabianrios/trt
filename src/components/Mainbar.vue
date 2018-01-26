@@ -238,7 +238,7 @@ export default {
       try {
         const response = await axios.post(url, sendBody)
         vm.showModal = false
-        vm.showLoginSuccess({title: 'passowrd recovery', message: `don't worry ${response.data}, we just send you an email`, timeout: 4000})
+        vm.showLoginSuccess({title: 'passoword recovery', message: `don't worry ${response.data}, we just send you an email`, timeout: 4000})
       } catch (e) {
         console.log('e', e.response)
         vm.showLoginError({title: e.response.statusText, message: e.response.data, type: 'error', timeout: 4000})

@@ -16,13 +16,13 @@
         <h4 class="tac upper fwn">{{$parent.user.address}} • {{getCountry($parent.user.country).value}}</h4>
         <p class="tac bio">{{$parent.user.bio}}</p>
         <br />
-        <h2 v-if="series" class="tac fwn upper" id="series"><b>Your</b> series</h2>
+        <h2 v-if="series.length > 0" class="tac fwn upper" id="series"><b>Your</b> series</h2>
         <div class="tac" v-else>
           <router-link :to="'/series/'" class="button tac">Discover our series</router-link>
         </div>
       </div>
       <div class="seriesshow">
-        <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }" v-if="!serie.email" v-bind:key="serie.id">
+        <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }" v-bind:key="serie.id">
           <div class="therating">
             <h3>YOUR REVIEW </h3>
             <div class="rating">
@@ -43,25 +43,44 @@
           </div>
           </router-link>
         </div>
-        <div class="serie gifted" v-else v-bind:style="{ 'background-image': `url(${serie.image})` }">
+        <div class="serie gifted" v-for="gift in givegifts" v-bind:style="{ 'background-image': `url(${gift.Serie.image})` }" v-bind:key="gift.id">
           <div class="giftedDetails">
             <h2 class="tac">GIFTED SERIE</h2>
-            <h2 class="tac lower">We sent an email to <b>{{serie.email}}</b>, we will inform you as soon as they claim the gift!</h2>
-            <p>if you want to change the person email address, please <a href="change" v-on:click.prevent="showForm()"><b>click here</b></a> notice that this is not necesary unless you have put the wrong email address.</p>
+            <h2 class="tac lower">We will inform you as soon as the gift is redeem!</h2>
+            <p>if you want to change the person email address, please <a href="change" v-on:click.prevent="showForm($event)"><b>click here</b></a> notice that this is not necesary unless you have put the wrong email address.</p>
           </div>
-          <form v-on:submit.prevent="submitEmail" method="POST" class="inline-form" v-show="changeEmail">
-            <input type="hidden" name="serieid" id="serieid" :value="serie.id">
-            <input type="email" name="email" id="email" :value="serie.email">
-            <button class="button"> Change email</button>
+          <form v-on:submit.prevent="submitEmail" method="POST" class="inline-form" style="display:none;">
+            <input type="hidden" name="giftid" :value="gift.id">
+            <input type="email" name="email" :value="gift.email" v-on:keyup="onInput(gift, $event)">
+            <button class="button" :id="'thisone'+gift.id" disabled> Change email</button>
           </form>
           <div class="text_Serie">
             <div class="fixw">
-              <h1>{{ serie.name }}</h1>
-              <p>{{ serie.text }}</p>
-              <h3>{{ serie.release }}</h3>
+              <h1>{{ gift.Serie.name }}</h1>
+              <p>{{ gift.Serie.text }}</p>
+              <h3>{{ gift.Serie.release }}</h3>
             </div>
           </div>
         </div>
+      </div>
+      <h2 v-if="gifts.length > 0" class="tac fwn upper" id="series"><b>Your</b> gifts</h2>
+      <div class="giftedseries">
+          <div v-for="gift in gifts" class="serie gifted" v-bind:key="gift.id" v-bind:style="{ 'background-image': `url(${gift.Serie.image})` }">
+            <div class="giftedDetails">
+              <br><br>
+              <p class="tac">You have received this serie from {{gift.User.name}}</p>
+              <br>
+              <a href="claim" class="button" v-on:click.prevent="claim(gift.id)">Claim this series</a>
+              <br><br><br><br>
+            </div>
+            <div class="text_Serie">
+              <div class="fixw">
+                <h1>{{ gift.Serie.name }}</h1>
+                <p>{{ gift.Serie.text }}</p>
+                <h3>{{ gift.Serie.release }}</h3>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
     <Footer ref="footer"></Footer>
@@ -83,7 +102,22 @@ export default {
       backgroundImage: this.$session.get('jwt').image || '',
       country: '',
       series: [],
-      changeEmail: false
+      givegifts: [],
+      gifts: [],
+      changeEmail: false,
+      activate: false
+    }
+  },
+  notifications: {
+    showError: {
+      title: '',
+      message: 'Failed to update',
+      type: 'error'
+    },
+    showSuccess: {
+      title: '',
+      message: 'Update email successful',
+      type: 'success'
     }
   },
   created () {
@@ -92,25 +126,70 @@ export default {
       this.$router.push('/')
     } else {
       this.fetchUser()
+      this.getGifts()
+      this.getAwayGifts()
+    }
+  },
+  watch: {
+    series: {
+      handler (val) {
+        // console.log('val', val)
+      },
+      deep: true
     }
   },
   methods: {
+    claim: async function claim (giftid) {
+      console.log(giftid)
+      const vm = this
+      const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}/claim`
+      try {
+        const response = await axios.post(url, {giftid: giftid, userid: vm.$session.get('jwt').id})
+        console.log(response)
+        if (response.status === 200) {
+          vm.fetchUser()
+          vm.getGifts()
+          vm.getAwayGifts()
+        }
+      } catch (e) {
+        console.log('e', e.response.data)
+        vm.errors.push(e)
+      }
+    },
+    onInput: function onInput (object, e) {
+      if (object.email !== e.currentTarget.value) {
+        document.getElementById('thisone' + object.id).disabled = false
+      } else {
+        document.getElementById('thisone' + object.id).disabled = true
+      }
+      console.log(object.email, e.currentTarget.value)
+    },
     classHandler: function classHandler (serie) {
       console.log(this, serie)
     },
-    showForm: function showForm () {
-      this.changeEmail = !this.changeEmail
+    showForm: function showForm (e) {
+      const form = e.currentTarget.parentNode.parentNode.parentNode.querySelector('form')
+      if (form.style.display === 'none') {
+        form.style.display = 'block'
+      } else {
+        form.style.display = 'none'
+      }
     },
     submitEmail: async function submitEmail (e) {
       const vm = this
       const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}/emailChange`
       const form = e.currentTarget
       const sendBody = {
-        serieid: form.querySelector("input[name='serieid']").value,
+        giftid: parseInt(form.querySelector("input[name='giftid']").value, 10),
         email: form.querySelector("input[name='email']").value
       }
       try {
-        await axios.post(url, sendBody)
+        const response = await axios.post(url, sendBody)
+        if (response.status === 200) {
+          vm.getAwayGifts()
+          document.getElementById('thisone' + sendBody.giftid).disabled = true
+          vm.showSuccess({title: 'Success email change', message: `we just sent an email to ${sendBody.email}!`, timeout: 4000})
+        }
       } catch (e) {
         console.log('e', e.response.data)
         vm.errors.push(e)
@@ -120,6 +199,32 @@ export default {
       userCountry = userCountry || 'NL'
       return this.$parent.countries.find(function (country) { return country.text === userCountry })
     },
+    getGifts: async function getGifts () {
+      const vm = this
+      if (vm.$session.get('jwt').id === parseInt(vm.$route.params.id, 10)) {
+        const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}/gifts`
+        try {
+          const response = await axios.get(url)
+          vm.gifts = response.data
+        } catch (e) {
+          console.log('e', e.response.data)
+          vm.errors.push(e)
+        }
+      }
+    },
+    getAwayGifts: async function getAwayGifts () {
+      const vm = this
+      if (vm.$session.get('jwt').id === parseInt(vm.$route.params.id, 10)) {
+        const url = `${vm.$parent.root}/user/${vm.$session.get('jwt').id}/awaygifts`
+        try {
+          const response = await axios.get(url)
+          vm.givegifts = response.data
+        } catch (e) {
+          console.log('e', e.response.data)
+          vm.errors.push(e)
+        }
+      }
+    },
     fetchUser: async function fetchUser () {
       const vm = this
       if (vm.$session.get('jwt').id === parseInt(vm.$route.params.id, 10)) {
@@ -128,16 +233,8 @@ export default {
           const response = await axios.get(url)
           vm.$parent.user = response.data
           vm.backgroundImage = vm.$parent.user.image
-          // const seriesIndex = []
-          // vm.$parent.user.Episodes.forEach(function (episode) {
-          //   if (seriesIndex.indexOf(episode.serie_id) === -1) {
-          //     seriesIndex.push(episode.serie_id)
-          //   }
-          // })
-          // vm.series = vm.$parent.series.filter((serie) => seriesIndex.indexOf(serie.id) !== -1)
           vm.series = response.data.Series
           vm.$session.set('jwt', vm.$parent.user)
-          console.log('series: ', vm.series)
         } catch (e) {
           console.log('e', e.response.data)
           vm.errors.push(e)
