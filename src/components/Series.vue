@@ -7,7 +7,8 @@
         <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur.</p>
       </div>
       <div class="seriesshow">
-        <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
+        <div class="serie" v-for="serie in $parent.series" v-bind:style="{ 'background-image': `url(${serie.image})` }" v-bind:key="serie.id">
+          <router-link :to="'/serie/'+serie.id">
           <div class="text_Serie">
             <div class="fixw">
               <h1>{{ serie.name }}</h1>
@@ -15,6 +16,7 @@
               <h3>COMING SPRING 2017</h3>
             </div>
           </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -33,18 +35,7 @@ export default {
   data () {
     return {
       msg: 'social',
-      isFloated: true,
-      series: [{
-        name: 'World of dressage',
-        image: 'https://res.cloudinary.com/trt-tv/image/upload/v1511523784/assets/Worldofdressage.jpg',
-        text: 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna.'
-      },
-      {
-        name: 'Brett kidding',
-        image: 'https://res.cloudinary.com/trt-tv/image/upload/v1511523784/assets/Brettkidding.jpg',
-        text: 'Parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur. Maecenas sed diam eget risus varius blandit sit amet non magna. lorem'
-      }
-      ]
+      isFloated: true
     }
   },
   method () {

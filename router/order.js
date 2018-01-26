@@ -1,7 +1,28 @@
 var express = require('express')
 var router = express.Router()
 const db = require('../models')
-const Mollie = require("mollie-api-node");
+const Mollie = require("mollie-api-node")
+const app = express()
+const path = require('path')
+const exphbs = require('express-handlebars')
+const mailer = require('express-mailer')
+
+// mail
+mailer.extend(app, {
+  from: 'trttv',
+  host: 'smtp.gmail.com', // hostname
+  secureConnection: true, // use SSL
+  port: 465, // port for secure SMTP
+  transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts
+  auth: {
+    user: process.env.GMAILEMAIL,
+    pass: process.env.GMAILPASS
+  }
+})
+
+app.set('views', path.join(__dirname, '../views'))
+app.engine('hbs', exphbs())
+app.set('view engine', 'hbs')
 
 mollie = new Mollie.API.Client;
 mollie.setApiKey(process.env.MOLLIE_API);
@@ -21,17 +42,30 @@ router.post('/webhook', function (req, res, next) {
       const u = payment.metadata.user
       const s = payment.metadata.serie
       const e = payment.metadata.episode
+      const email = payment.metadata.email
       if (payment.isPaid()) {
         if (s !== undefined) {
-          db.Serie.findOne({ where: {id: s}}).then(serie => {
+          db.Serie.findOne({where: {id: s}}).then(serie => {
             if (!serie) {
               return res.status(401).end('No serie found')
             }
-            db.User.findOne({ where: {id: u }}).then(user => {
+            db.User.findOne({where: { id: u }}).then(user => {
               if (!user) {
                 return res.status(401).end('No user found')
               }
-              user.addSerie(serie, { through: { status: payment.status }}).then(() => {
+              const th = { status: payment.status }
+              if (email) th.email = email
+              user.addSerie(serie, { through: th }).then(() => {
+                app.mailer.send('agift', {
+                  to: email,
+                  subject: 'You have a gift from TRTTV',
+                  user: user,
+                  serie: serie
+                }, function (err) {
+                  if (err) {
+                    console.log('There was an error sending the email', err)
+                  }
+                })
                 return res.status(200).end()
               }).catch(function (err) {
                 console.error('couldnt associate serie to user', err)
@@ -106,8 +140,55 @@ router.post('/webhook', function (req, res, next) {
 
 router.get('/:id', function (req, res, next) {
   console.log('id', req.params.id)
-  
   return res.status(200).send(req.params.id)
+})
+
+router.post('/:serie/:user/create', function (req, res, next) {
+  const s = req.params.serie
+  const u = parseInt(req.params.user, 10)
+  db.Serie.findOne({ where: {id: s}}).then(serie => {
+    if (!serie) {
+      return res.status(401).end('No serie found')
+    }
+    return db.User.findOne({ where: {id: u }}).then(user => {
+      if (!user) {
+        return res.status(401).end('No user found')
+      }
+      const meta = {
+        orderId: `${u}_${s}`,
+        user: u,
+        serie: serie.id,
+        email: req.body.email
+      }
+      mollie.payments.create({
+        amount: serie.price,
+        description: serie.name,
+        redirectUrl: `http://${req.headers.host}/#/profile/${u}?serie_id=${s}`,
+        webhookUrl: `http://www.trt-tv.eu/order/webhook/`,
+        metadata: meta
+      }, function (payment) {
+        if (payment.error) {
+          console.error('error', payment.error)
+          return res.end()
+        }
+        console.log('ps: ', payment)
+        db.Gifts.create({ status: payment.status, pay: payment.id, email: payment.metadata.email, user_id: user.id, serie_id: serie.id, claim: false }).then((gift) => {
+          console.log(gift)
+          return res.status(200).send(payment)
+        }).catch(function (err) {
+          console.error('couldnt create gift', err)
+          return res.status(500).send(err)
+        })
+      })
+    }).catch(function (err) {
+      console.error('couldnt get a user', err)
+      return res.status(500).send(err)
+    })
+  })
+  .catch(function (err) {
+    console.error('couldnt get serie', err)
+    return res.status(500).send(err)
+  })
 })
 
 router.get('/:episode/:user/episode_create', function (req, res, next) {

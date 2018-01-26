@@ -1,5 +1,6 @@
 
 $blue: #009fe3;
+$darkblue: #0380bb;
 
 html, body{
   font-size: 100%;
@@ -125,6 +126,10 @@ button{
     display: block;
     margin: 0;
     padding: 0;
+    &:disabled {
+      background-color:gray;
+      opacity: 0.5;
+    }
 }
 
 .ext{
@@ -159,6 +164,11 @@ a, button {
     &.expand{
         width: 100%;
     }
+    &:disabled {
+      background-color:black;
+      opacity: 0.6;
+      border: 1px solid black;
+    }
     &:before{
       content:'';
       position: absolute;
@@ -179,11 +189,22 @@ a, button {
     &.multiply{
       background:#0380bb;
     }
+    &:hover{
+      background:#0380bb;
+      border: 1px solid #0380bb;
+    }
     &.transparent{
       background:none;
       color:$blue;
       &:before{
         background-color:$blue;
+      }
+      &:hover{
+        color:#fff;
+        border: 1px solid #fff;
+        &:before{
+          background-color:#fff;
+        }
       }
     }
   }
@@ -306,6 +327,11 @@ a, button {
     background: linear-gradient(to right, rgba(0,0,0,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
     z-index: 9;
+    &:hover{
+      span{
+        background-color: white;
+      }
+    }
     span{
       display: inline-block;
       width: 50px;
