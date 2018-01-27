@@ -560,6 +560,9 @@ div{
   &.novideo{
     margin-top: 0;
   }
+  &.pause{
+    background: url(./assets/pause.svg);
+  }
 }
 
 #teaser{
