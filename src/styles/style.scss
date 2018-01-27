@@ -292,6 +292,20 @@ a, button {
   color: #fff;
 }
 
+.feature{
+  display: block;
+  position: absolute;
+  right: 50px;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  color: #fff;
+  &.selected{
+    color: gold;
+  }
+}
+
 .aboutHome{
   .theimg{
     width:40%;

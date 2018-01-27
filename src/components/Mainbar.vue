@@ -311,12 +311,13 @@ $blue: #009fe3;
 }
 
 .logo{
-  background:url(../assets/logo.svg) no-repeat center center;
+  background:url(../assets/Logo_trttv.png) no-repeat center center;
   width: 135px;
   height: 50px;
   display: inline-block;
   position: relative;
   top: 50px;
+  background-size:100%;
 }
 
 .optionen{

@@ -14,6 +14,7 @@
           <label for="file">Image: </label>
           <input type="file" name="file" id="file">
           <input type="text" name="price" id="price" placeholder="Price in unformated numbers" required>
+          <input type="text" name="video" id="video" placeholder="Trailer">
           <input type="text" name="release" id="release" placeholder="Promo release">
           <textarea name="bio" id="bio" cols="30" rows="10" placeholder="Description"></textarea>
           <button class="button upper">Create</button>
@@ -33,6 +34,7 @@
             <label for="file">Image: </label>
             <input type="file" name="file" id="file">
             <input type="text" name="price" id="price" placeholder="Price" :value="editserie.price" required>
+            <input type="text" name="video" id="video" placeholder="Trailer" :value="editserie.video" required>
             <input type="hidden" name="id" id="id" placeholder="id" :value="editserie.id">
             <input type="text" name="release" id="release" placeholder="Promo release" :value="editserie.release">
             <textarea name="bio" id="bio" cols="30" rows="10" placeholder="Description" :value="editserie.bio"></textarea>
@@ -45,6 +47,7 @@
       <div class="seriesshow">
         <div class="serie admin" v-for="serie in $parent.series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
           <a href="edit" v-on:click.prevent="onEditSerie(serie)" class="edit"><icon name="pencil" scale="2"></icon></a>
+          <a href="feature" v-on:click.prevent="onFeatureSerie(serie.id)" v-bind:class="[{selected: $parent.mainseries.id === serie.id}, 'feature']" ><icon name="star" scale="2"></icon></a>
           <div class="text_Serie">
             <div class="fixw">
               <h2>{{ serie.name }}</h2>
@@ -76,7 +79,6 @@ export default {
     }
   },
   created () {
-    // console.log('get countries', vm.$parent.countries['DE'])
     if (!this.$session.exists()) {
       this.$router.push('/')
     } else {
@@ -87,15 +89,27 @@ export default {
     onPushSerie: function onPushSerie (e) {
       const form = e.currentTarget
       const sendBody = this.$parent.parseBody(form)
-      console.log(sendBody)
       if (sendBody.hasOwnProperty('file')) {
         this.uploadImage(sendBody, false)
       } else {
         this.updateSerie(sendBody)
       }
     },
+    onFeatureSerie: async function onFeatureSerie (id) {
+      const vm = this
+      const url = `${vm.$parent.root}/dashboard/1/update`
+      const sendBody = {
+        main_serie_id: id
+      }
+      try {
+        const response = await axios.post(url, sendBody)
+        vm.$parent.mainseries = response.data
+      } catch (e) {
+        console.log('e', e.response.data)
+        vm.errors.push(e)
+      }
+    },
     onEditSerie: function onEditSerie (serie) {
-      console.log('onEditSerie')
       this.editserie = serie
       this.showModal = true
     },

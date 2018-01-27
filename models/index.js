@@ -60,6 +60,7 @@ db.Serie.belongsToMany(db.User, {through: db.UserSeries})
 db.User.belongsToMany(db.Serie, {through: db.UserSeries})
 
 db.Serie.hasOne(db.Dashboard, {foreignKey: 'main_serie_id'})
+db.Dashboard.belongsTo(db.Serie, {foreignKey: 'main_serie_id'})
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
