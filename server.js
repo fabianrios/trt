@@ -204,12 +204,18 @@ app.get('/mailchecker', function(req, res, next){
 
 app.post('/dashboard/:id/update', function (req, res, next) {
   // console.log('post dashboard', req.body)
-  db.Dashboard.update(req.body, { where: {id: req.params.id}, returning: true }).then(serie => {
+  db.Dashboard.update(req.body, { where: {id: req.params.id}, returning: true }).then(dash => {
     // console.log('update: ', serie)
-    if (!serie[1][0]) {
+    if (!dash[1][0]) {
       return res.status(401).end('No main series updated')
     }
-    return res.status(200).send(serie[1][0])
+    console.log(dash[1][0])
+    db.Serie.findOne({where: {id: dash[1][0].main_serie_id}}).then(serie => {
+      if (!serie) {
+        return res.status(401).end('No serie found')
+      }
+      return res.status(200).send(JSON.stringify(serie, null, 2))
+    })
   })
   .catch(function (err) {
     console.error('couldnt update user', err)
@@ -218,16 +224,15 @@ app.post('/dashboard/:id/update', function (req, res, next) {
 })
 
 app.get('/dashboard', function (req, res, next) {
-  db.Dashboard.findAll().then(dash => {
+  db.Dashboard.findOne().then(dash => {
     if (!dash) {
       return res.status(401).end('No dash found')
     }
-    return db.Serie.findOne({where : {id: dash[0].main_serie_id}}).then(serie => {
-      // console.log('response: ', serie)
-      if (!dash) {
-        return res.status(401).end('No dash found')
+    dash.getSerie().then(serie => {
+      if (!serie) {
+        return res.status(401).end('No serie found')
       }
-      return res.status(200).send(JSON.stringify(serie,null,2))
+      return res.status(200).send(JSON.stringify(serie, null, 2))
     })
     .catch(function (err) {
       console.error('couldnt get a serie', err)

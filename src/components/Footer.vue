@@ -15,7 +15,7 @@
         </div>
         <div class="linksfooter">
           <ul>
-            <li><a href="">BROWSE CLASSES</a></li>
+            <li><router-link :to="{ name: 'Series' }">BROWSE CLASSES</router-link></li>
             <li><a href="">HELP CENTER</a></li>
             <li><a href="">CONTACT US</a></li>
             <li><a href="">PRIVACY</a></li>
