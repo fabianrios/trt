@@ -128,7 +128,17 @@ export default {
     playTeaser: function playTeaser (e) {
       const teaser = document.getElementById('teaser')
       this.playing = !this.playing
-      this.playing ? teaser.play() : teaser.pause()
+      if (this.playing) {
+        teaser.play()
+        Velocity(e.currentTarget, { scale: this.sc, opacity: 0.1 }, { duration: this.speed - 100, easing: 'ease-in', iterations: 1 })
+        e.currentTarget.classList.add('pause')
+        Velocity(e.currentTarget, { scale: 1, opacity: 1 }, { duration: this.speed - 50, easing: 'ease-in', iterations: 1 })
+      } else {
+        teaser.pause()
+        Velocity(e.currentTarget, { scale: this.sc, opacity: 0.1 }, { duration: this.speed - 100, easing: 'ease-in', iterations: 1 })
+        e.currentTarget.classList.remove('pause')
+        Velocity(e.currentTarget, { scale: 1, opacity: 1 }, { duration: this.speed - 50, easing: 'ease-in', iterations: 1 })
+      }
     },
     changeSeries: function changeSeries (e, serie) {
       this.$parent.mainseries = serie
