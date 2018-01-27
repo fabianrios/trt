@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="seriesshow">
-        <div class="serie" v-for="serie in series" v-bind:style="{ 'background-image': `url(${serie.image})` }" v-bind:key="serie.id">
+        <div class="serie" v-for="serie in series" v-bind:key="serie.id" v-bind:style="{ 'background-image': `url(${serie.image})` }">
           <div class="therating">
             <h3>YOUR REVIEW </h3>
             <div class="rating">
@@ -34,36 +34,35 @@
             </div>
           </div>
           <router-link :to="'/serie/'+serie.id">
-          <div class="text_Serie">
-            <div class="fixw">
-              <h1>{{ serie.name }}</h1>
-              <p>{{ serie.text }}</p>
-              <h3>{{ serie.release }}</h3>
+            <div class="text_Serie">
+              <div class="fixw">
+                <h1>{{ serie.name }}</h1>
+                <p>{{ serie.text }}</p>
+                <h3>{{ serie.release }}</h3>
+              </div>
             </div>
-          </div>
           </router-link>
         </div>
-        <div class="serie gifted" v-for="gift in givegifts" v-bind:style="{ 'background-image': `url(${gift.Serie.image})` }" v-bind:key="gift.id">
-          <div class="giftedDetails">
-            <h2 class="tac">GIFTED SERIE</h2>
-            <h2 class="tac lower">We will inform you as soon as the gift is redeem!</h2>
-            <p>if you want to change the person email address, please <a href="change" v-on:click.prevent="showForm($event)"><b>click here</b></a> notice that this is not necesary unless you have put the wrong email address.</p>
-          </div>
-          <form v-on:submit.prevent="submitEmail" method="POST" class="inline-form" style="display:none;">
-            <input type="hidden" name="giftid" :value="gift.id">
-            <input type="email" name="email" :value="gift.email" v-on:keyup="onInput(gift, $event)">
-            <button class="button" :id="'thisone'+gift.id" disabled> Change email</button>
-          </form>
-          <div class="text_Serie">
-            <div class="fixw">
-              <h1>{{ gift.Serie.name }}</h1>
-              <p>{{ gift.Serie.text }}</p>
-              <h3>{{ gift.Serie.release }}</h3>
+      </div>
+      <br >
+      <h2 v-if="episodes.length > 0" class="tac fwn upper" id="episodes"><b>Your</b> Episodes</h2>
+      <ul class="episodes" id="episodes">
+        <li  v-for="episode in episodes">
+          <div class="episode_box">
+            <div class="eimage">
+              <img v-if="episode.image" :src="`${episode.image.split('upload')[0]}upload/c_thumb,w_255,h_255${episode.image.split('upload')[1]}`" alt="">
+              <router-link :to="'/episode/'+episode.id" class="play normalize"></router-link>
+              <div class="hoverish"></div>
+            </div>
+            <div class="etext">
+              <router-link :to="'/episode/'+episode.id"><h3 class="upper fwn"><b>{{episode.name}}</b> </h3></router-link>
+              <p>{{episode.bio}}</p>
             </div>
           </div>
-        </div>
-      </div>
-      <h2 v-if="gifts.length > 0" class="tac fwn upper" id="series"><b>Your</b> gifts</h2>
+        </li>
+      </ul>
+      <br >
+      <h2 v-if="gifts.length > 0" class="tac fwn upper" id="gifts"><b>Your</b> gifts</h2>
       <div class="giftedseries">
           <div v-for="gift in gifts" class="serie gifted" v-bind:key="gift.id" v-bind:style="{ 'background-image': `url(${gift.Serie.image})` }">
             <div class="giftedDetails">
@@ -102,6 +101,7 @@ export default {
       backgroundImage: this.$session.get('jwt').image || '',
       country: '',
       series: [],
+      episodes: [],
       givegifts: [],
       gifts: [],
       changeEmail: false,
@@ -234,6 +234,7 @@ export default {
           vm.$parent.user = response.data
           vm.backgroundImage = vm.$parent.user.image
           vm.series = response.data.Series
+          vm.episodes = response.data.Episodes
           vm.$session.set('jwt', vm.$parent.user)
         } catch (e) {
           console.log('e', e.response.data)
