@@ -65,7 +65,7 @@
       <h2 class="fwn tac upper"><b>The</b> Series</h2>
       <div class="slideBanner row">
         <a id="leftgone" href="" v-on:click.prevent="moveLeft"><span></span></a>
-        <transition-group name="list" tag="ul" class="seriesList"  v-on:enter="enter" v-on:leave="leave" v-bind:css="false">
+        <transition-group name="list" tag="ul" class="seriesList" v-on:before-enter="beforeEnter" v-on:before-leave="beforeLeave" v-on:enter="enter" v-on:leave="leave" v-bind:css="false">
           <li v-for="serie in $parent.series" v-bind:key="serie.id" v-bind:style="{'background-image':`url(${serie.image.split('upload')[0]}upload/c_thumb,w_265,h_185${serie.image.split('upload')[1]})`}" v-if="serie.publish">
             <a :href="'/#/serie/'+serie.id" class="fixclick">
               <div class="contentbanner">
@@ -102,6 +102,7 @@ import Footer from '@/components/Footer'
 import Mainbar from '@/components/Mainbar'
 import Modal from '@/components/Modal'
 import axios from 'axios'
+import Velocity from 'velocity-animate'
 
 export default {
   name: 'Serie',
@@ -114,7 +115,8 @@ export default {
       episodes: {},
       side: true,
       x: 50,
-      speed: 200
+      speed: 200,
+      sc: 0.9
     }
   },
   created () {
@@ -144,23 +146,36 @@ export default {
         vm.errors.push(e)
       }
     },
-    enter: function enter (el, done) {
+    beforeEnter: function (el) {
       const x = this.x
-      const trans = this.side ? [{ transform: `translateX(${x}px)`, opacity: 0 }, { transform: 'translateX(0px)', opacity: 1 }] : [{ transform: `translateX(-${x}px)`, opacity: 0 }, { transform: 'translateX(0px)', opacity: 1 }]
-      el.animate(trans, {
-        duration: this.speed,
-        iterations: 1,
-        easing: 'ease-in'
-      })
+      if (this.side) {
+        Velocity(el, { translateX: `${x}px`, opacity: 0, scale: this.sc }, { duration: this.speed, easing: 'ease-in', iterations: 1 })
+      } else {
+        Velocity(el, { translateX: `-${x}px`, opacity: 0, scale: this.sc }, { duration: this.speed, easing: 'ease-in', iterations: 1 })
+      }
+    },
+    beforeLeave: function (el) {
+      const x = this.x
+      if (this.side) {
+        Velocity(el, { translateX: `-${x}px`, opacity: 1, scale: this.sc }, { duration: this.speed, easing: 'ease-in', iterations: 1 })
+      } else {
+        Velocity(el, { translateX: `${x}px`, opacity: 1, scale: this.sc }, { duration: this.speed, easing: 'ease-in', iterations: 1 })
+      }
+    },
+    enter: function enter (el, done) {
+      if (this.side) {
+        Velocity(el, { translateX: '0px', opacity: 1, scale: 1 }, { complete: done })
+      } else {
+        Velocity(el, { translateX: '0px', opacity: 1, scale: 1 }, { complete: done })
+      }
     },
     leave: function leave (el, done) {
       const x = this.x
-      const trans = this.side ? [{ transform: 'translateX(0)', opacity: 1 }, { transform: `translateX(-${x}px)`, opacity: 0 }] : [{ transform: 'translateX(0)', opacity: 1 }, { transform: `translateX(${x}px)`, opacity: 0 }]
-      el.animate(trans, {
-        duration: this.speed,
-        iterations: 1,
-        easing: 'ease-out'
-      })
+      if (this.side) {
+        Velocity(el, { translateX: `-${x}px`, opacity: 0 }, { complete: done })
+      } else {
+        Velocity(el, { translateX: `${x}px`, opacity: 0 }, { complete: done })
+      }
     },
     moveLeft: function moveLeft () {
       const b = this.$parent.series[0]
@@ -211,7 +226,8 @@ export default {
   components: {
     Footer,
     Modal,
-    Mainbar
+    Mainbar,
+    Velocity
   }
 }
 </script>
