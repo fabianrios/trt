@@ -1,13 +1,21 @@
 <template>
   <div class="aserie">
     <Mainbar v-bind:class="{ static: isFloated }" ref="mainBar"></Mainbar>
-    <div class="main_series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
-      <a href="" v-scroll-to="'#episodes'" class="play big"></a>
-      <h1>{{serie.name}}</h1>
-      <p class="intro_series">
-        {{serie.bio}}
-      </p>
-      <h3 class="upper">{{serie.release}}</h3>
+    <div class="main_series">
+      <div class="maincontainer">
+        <video :poster="serie.image" v-if="serie.video" :src="serie.video" loop id="teaser"></video>
+        <div class="shadow" v-if="serie.video"></div>
+        <div class="extrainfo" v-bind:class="{ onvideo: serie.video }">
+          <div class="inside">
+            <a class="play big" v-bind:class="{ novideo: serie.video }" v-on:click="playTeaser"></a>
+            <h1>{{serie.name}}</h1>
+            <p class="intro_series">
+              {{serie.bio}}
+            </p>
+            <a href="#episodes" v-scroll-to="'#episodes'" class="button upper">View Episodes</a>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="promotion">
@@ -193,6 +201,21 @@ export default {
         this.$parent.series.unshift(b)
       }, this.speed)
     },
+    playTeaser: function playTeaser (e) {
+      const teaser = document.getElementById('teaser')
+      this.playing = !this.playing
+      if (this.playing) {
+        teaser.play()
+        Velocity(e.currentTarget, { scale: this.sc, opacity: 0.1 }, { duration: this.speed - 100, easing: 'ease-in', iterations: 1 })
+        e.currentTarget.classList.add('pause')
+        Velocity(e.currentTarget, { scale: 1, opacity: 1 }, { duration: this.speed - 50, easing: 'ease-in', iterations: 1 })
+      } else {
+        teaser.pause()
+        Velocity(e.currentTarget, { scale: this.sc, opacity: 0.1 }, { duration: this.speed - 100, easing: 'ease-in', iterations: 1 })
+        e.currentTarget.classList.remove('pause')
+        Velocity(e.currentTarget, { scale: 1, opacity: 1 }, { duration: this.speed - 50, easing: 'ease-in', iterations: 1 })
+      }
+    },
     getSerie: async function getSerie () {
       const vm = this
       const url = `${vm.$parent.root}/serie/${vm.$route.params.id}`
@@ -202,20 +225,25 @@ export default {
         vm.serie = response.data
         vm.episodes = response.data.Episodes
         const seriesIndex = []
-        // console.log(vm.$parent.user.Series, vm.$parent.user.Episodes, vm.serie)
-        vm.$parent.user.Episodes.forEach(function (episode) {
-          seriesIndex.push(episode.id)
-        })
-        vm.$parent.user.Series.forEach(function (userSerie) {
-          if (userSerie.id === vm.serie.id) {
-            vm.serie['payed'] = true
-          }
-        })
-        vm.episodes.forEach(function (episode) {
-          if (seriesIndex.indexOf(episode.id) !== -1) {
-            episode['payed'] = true
-          }
-        })
+        if (vm.$parent.user.Episodes) {
+          vm.$parent.user.Episodes.forEach(function (episode) {
+            seriesIndex.push(episode.id)
+          })
+        }
+        if (vm.$parent.user.Series) {
+          vm.$parent.user.Series.forEach(function (userSerie) {
+            if (userSerie.id === vm.serie.id) {
+              vm.serie['payed'] = true
+            }
+          })
+        }
+        if (response.data.Episodes.length > 0) {
+          vm.episodes.forEach(function (episode) {
+            if (seriesIndex.indexOf(episode.id) !== -1) {
+              episode['payed'] = true
+            }
+          })
+        }
         // console.log(seriesIndex, 'vm.episodes', vm.episodes, vm.serie)
       } catch (e) {
         console.log('e', e.response.data)
@@ -234,6 +262,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
+.intro_series{
+  margin-bottom:30px;
+}
 
 .aboutHome{
   max-width: 1000px;

@@ -51,7 +51,7 @@
         <h2>Inspire someone you love</h2>
         <h1 class="upper"><b>Give the gift</b> oF TRT TV</h1>
         <br />
-        <a href="" class="button multiply">order now</a>
+        <router-link :to="{ name: 'Series' }" class="button multiply upper">browse series now</router-link>
       </div>
     </div>
     <Footer></Footer>
@@ -156,16 +156,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-.extrainfo{
-  &.onvideo{
-    position: absolute;
-    top: 25%;
-    width: 100%;
-    .inside{
-      margin: 0 auto;
-      text-align: center;
-    }
-  }
-}
-
 </style>

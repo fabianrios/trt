@@ -543,6 +543,19 @@ div{
   }
 }
 
+.extrainfo{
+  &.onvideo{
+    position: absolute;
+    top: 25%;
+    width: 100%;
+    .inside{
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+}
+
+
 .play{
   background: url(./assets/player.svg);
   width: 80px;

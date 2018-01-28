@@ -1,5 +1,5 @@
 <template>
-  <div class="series">
+  <div class="series" id="series">
     <Mainbar v-bind:class="{ static: isFloated }"></Mainbar>
     <div class="row">
       <div class="innerStart">
