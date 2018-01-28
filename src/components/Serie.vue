@@ -263,10 +263,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
-.intro_series{
-  margin-bottom:30px;
-}
-
 .aboutHome{
   max-width: 1000px;
   margin: 0 auto;

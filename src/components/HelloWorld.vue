@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <mainbar></mainbar>
-    <div class="main_series">
+    <div class="main_series" v-bind:style="{ 'background-image': `url(${$parent.mainseries.image})` }">
       <div class="maincontainer">
         <video :poster="$parent.mainseries.image" v-if="$parent.mainseries.video" :src="$parent.mainseries.video" loop id="teaser" class="hideMobile"></video>
         <div class="shadow hideMobile" v-if="$parent.mainseries.video"></div>
