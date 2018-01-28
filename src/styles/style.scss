@@ -187,11 +187,13 @@ a, button {
       mask-position: left center;
     }
     &.multiply{
-      background:#0380bb;
+      background:#076894;
+      opacity: 0.5;
     }
     &:hover{
       background:#0380bb;
       border: 1px solid #0380bb;
+      opacity: 1;
     }
     &.transparent{
       background:none;
@@ -213,12 +215,30 @@ a, button {
 .inspireBanner{
   padding-top: 150px;
   padding-bottom: 100px;
-  background: url(./assets/horsedegrade.jpg) center center no-repeat;
-  background-size: contain;
+  background: url(./assets/horsedegrade.jpg) right center no-repeat;
+  background-size: cover;
   width: 100%;
   text-align: center;
+  margin-top: 40px;
+  h1{
+    font-size: 50px;
+  }
+  h2{
+    font-size: 40px;
+  }
+  @media only screen and (min-width: 768px) {
+    margin-top: 0;
+    background: url(./assets/horsedegrade.jpg) center center no-repeat;
+    background-size: contain;
+    h1{
+      font-size: 45px;
+    }
+    h2{
+      font-size: 45px;
+    }
+  }
   h1,h2{
-      font-weight: 300;
+    font-weight: 300;
   }
 }
 
@@ -308,15 +328,27 @@ a, button {
 
 .aboutHome{
   .theimg{
-    width:40%;
-    display: inline-block;
+    width: 100%;
+    display: block;
     text-align: center;
+    @media only screen and (min-width: 768px) {
+      width:40%;
+      display: inline-block;
+    }
   }
   .text{
-    width: 50%;
-    display: inline-block;
+    width: 100%;
+    display: block;
     vertical-align: top;
     margin-top: 100px;
+    padding: 0 20px;
+    text-align: center;
+    @media only screen and (min-width: 768px) {
+      width:50%;
+      padding: 0;
+      display: inline-block;
+      text-align: left;
+    }
     h1{
       font-weight: 300;
     }

@@ -132,14 +132,21 @@ export default {
       this.menuActive = !this.menuActive
       const mainbar = document.getElementsByClassName('mainbar')[0]
       const signform = document.getElementsByClassName('signform')[0]
+      const optionen = document.getElementsByClassName('optionen')[0]
       if (this.menuActive) {
         mainbar.classList.remove('active')
         Velocity(signform, { opacity: 0, scale: 0 }, { duration: 200, easing: 'ease-out', iterations: 1 })
         signform.style.display = 'block'
+        if (this.logUser) {
+          optionen.style.display = 'none'
+        }
       } else {
         mainbar.classList.add('active')
         signform.style.display = 'block'
         Velocity(signform, { opacity: 1, scale: 1 }, { duration: 200, easing: 'ease-in', iterations: 1 })
+        if (this.logUser) {
+          optionen.style.display = 'block'
+        }
       }
     },
     getUserData: function getUserData () {
@@ -323,7 +330,6 @@ $blue: #009fe3;
   width:100%;
   position: relative;
   top:35px;
-  padding-left: 20px;
   background: #000;
   padding-bottom: 10px;
   display: none;
@@ -336,6 +342,7 @@ $blue: #009fe3;
     a{
       text-transform: uppercase;
       color: #fff;
+      padding-left: 20px;
     }
   }
   &:hover{
@@ -358,6 +365,9 @@ $blue: #009fe3;
       display: inline-block;
       margin-left:10px;
       text-align:left;
+      a{
+        padding-left: 0;
+      }
     }
   }
 }
@@ -381,10 +391,11 @@ $blue: #009fe3;
   position: absolute;
   width: 100%;
   right: 0;
-  top: 20px;
+  top: -25px;
   padding-top: 35px;
   @media only screen and (min-width: 768px) {
     width: 300px;
+    top: 20px;
   }
   &:before{
     content: '';

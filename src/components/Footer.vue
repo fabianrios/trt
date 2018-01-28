@@ -78,9 +78,14 @@ footer{
     margin: 0 auto;
   }
   .logofooter{
-    float: left;
-    width: 19%;
-    display: inline-block;
+    float: none;
+    width: 100%;
+    display: block;
+    @media only screen and (min-width: 768px) {
+      float: left;
+      width: 19%;
+      display: inline-block; 
+    }
     img{
       display: inline-block;
       max-width: 120px;
@@ -88,20 +93,29 @@ footer{
     }
   }
   .linksfooter{
-    display: inline-block;
-    width: 60%;
-    border-left: 1px solid #333;
-    border-right: 1px solid #333;
-    padding-top: 30px;
-    padding-bottom: 20px;
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 0;
+    @media only screen and (min-width: 768px) {
+      border-left: 1px solid #333;
+      border-right: 1px solid #333;
+      display: inline-block;
+      padding-top: 30px;
+      width: 60%;
+    }
     p{
       color: #555;
       font-size: 12px;
     }
     ul{
       li{
-        margin:0 10px;
-        display: inline-block;
+        margin:15px;
+        display: block;
+        @media only screen and (min-width: 768px) {
+          margin:0 10px;
+          display: inline-block;
+        }
         a{
           color: white;
           text-transform: uppercase;
@@ -110,11 +124,17 @@ footer{
     }
   }
   .acceptedPayment{
-    width: 20%;
-    float: right;
+    width: 100%;
+    float: none;
     position: relative;
-    top: 40px;
-    display: inline-block;
+    top: 10px;
+    display: block;
+    @media only screen and (min-width: 768px) {
+      display: inline-block;
+      top: 40px;
+      width: 20%;
+      float: right;
+    }
     img{
       max-width: 50px;
       margin: 0 10px;
