@@ -3,8 +3,8 @@
     <mainbar></mainbar>
     <div class="main_series">
       <div class="maincontainer">
-        <video :poster="$parent.mainseries.image" v-if="$parent.mainseries.video" :src="$parent.mainseries.video" loop id="teaser"></video>
-        <div class="shadow" v-if="$parent.mainseries.video"></div>
+        <video :poster="$parent.mainseries.image" v-if="$parent.mainseries.video" :src="$parent.mainseries.video" loop id="teaser" class="hideMobile"></video>
+        <div class="shadow hideMobile" v-if="$parent.mainseries.video"></div>
         <div class="extrainfo" v-bind:class="{ onvideo: $parent.mainseries.video }">
           <div class="inside">
             <a class="play big" v-bind:class="{ novideo: $parent.mainseries.video }" v-on:click="playTeaser"></a>

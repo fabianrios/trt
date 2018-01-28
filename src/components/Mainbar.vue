@@ -289,15 +289,10 @@ $blue: #009fe3;
 }
  
 .signform{
-  width: 35%;
-  position: relative;
-  top:55px;
-  float: right;
-  text-align: right;
-  padding: 10px 0;
+  width:100%;
   li{
-    display: inline-block;
-    margin-left:10px;
+    width:100%;
+    display:block;
     a{
       text-transform: uppercase;
       color: #fff;
@@ -306,6 +301,19 @@ $blue: #009fe3;
   &:hover{
     .optionen{
       display: block;
+    }
+  }
+  @media only screen and (min-width: 768px) {
+    width: 35%;
+    position: relative;
+    top:55px;
+    float: right;
+    text-align: right;
+    padding: 10px 0;
+    li{
+      width:auto;
+      display: inline-block;
+      margin-left:10px;
     }
   }
 }
