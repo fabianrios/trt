@@ -1,12 +1,13 @@
 <template>
   <div class="mainbar">
     <div class="row">
+      <a href="#menu" id="menuButton" v-on:click.prevent="openMenu"><icon name="bars" scale="3"></icon></a>
       <router-link to="/"><span class="logo"></span></router-link>
       <ul class="signform" v-if="!logUser">
         <li><a href="login"  v-on:click="showThemodal($event, 'login')">login</a></li>
         <li><a href="sign up" v-on:click="showThemodal($event, 'register')">sign up</a></li>
       </ul>
-      <ul v-else class="signform">
+      <ul v-else class="signform" id="#menu">
         <li><h4 class="upper nm">WELCOME {{$parent.$parent.user.name}}</h4></li>
         <li>
           <router-link :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}"><icon name="user" scale="1"></icon></router-link>
@@ -92,6 +93,7 @@
 <script>
 import Modal from '@/components/Modal'
 import axios from 'axios'
+import Velocity from 'velocity-animate'
 
 // Helpers
 import {
@@ -109,7 +111,8 @@ export default {
       errors: [],
       FB: undefined,
       selected: 'NL',
-      face: false
+      face: false,
+      menuActive: true
     }
   },
   notifications: {
@@ -125,6 +128,20 @@ export default {
     }
   },
   methods: {
+    openMenu: function openMenu () {
+      this.menuActive = !this.menuActive
+      const mainbar = document.getElementsByClassName('mainbar')[0]
+      const signform = document.getElementsByClassName('signform')[0]
+      if (this.menuActive) {
+        mainbar.classList.remove('active')
+        Velocity(signform, { opacity: 0, scale: 0 }, { duration: 200, easing: 'ease-out', iterations: 1 })
+        signform.style.display = 'block'
+      } else {
+        mainbar.classList.add('active')
+        signform.style.display = 'block'
+        Velocity(signform, { opacity: 1, scale: 1 }, { duration: 200, easing: 'ease-in', iterations: 1 })
+      }
+    },
     getUserData: function getUserData () {
       const vm = this
       window.FB.api('/me', 'GET', { fields: 'id,name,email' },
@@ -271,7 +288,8 @@ export default {
     }
   },
   components: {
-    Modal
+    Modal,
+    Velocity
   }
 }
 </script>
@@ -280,19 +298,41 @@ export default {
 <style lang="scss" scoped>
 $blue: #009fe3;
 
+#menuButton{
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  color: #fff;
+  display: block;
+  @media only screen and (min-width: 768px) {
+    display: none;
+  }
+}
+
 .mainbar{
   width: 100%;
-  padding:0 20px;
   position: absolute;
   top: 0;
   z-index: 9;
+  &.active{
+    background: #000;
+  }
 }
  
 .signform{
   width:100%;
+  position: relative;
+  top:35px;
+  padding-left: 20px;
+  background: #000;
+  padding-bottom: 10px;
+  display: none;
+  opacity: 0;
+  zoom: 0;
   li{
     width:100%;
     display:block;
+    padding: 10px 0;
     a{
       text-transform: uppercase;
       color: #fff;
@@ -304,16 +344,20 @@ $blue: #009fe3;
     }
   }
   @media only screen and (min-width: 768px) {
+    background: transparent;
     width: 35%;
     position: relative;
-    top:55px;
     float: right;
     text-align: right;
     padding: 10px 0;
+    display: block;
+    opacity: 1;
+    zoom: 1;
     li{
       width:auto;
       display: inline-block;
       margin-left:10px;
+      text-align:left;
     }
   }
 }
@@ -324,17 +368,24 @@ $blue: #009fe3;
   height: 50px;
   display: inline-block;
   position: relative;
-  top: 50px;
+  top: 40px;
+  left: 20px;
   background-size:100%;
+  @media only screen and (min-width: 768px) {
+    left: 0;
+  }
 }
 
 .optionen{
   display: none;
   position: absolute;
-  width: 300px;
+  width: 100%;
   right: 0;
   top: 20px;
   padding-top: 35px;
+  @media only screen and (min-width: 768px) {
+    width: 300px;
+  }
   &:before{
     content: '';
     border-style: solid;

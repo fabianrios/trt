@@ -66,13 +66,16 @@ export default {
 
 .modal-container {
   position: relative;
-  width: 400px;
+  width: 100%;
   margin: 0px auto;
   padding: 30px 50px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
+  @media only screen and (min-width: 768px) {
+    width: 400px;
+  }
 }
 
 .adminseries{
