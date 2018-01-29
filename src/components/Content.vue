@@ -61,6 +61,10 @@ export default {
   .articles{
     max-width: 750px;
     margin: 0 auto;
+    padding:0 10px;
+    @media only screen and (min-width: 768px) {
+      padding:0;
+    }
     img{
       width: 100%;
       margin: 30px 0;
@@ -74,14 +78,21 @@ export default {
 
  .heroText{
    background: #f5f5f5;
-   padding: 120px 0;
+   padding: 20px;
    .innerHero{
      max-width: 910px;
      margin: 0 auto;
      background: #fff;
      border: 1px solid #e6e6e6;
-     padding: 50px 100px;
+     padding: 20px;
      color: #000;
+     text-align: center;
+   }
+   @media only screen and (min-width: 768px) {
+     padding: 120px 0;
+     .innerHero{
+       padding: 50px 100px;
+     }
    }
  }
 </style>

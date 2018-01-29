@@ -267,15 +267,26 @@ export default {
   max-width: 1000px;
   margin: 0 auto;
   .theimg{
-    width: 30%;
+    width: 100%;
     img{
-      max-width: 400px;
+      max-width: 100%;
       height: auto;
+    }
+    @media only screen and (min-width: 768px) {
+      width: 30%;
+      img{
+        max-width: 400px;
+        height: auto;
+      }
     }
   }
   .text{
-    float: right;
-    width: 50%;
+    float: none;
+    width: 100%;
+    @media only screen and (min-width: 768px) {
+      float: right;
+      width: 50%;
+    }
   }
 }
 
@@ -289,14 +300,18 @@ export default {
     margin: 0 auto;
     text-align: center;
     li{
-      padding: 10px 20px;
+      padding: 10px 0;
       display: inline-block;
-      width: 28%;
+      width: 100%;
       vertical-align: top;
-      &:nth-of-type(2){
-        border: 1px solid #3B3B3B;
-        border-top: 0;
-        border-bottom: 0;
+      @media only screen and (min-width: 768px) {
+        width: 28%;
+        padding: 10px 20px;
+        &:nth-of-type(2){
+          border: 1px solid #3B3B3B;
+          border-top: 0;
+          border-bottom: 0;
+        }
       }
       p{
         color: #555555;
