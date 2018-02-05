@@ -14,6 +14,7 @@ import Episode from '@/components/Episode'
 import Profile from '@/components/Profile'
 import Adminseries from '@/components/Adminseries'
 import Adminepisodes from '@/components/Adminepisodes'
+import Adminusers from '@/components/Adminusers'
 
 const toastTypes = {
   success: 'success',
@@ -82,6 +83,11 @@ export default new Router({
       path: '/admin/episodes',
       name: 'Adminepisodes',
       component: Adminepisodes
+    },
+    {
+      path: '/admin/users',
+      name: 'Adminusers',
+      component: Adminusers
     }
   ],
   scrollBehavior (to, from, savedPosition) {

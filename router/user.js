@@ -23,6 +23,33 @@ app.set('views', path.join(__dirname, '../views'))
 app.engine('hbs', exphbs())
 app.set('view engine', 'hbs')
 
+router.get('/all', function (req, res, next) {
+  db.User.findAll({
+    attributes: ['id', 'name', 'email', 'image', 'address', 'country', 'bio', 'admin'],
+    include: [{
+      model: db.Episode,
+      through: {
+        where: {status: 'paid'}
+      }
+    },
+    {
+      model: db.Serie,
+      through: {
+        where: { status: 'paid' }
+      }
+    }]}
+  ).then(users => {
+    // console.log('response: ', user)
+    if (!users) {
+      return res.status(401).end('No users found')
+    }
+    return res.status(200).send(JSON.stringify(users, null, 2))
+  }).catch(function (err) {
+    console.error('couldnt get a users', err)
+    return res.status(500).send(err)
+  })
+})
+
 router.get('/:id', function (req, res, next) {
   db.User.findOne({ where: {id: req.params.id},
     attributes: ['id', 'name', 'email', 'image', 'address', 'country', 'bio', 'admin'],
