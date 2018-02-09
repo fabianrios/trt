@@ -43,6 +43,14 @@
           <input type="password" name="password" id="password" placeholder="Password" required>
           <button class="button expand upper">sign up</button>
         </form>
+        <h4 class="tac fwn">or</h4>
+        <facebook-login class="button ext"
+          appId="138744983473354"
+          loginLabel="REGISTER WITH FACEBOOK"
+          @login="getUserData"
+          @logout="logOut"
+          @get-initial-status="getUserData">
+        </facebook-login>
         <br />
         <p class="tac nm">Already have an account? <a href="login" v-on:click="showThemodal($event, 'login')">click here</a></p>
       </div>
