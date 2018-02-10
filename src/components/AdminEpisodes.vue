@@ -20,7 +20,7 @@
           <input type="date" name="release" id="release" placeholder="release date">
           <label for="serie_id">Serie: </label>
           <select name="serie_id">
-            <option v-for="serie in $parent.series" v-bind:value="serie.id">
+            <option v-for="serie in $parent.series" v-bind:value="serie.id" v-bind:key="serie.id">
               {{serie.name.toLowerCase()}}
             </option>
           </select>
@@ -48,7 +48,7 @@
             <input type="date" name="release" id="release" placeholder="Promo release" :value="new Date(editepisode.release).toISOString().substring(0, 10)">
             <label for="serie_id">Serie: </label>
             <select name="serie_id" v-model="editepisode.serie_id">
-            <option v-for="serie in $parent.series" v-bind:value="serie.id">
+            <option v-for="serie in $parent.series" v-bind:value="serie.id" v-bind:key="serie.id">
               {{serie.name.toLowerCase()}}
             </option>
             </select>
@@ -61,7 +61,7 @@
       <h2 class="fwn tac upper"><b>List</b> of Episodes</h2>
       <div class="right">
           <select name="serie_id" @change="getEpisodes($event.target.value);">
-            <option v-for="serie in $parent.series" v-bind:value="serie.id">
+            <option v-for="serie in $parent.series" v-bind:value="serie.id" v-bind:key="serie.id">
               {{serie.name.toLowerCase()}}
             </option>
           </select>
@@ -69,7 +69,7 @@
        <div class="slideBanner row">
       <a id="leftgone" href=""><span></span></a>
       <ul class="seriesList">
-      <li v-for="episode in episodes" v-bind:style="{'background-image':`url(${episode.image.split('upload')[0]}upload/c_thumb,w_265,h_185${episode.image.split('upload')[1]})`}">
+      <li v-for="episode in episodes" v-bind:style="{'background-image':`url(${episode.image.split('upload')[0]}upload/c_thumb,w_265,h_185${episode.image.split('upload')[1]})`}" v-bind:key="episode.id">
         <a href="edit" v-on:click.prevent="onEditEpisode(episode)" class="edit"><icon name="pencil" scale="2"></icon></a>
         <div class="contentbanner">
           <router-link :to="'/episode/'+episode.id"><span class="logo"></span>

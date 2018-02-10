@@ -45,7 +45,7 @@
       <br />
       <h2 class="fwn tac upper"><b>List</b> of series</h2>
       <div class="seriesshow">
-        <div class="serie admin" v-for="serie in $parent.series" v-bind:style="{ 'background-image': `url(${serie.image})` }">
+        <div class="serie admin" v-for="serie in $parent.series" v-bind:style="{ 'background-image': `url(${serie.image})` }" v-bind:key="serie.id">
           <a href="edit" v-on:click.prevent="onEditSerie(serie)" class="edit"><icon name="pencil" scale="2"></icon></a>
           <a href="feature" v-on:click.prevent="onFeatureSerie(serie.id)" v-bind:class="[{selected: $parent.mainseries.id === serie.id}, 'feature']" ><icon name="star" scale="2"></icon></a>
           <div class="text_Serie">

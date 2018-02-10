@@ -16,6 +16,7 @@
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}">Your profile</router-link></li>
               <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminepisodes' }">Admin episodes</router-link></li>
               <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminseries' }">Admin series</router-link></li>
+              <li v-if="$parent.$parent.user.admin"><router-link class="button backwards" :to="{ name: 'Adminusers' }">Admin users</router-link></li>
               <li><a href="settings" class="button backwards" v-on:click="showThemodal($event, 'update')">Edit your settings</a></li>
               <li><router-link class="button backwards" :to="{ name: 'Profile', params: { id: $parent.$parent.user.id }}" v-scroll-to="'#series'">View your series</router-link></li>
               <li><a href="logout" class="button backwards" v-on:click.prevent="logOut()">Sign out</a></li>
@@ -35,7 +36,7 @@
           <input type="text" name="name" placeholder="Name">
           <select v-model="selected" name="country">
             <option disabled value="0">Select an option</option>
-            <option v-for="country in $parent.$parent.countries" v-bind:value="country.text">
+            <option v-for="country in $parent.$parent.countries" v-bind:value="country.text" v-bind:key="country.value">
               {{country.value}}
             </option>
           </select>
@@ -61,7 +62,7 @@
           <input type="text" name="address" placeholder="Address" :value="$parent.$parent.user.address">
           <select v-model="$parent.$parent.user.country" name="country">
             <option disabled value="0">Select an option</option>
-            <option v-for="country in $parent.$parent.countries" v-bind:value="country.text">
+            <option v-for="country in $parent.$parent.countries" v-bind:value="country.text" v-bind:key="country.value">
               {{country.value}}
             </option>
           </select>

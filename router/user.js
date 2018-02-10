@@ -27,16 +27,13 @@ router.get('/all', function (req, res, next) {
   db.User.findAll({
     attributes: ['id', 'name', 'email', 'image', 'address', 'country', 'bio', 'admin'],
     include: [{
-      model: db.Episode,
-      through: {
-        where: {status: 'paid'}
-      }
+      model: db.Episode
     },
     {
-      model: db.Serie,
-      through: {
-        where: { status: 'paid' }
-      }
+      model: db.Serie
+    },
+    {
+      model: db.Gifts
     }]}
   ).then(users => {
     // console.log('response: ', user)
@@ -104,7 +101,7 @@ router.get('/:id/gifts', function (req, res, next) {
       return res.status(401).end('No user found')
     }
     const email = user.email
-    return db.Gifts.findAll({ where: {email: email, status: 'paid', claim: false },
+    return db.Gifts.findAll({ where: { email: email, status: 'paid', claim: false },
       include: [{model: db.Serie}, {model: db.User, attributes: ['name', 'id', 'email']}] }).then(gifts => {
         if (!gifts) {
           return res.status(401).end('No gifts found')
@@ -167,12 +164,12 @@ router.post('/:id/claim', function (req, res, next) {
 
 router.post('/:id/rating', function (req, res, next) {
   console.log('post', req.body)
-  db.User.findOne({ where: {id: req.params.id}, include: [db.Serie]}).then(user => {
+  db.User.findOne({where: {id: req.params.id}, include: [db.Serie]}).then(user => {
     if (!user) {
       return res.status(401).end('No user found')
     }
     const serie = user.Series.filter((serie) => serie.id === req.body.serieid)
-    return user.addSerie(serie, { through: { stars: req.body.rate }}).then(() => {
+    return user.addSerie(serie, {through: { stars: req.body.rate }}).then(() => {
       return res.status(200).end()
     }).catch(function (err) {
       console.error('couldnt associate serie to user', err)
@@ -230,7 +227,7 @@ router.post('/:id', function (req, res, next) {
     if (user[0] !== 1) {
       return res.status(401).end('No user found')
     }
-    db.User.findOne({ where: {id: req.params.id} }).then(user => {
+    db.User.findOne({ where: {id: req.params.id}, attributes: ['address', 'admin', 'bio', 'country', 'email', 'id', 'image', 'name', 'publicid'] }).then(user => {
         // console.log('response: ', user)
       if (!user) {
         return res.status(401).end('No user found')
