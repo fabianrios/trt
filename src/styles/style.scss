@@ -34,6 +34,14 @@ p{
   text-align: center;
 }
 
+.tal{
+  text-align: left;
+}
+
+.nmb{
+  margin-bottom: 0;
+}
+
 .right{
   float: none;
   @media only screen and (min-width: 768px) {
@@ -214,6 +222,25 @@ a, button {
     }
   }
 }
+
+.thirds{
+  margin: 0;
+  padding: 0;
+  li{
+    display: inline-block;
+    width: 30%;
+    margin: 0 8px;
+    vertical-align: top;
+    text-align: left;
+    h4{
+      margin-bottom: 3px;
+      img{
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
 
 .inspireBanner{
   padding-top: 150px;

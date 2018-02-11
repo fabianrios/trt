@@ -8,6 +8,12 @@ import miniToastr from 'mini-toastr'
 
 import HelloWorld from '@/components/HelloWorld'
 import Content from '@/components/Content'
+import About from '@/components/About'
+import Terms from '@/components/Terms'
+import Privacy from '@/components/Privacy'
+import Careers from '@/components/Careers'
+import HelpCenter from '@/components/HelpCenter'
+import ContactUs from '@/components/ContactUs'
 import Series from '@/components/Series'
 import Serie from '@/components/Serie'
 import Episode from '@/components/Episode'
@@ -50,9 +56,39 @@ export default new Router({
       component: HelloWorld
     },
     {
+      path: '/helpcenter',
+      name: 'HelpCenter',
+      component: HelpCenter
+    },
+    {
       path: '/content',
       name: 'Content',
       component: Content
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About
+    },
+    {
+      path: '/terms',
+      name: 'Terms',
+      component: Terms
+    },
+    {
+      path: '/careers',
+      name: 'Careers',
+      component: Careers
+    },
+    {
+      path: '/contactus',
+      name: 'ContactUs',
+      component: ContactUs
+    },
+    {
+      path: '/privacy',
+      name: 'Privacy',
+      component: Privacy
     },
     {
       path: '/series',
