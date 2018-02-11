@@ -35,7 +35,7 @@
             <td><input type="checkbox" name="admin" :checked="user.admin" v-on:change="updateUser" :data-key="user.id"></td>
             <td>
               <tr v-for="serie in user.Series" :key="serie.id">
-                <td>{{serie.name}}</td>
+                <td>{{serie.name}}<sup><b>{{serie.UserSeries.stars}}</b></sup></td>
                 <td><span :class="[{success: serie.UserSeries.status === 'paid'}, 'label']">{{serie.UserSeries.status}}</span></td>
               </tr>
             </td>

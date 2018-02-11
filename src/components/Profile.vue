@@ -47,7 +47,7 @@
       <br >
       <h2 v-if="episodes.length > 0" class="tac fwn upper" id="episodes"><b>Your</b> Episodes</h2>
       <ul class="episodes" id="episodes">
-        <li  v-for="episode in episodes">
+        <li  v-for="episode in episodes" v-bind:key="episode.key">
           <div class="episode_box">
             <div class="eimage">
               <img v-if="episode.image" :src="`${episode.image.split('upload')[0]}upload/c_thumb,w_255,h_255${episode.image.split('upload')[1]}`" alt="">

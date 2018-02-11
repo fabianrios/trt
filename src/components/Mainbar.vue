@@ -4,7 +4,7 @@
       <a href="#menu" id="menuButton" v-on:click.prevent="openMenu"><icon name="bars" scale="3"></icon></a>
       <router-link to="/"><span class="logo"></span></router-link>
       <ul class="signform" v-if="!logUser">
-        <li><a href="login"  v-on:click="showThemodal($event, 'login')">login</a></li>
+        <li><a href="login" id="login"  v-on:click="showThemodal($event, 'login')">login</a></li>
         <li><a href="sign up" v-on:click="showThemodal($event, 'register')">sign up</a></li>
       </ul>
       <ul v-else class="signform" id="#menu">
