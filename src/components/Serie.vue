@@ -34,7 +34,7 @@
             <icon name="star-o" scale="4"></icon>
             <h3 class="fwn"><b>€ {{serie.price}}</b> <small class="upper">life time access {{$parent.user.id}} {{serie.payed}}</small></h3>
             <a v-if="serie.payed !== true && $parent.user.id" :href="'http://www.trt-tv.eu/order/'+serie.id+'/'+$parent.user.id+'/create'" class="button">Pre-enroll</a>
-            <a href="log in" v-else-if="serie.payed !== true && $parent.user.id" v-on:click="$refs.mainBar.showThemodal($event, 'login')" class="button">Pre-enroll</a>
+            <a href="log in" v-else-if="serie.payed !== true && !$parent.user.id" v-on:click="$refs.mainBar.showThemodal($event, 'login')" class="button">Pre-enroll</a>
             <a v-if="$parent.user.id" href="" class="button transparent" id="gagift" v-on:click.prevent="showModalfx()">Give as a gift</a>
           </li>
         </ul>
@@ -65,7 +65,7 @@
             <div class="etext">
               <router-link :to="'/episode/'+episode.id"><h3 class="upper fwn"><b>{{episode.name}}</b> {{serie.name}}</h3></router-link>
               <p>{{episode.bio}}</p>
-              <a v-if="episode.payed !== true && serie.payed !== true" :href="'http://www.trt-tv.eu/order/'+episode.id+'/'+$parent.user.id+'/episode_create'" class="button right">Get episode €{{episode.price}}</a>
+              <a v-if="episode.payed !== true && serie.payed !== true && $parent.user.id" :href="'http://www.trt-tv.eu/order/'+episode.id+'/'+$parent.user.id+'/episode_create'" class="button right">Get episode €{{episode.price}}</a>
             </div>
           </div>
         </li>

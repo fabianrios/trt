@@ -43,7 +43,7 @@
         <div class="text">
           <h1><b>ABOUT</b> TRT TV</h1>
           <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur alias laborum veniam odio accusantium eius, quaerat dolor doloribus modi aliquam? Iste aliquam impedit obcaecati maxime eaque tenetur perferendis qui ratione.</p>
-          <a href="" class="button transparent">continue reading</a>
+          <router-link :to="{name: 'About'}" class="button transparent">continue reading</router-link>
           <!-- <a href="" class="button">complete order</a> -->
         </div>
       </div>

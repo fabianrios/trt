@@ -228,10 +228,20 @@ a, button {
   padding: 0;
   li{
     display: inline-block;
-    width: 30%;
+    width: 100%;
     margin: 0 8px;
     vertical-align: top;
-    text-align: left;
+    text-align: center;
+    p{
+      text-align: justify;
+    }
+    @media only screen and (min-width: 768px) {
+      width: 30%;
+      text-align: left;
+      p{
+        text-align: left;
+      }
+    }
     h4{
       margin-bottom: 3px;
       img{
@@ -493,6 +503,7 @@ form{
       height: 255px;
       img{
         width: auto;
+        bottom: 0;
       }
     }
     .play{
