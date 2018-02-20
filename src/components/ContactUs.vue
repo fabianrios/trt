@@ -30,13 +30,13 @@
         <h2 class="upper"><b>SOCIAL MEDIA</b> NEWS</h2>
         <ul>
           <li>
-            <icon class="facebook" name="facebook-square" scale="1"></icon> <a href="https://www.facebook.com/tristan.tucker.543">Like us on Facebook</a>
+            <icon class="facebook" name="facebook-square" scale="1"></icon> <a href="https://www.facebook.com/thetrttv">Like us on Facebook</a>
           </li>
           <li>
-            <icon class="instagram" name="instagram" scale="1"></icon> <a href="https://www.instagram.com/tristantucker_official/">Follow us on Instagram</a>
+            <icon class="instagram" name="instagram" scale="1"></icon> <a href="https://www.instagram.com/trt_tv/">Follow us on Instagram</a>
           </li>
           <li>
-            <icon class="youtube" name="youtube-square" scale="1"></icon> <a href="https://www.youtube.com/channel/UC2Y_M0XAo8NpCf0cktKdf_w">Watch us on YouTube</a>
+            <icon class="youtube" name="youtube-square" scale="1"></icon> <a href="https://www.youtube.com/channel/UC4JOZGZwrOFcez8oaBd7ugw">Watch us on YouTube</a>
           </li>
         </ul>
       </div>

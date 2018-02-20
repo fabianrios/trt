@@ -3,9 +3,9 @@
     <div class="social tac">
       <h3 class="upper fwn"><b>stay up to date with</b> trt tb</h3>
       <ul class="social-icons">
-        <li><a href="https://www.instagram.com/tristantucker_official/" target="_blank"><icon name="instagram" scale="2"></icon></a></li>
-        <li><a href="https://www.youtube.com/channel/UC2Y_M0XAo8NpCf0cktKdf_w" target="_blank"><icon name="youtube" scale="2"></icon></a></li>
-        <li><a href="https://www.facebook.com/tristan.tucker.543" target="_blank"><icon name="facebook" scale="2"></icon></a></li>
+        <li><a href="https://www.instagram.com/trt_tv/" target="_blank"><icon name="instagram" scale="2"></icon></a></li>
+        <li><a href="https://www.youtube.com/channel/UC4JOZGZwrOFcez8oaBd7ugw" target="_blank"><icon name="youtube" scale="2"></icon></a></li>
+        <li><a href="https://www.facebook.com/thetrttv" target="_blank"><icon name="facebook" scale="2"></icon></a></li>
       </ul>
     </div>
     <footer>
@@ -22,7 +22,7 @@
             <li><router-link :to="{ name: 'Terms' }">TERMS</router-link></li>
             <li><router-link :to="{ name: 'Careers' }">CAREERS</router-link></li>
           </ul>
-          <p>Copyright © 2017 TRT TV</p>
+          <p>Copyright © 2018 TRT TV by <a href="http://www.m7design.nl/" target="_blank">M7 DESIGN</a></p>
         </div>
         <div class="acceptedPayment">
           <img src="../assets/ideal.gif" alt="ideal">

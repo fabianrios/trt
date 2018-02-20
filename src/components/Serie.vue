@@ -63,7 +63,8 @@
               <div class="hoverish"></div>
             </div>
             <div class="etext">
-              <router-link :to="'/episode/'+episode.id"><h3 class="upper fwn"><b>{{episode.name}}</b> {{serie.name}}</h3></router-link>
+              <router-link :to="'/episode/'+episode.id" v-if="episode.payed === true || serie.payed === true"><h3 class="upper fwn"><b>{{episode.name}}</b> {{serie.name}}</h3></router-link>
+              <h3 v-else class="upper fwn"><b>{{episode.name}}</b> {{serie.name}}</h3>
               <p>{{episode.bio}}</p>
               <a v-if="episode.payed !== true && serie.payed !== true && $parent.user.id" :href="'http://www.trt-tv.eu/order/'+episode.id+'/'+$parent.user.id+'/episode_create'" class="button right">Get episode €{{episode.price}}</a>
             </div>
