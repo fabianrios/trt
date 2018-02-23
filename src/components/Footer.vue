@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="social tac">
-      <h3 class="upper fwn"><b>stay up to date with</b> trt tb</h3>
+      <h3 class="upper fwn"><b>stay up to date with</b> trt tv</h3>
       <ul class="social-icons">
         <li><a href="https://www.instagram.com/trt_tv/" target="_blank"><icon name="instagram" scale="2"></icon></a></li>
         <li><a href="https://www.youtube.com/channel/UC4JOZGZwrOFcez8oaBd7ugw" target="_blank"><icon name="youtube" scale="2"></icon></a></li>
