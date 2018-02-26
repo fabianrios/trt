@@ -4,7 +4,7 @@
     <div class="row">
       <div class="innerStart">
         <h1 class="tac fwn upper"><b>The</b> series</h1>
-        <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultrconsectetur.</p>
+        <p class="tac">Below you can explore all of TRT TV's available content as well as the content that will appear soon. Click the series thumbnails to view the specifications and the episodes inside.</p>
       </div>
       <div class="seriesshow">
         <div class="serie" v-for="serie in $parent.series" v-bind:style="{ 'background-image': `url(${serie.image})` }" v-bind:key="serie.id">
