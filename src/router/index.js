@@ -21,6 +21,7 @@ import Profile from '@/components/Profile'
 import Adminseries from '@/components/Adminseries'
 import Adminepisodes from '@/components/Adminepisodes'
 import Adminusers from '@/components/Adminusers'
+import VueCookies from 'vue-cookies'
 
 const toastTypes = {
   success: 'success',
@@ -47,6 +48,7 @@ Vue.use(Router)
 Vue.use(VueSession)
 Vue.use(VueNotifications, options)
 Vue.use(VueScrollTo)
+Vue.use(VueCookies)
 
 export default new Router({
   routes: [

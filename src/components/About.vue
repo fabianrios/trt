@@ -36,7 +36,7 @@
             <h4><b>MARTIJN ROEFS</b><img src="../assets/netherlands.png" alt="netherlands"></h4>
             <i>Manager, Tech, Design & Brand</i>
             <br>
-            <p>Where a dream is, is a way. Martijn is a optimistic and driven individual who gave shape to TRT TV by designing and developing the concept and platform. Martijn manages the overarching concept, technology, marketing, branding and design.</p>
+            <p>Where a dream is, is a way. Martijn is an optimistic and driven individual who gave shape to TRT TV by designing and developing the concept and platform. Martijn manages the overarching concept, technology, marketing, branding and design.</p>
           </li>
           <li>
             <img src="../assets/Rinus.jpg" alt="Rinus" width="208px" height="208px">

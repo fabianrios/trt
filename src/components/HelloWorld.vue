@@ -54,6 +54,14 @@
         <router-link :to="{ name: 'Series' }" class="button multiply upper">browse series now</router-link>
       </div>
     </div>
+    <modal v-if="showModal" @close="showModal = false">
+      <h2 class="upper tac fwn" slot="header"><b>COOKIES</b></h2>
+      <div slot="body">
+        <p class="tac"> TRT TV uses cookies  to personalize video content and marketing on the website. By interacting with this website, you agree with this, for more information read our <router-link :to="{name: 'Privacy'}">privacy policy</router-link>.</p>
+        <br><br>
+        <a href="accept" @click.prevent="accepted()" class="button expanded">ACCEPT COOKIES</a>
+      </div>
+    </modal>
     <Footer></Footer>
   </div>
 </template>
@@ -64,6 +72,7 @@ import Icon from 'vue-awesome/components/Icon'
 import Footer from '@/components/Footer'
 import Mainbar from '@/components/Mainbar'
 import Velocity from 'velocity-animate'
+import Modal from '@/components/Modal'
 
 export default {
   name: 'HelloWorld',
@@ -74,10 +83,23 @@ export default {
       side: true,
       x: 50,
       speed: 200,
-      sc: 0.9
+      sc: 0.9,
+      showModal: false
     }
   },
+  created () {
+    this.cookiePolicy()
+  },
   methods: {
+    cookiePolicy: function () {
+      if (!this.$cookies.isKey('consent')) {
+        this.showModal = true
+      }
+    },
+    accepted: function () {
+      this.$cookies.set('consent', 'yesIdo', '1y')
+      this.showModal = false
+    },
     beforeEnter: function (el) {
       const x = this.x
       if (this.side) {
@@ -149,11 +171,22 @@ export default {
     Icon,
     Footer,
     Mainbar,
-    Velocity
+    Velocity,
+    Modal
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+.aboutHome{
+  margin: 50px 0 80px 0;
+}
+a.expanded{
+  width:100%;
+  margin: 0;
+  padding: 0;
+  display:block;
+  text-align:center; 
+}
 </style>
