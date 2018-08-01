@@ -13,7 +13,6 @@
     <div id="app"></div>
     <script>
       var isiPad = navigator.userAgent.match(/iPad/i) != null;
-      alert(navigator.userAgent.match(/iPad/i), isiPad);
       if (isiPad) {
         var viewport = document.querySelector("meta[name=viewport]");
         viewport.setAttribute('content', 'width=1024');
