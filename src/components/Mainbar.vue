@@ -333,6 +333,9 @@ $blue: #009fe3;
   &.active{
     background: #000;
   }
+  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
+    padding: 0 30px;
+  }
 }
  
 .signform{

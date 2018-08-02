@@ -90,6 +90,9 @@ footer{
       display: inline-block;
       max-width: 120px;
       vertical-align: bottom;
+      @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
+        max-width: 100px;
+      }
     }
   }
   .linksfooter{
@@ -116,6 +119,9 @@ footer{
           margin:0 10px;
           display: inline-block;
         }
+        @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
+          margin:0 5px;
+        }
         a{
           color: white;
           text-transform: uppercase;
@@ -139,6 +145,9 @@ footer{
       max-width: 50px;
       margin: 0 10px;
       display: inline-block;
+      @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
+          max-width: 35px;
+      }
     }
   }
 }

@@ -277,6 +277,21 @@ a, button {
       font-size: 45px;
     }
   }
+  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    h1{
+      font-size: 35px;
+    }
+    h2{
+      font-size: 35px;
+    }
+  }
+  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+    padding-top: 110px;
+    padding-bottom: 70px;
+  }
+
   h1,h2{
     font-weight: 300;
   }
@@ -734,6 +749,9 @@ div{
   overflow: hidden;
   @media only screen and (min-width: 768px) {
     height: none;
+  }
+  @media only screen and (min-device-width : 768px) and (max-device-width : 1024px)  {
+    height: 590px;
   }
 }
 
