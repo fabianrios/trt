@@ -54,5 +54,8 @@ export default {
 .video{
   margin: 0 auto;
   text-align: center;
+  video{
+    width: 100%;
+  }
 }
 </style>

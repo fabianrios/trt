@@ -10,7 +10,7 @@
     <div class="innerText">
     <div class="articles">
       <h2 class="upper"><b>TRT TV </b> BACKGROUND</h2>
-      <p>TRT TV is the brain child of renowned horseman and dressage rider Tristan Tucker, the man behind the TRT Method and the rest of the TRT Enterprise. TRT are the initials of Tristan Ross Tucker. Read more about Tristan Tucker <a href="">here</a>.</p>
+      <p>TRT TV is the brain child of renowned horseman and dressage rider Tristan Tucker, the man behind the TRT Method and the rest of the TRT Enterprise. TRT are the initials of Tristan Ross Tucker. Read more about Tristan Tucker <a href="https://trt-stables.com/" target="_blank">here</a>.</p>
       <h2 class="upper"><b>TRT TV </b> THE PRODUCT</h2>
       <p>TRT TV is a platform developed to provide people with inspiring, educational and entertaining media from the horse world that you can access from anywhere in the world on any mobile device. </p>
 
