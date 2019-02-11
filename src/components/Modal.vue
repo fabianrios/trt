@@ -82,6 +82,8 @@ export default {
   .modal-container{
     width: 500px;
     padding-bottom: 50px;
+    overflow: auto;
+    max-height: 90vh;
   }
 }
 

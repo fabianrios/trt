@@ -23,12 +23,12 @@
           <li>
             <icon name="play-circle-o" scale="4"></icon>
             <h3 class="upper fwn"><b>{{episodes.length}}</b> VIDEOS</h3>
-            <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh.</p>
+            <p class="tac">{{serie.firstrow}}</p>
           </li>
           <li>
             <icon name="heart-o" scale="4"></icon>
             <h3 class="upper fwn"><b>100%</b> EXCLUSIVE</h3>
-            <p class="tac">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh.</p>
+            <p class="tac">{{serie.secondrow}}</p>
           </li>
           <li>
             <icon name="star-o" scale="4"></icon>
@@ -48,7 +48,7 @@
         </div>
         <div class="text">
           <h2 class="fwn upper"><b>ABOUT</b> {{serie.name}}</h2>
-          <p>{{serie.bio}}</p>
+          <p>{{serie.paragraph}}</p>
         </div>
       </div>
       <br />

@@ -17,6 +17,9 @@
           <input type="text" name="video" id="video" placeholder="Trailer">
           <input type="text" name="release" id="release" placeholder="Promo release">
           <textarea name="bio" id="bio" cols="30" rows="10" placeholder="Description"></textarea>
+          <textarea name="firstrow" id="firstrow" cols="30" rows="10" placeholder="Description in video"></textarea>
+          <textarea name="secondrow" id="secondrow" cols="30" rows="10" placeholder="Description in 100% exclusive"></textarea>
+          <textarea name="paragraph" id="paragraph" cols="30" rows="10" placeholder="Description in next to image"></textarea>
           <button class="button upper">Create</button>
         </form>
       </div>
@@ -38,6 +41,9 @@
             <input type="hidden" name="id" id="id" placeholder="id" :value="editserie.id">
             <input type="text" name="release" id="release" placeholder="Promo release" :value="editserie.release">
             <textarea name="bio" id="bio" cols="30" rows="10" placeholder="Description" :value="editserie.bio"></textarea>
+            <textarea name="firstrow" id="firstrow" cols="30" rows="10" placeholder="Description in video" :value="editserie.firstrow"></textarea>
+            <textarea name="secondrow" id="secondrow" cols="30" rows="10" placeholder="Description in 100% exclusive" :value="editserie.secondrow"></textarea>
+            <textarea name="paragraph" id="paragraph" cols="30" rows="10" placeholder="Description in next to image" :value="editserie.paragraph"></textarea>
             <button class="button expand upper">Update</button>
           </form>
         </div>
