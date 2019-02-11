@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     bio: DataTypes.TEXT,
     video: DataTypes.TEXT,
     release: DataTypes.STRING,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    sideimage: DataTypes.STRING,
+    firstrow: DataTypes.TEXT,
+    secondrow: DataTypes.TEXT,
+    paragraph: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function (models) {

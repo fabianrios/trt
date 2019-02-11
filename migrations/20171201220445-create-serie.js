@@ -14,6 +14,9 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      sideimage: {
+        type: Sequelize.STRING
+      },
       publish: {
         type: Sequelize.BOOLEAN
       },
@@ -21,6 +24,15 @@ module.exports = {
         type: Sequelize.DECIMAL
       },
       bio: {
+        type: Sequelize.TEXT
+      },
+      firstrow: {
+        type: Sequelize.TEXT
+      },
+      secondrow: {
+        type: Sequelize.TEXT
+      },
+      paragraph: {
         type: Sequelize.TEXT
       },
       video: {
