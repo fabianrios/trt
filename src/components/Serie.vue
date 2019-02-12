@@ -44,7 +44,8 @@
       <br />
       <div class="aboutHome">
         <div class="theimg">
-          <img src="http://res.cloudinary.com/trt-tv/image/upload/v1513698826/assets/behindguy.png" alt="" width="554" height="660">
+          <img v-if="serie.sideimage" :src="serie.sideimage" alt="sideimage">
+          <img v-else src="http://res.cloudinary.com/trt-tv/image/upload/v1513698826/assets/behindguy.png" alt="default" width="554" height="660">
         </div>
         <div class="text">
           <h2 class="fwn upper"><b>ABOUT</b> {{serie.name}}</h2>

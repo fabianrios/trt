@@ -19,6 +19,7 @@
           <textarea name="bio" id="bio" cols="30" rows="10" placeholder="Description"></textarea>
           <textarea name="firstrow" id="firstrow" cols="30" rows="10" placeholder="Description in video"></textarea>
           <textarea name="secondrow" id="secondrow" cols="30" rows="10" placeholder="Description in 100% exclusive"></textarea>
+          <input type="text" name="sideimage" id="sideimage" placeholder="Image URL">
           <textarea name="paragraph" id="paragraph" cols="30" rows="10" placeholder="Description in next to image"></textarea>
           <button class="button upper">Create</button>
         </form>
@@ -43,6 +44,7 @@
             <textarea name="bio" id="bio" cols="30" rows="10" placeholder="Description" :value="editserie.bio"></textarea>
             <textarea name="firstrow" id="firstrow" cols="30" rows="10" placeholder="Description in video" :value="editserie.firstrow"></textarea>
             <textarea name="secondrow" id="secondrow" cols="30" rows="10" placeholder="Description in 100% exclusive" :value="editserie.secondrow"></textarea>
+            <input type="text" name="sideimage" id="sideimage" placeholder="Side image URL" :value="editserie.sideimage">
             <textarea name="paragraph" id="paragraph" cols="30" rows="10" placeholder="Description in next to image" :value="editserie.paragraph"></textarea>
             <button class="button expand upper">Update</button>
           </form>

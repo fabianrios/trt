@@ -1,8 +1,8 @@
 {
   "name": "trt",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "description": "video CMS with vue and express.js",
-  "author": "fabianrios <faben02@gmail.com>",
+  "author": "fabianrios <hola@fabianrios.co>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
